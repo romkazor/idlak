@@ -3,9 +3,11 @@
   <set name="phone" null="0">
     <item name="pau"/>
     <item name="aa"/>
+    <item name="a@"/>
     <item name="an"/>
     <item name="ah"/>
     <item name="ax"/>
+    <item name="au"/>
     <item name="b"/>
     <item name="d"/>
     <item name="eh"/>
@@ -33,6 +35,7 @@
     <item name="oe"/>
     <item name="p"/>
     <item name="r"/>
+    <item name="rr"/>
     <item name="s"/>
     <item name="sh"/>
     <item name="t"/>
