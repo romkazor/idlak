@@ -79,7 +79,9 @@
 		<o pat="t j"/>
 		<o pat="d r"/>
 		<o pat="d w"/>
+		<o pat="d j"/>
 		<o pat="k r"/>
+		<o pat="k j"/>
 		<o pat="k w"/>
     <o pat="k n"/>
 		<o pat="k j"/>
