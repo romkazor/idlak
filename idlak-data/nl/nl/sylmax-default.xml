@@ -66,6 +66,8 @@
 		<o pat="s x"/>
 		<o pat="s gh"/>
 		<o pat="s r"/>
+		<o pat="z w"/>
+		<o pat="z l"/>
 		<o pat="p r"/>
 		<o pat="p l"/>
     <o pat="p j"/>
