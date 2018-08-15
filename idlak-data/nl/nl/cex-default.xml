@@ -6,6 +6,7 @@
     <item name="a@"/>
     <item name="an"/>
     <item name="ah"/>
+    <item name="au"/>
     <item name="ax"/>
     <item name="au"/>
     <item name="b"/>
@@ -90,9 +91,12 @@
     <item name="VDN"/>
     <item name="VDP"/>
     <item name="VDZ"/>
+    <item name="VH"/>
     <item name="VHB"/>
     <item name="VHD"/>
+    <item name="VHG"/>
     <item name="VHI"/>
+    <item name="VHN"/>
     <item name="VHP"/>
     <item name="VHZ"/>
     <item name="VV"/>
