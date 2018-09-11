@@ -54,7 +54,6 @@ TxpParseOptions::TxpParseOptions(const char *usage)
     : ParseOptions(usage) {
   std::istringstream is(txpconfigdefault);
   std::string line, key, value, *stringptr;
-  LookupMapItem item;
   RegisterStandard("tpdb", &tpdb_,
                    "Text processing database (directory XML language/speaker files)"); //NOLINT
   while (std::getline(is, line)) {
@@ -133,6 +132,34 @@ const char* TxpParseOptions::GetValue(const char* module, const char* key) const
 }
 const char* TxpParseOptions::GetTpdb() const {
   return tpdb_.c_str();
+}
+
+const char* TxpParseOptions::GetValue(const char* key) const {
+  LookupMapPtr::const_iterator lookup = txpoptions_.find(key);
+  if (lookup == txpoptions_.end()) {
+    if (!strcmp(key, "tpdb")) {
+      return GetTpdb();
+    }
+    return nullptr;
+  }
+  else {
+    return (lookup->second)->c_str();
+  }
+}
+
+std::vector<std::string> TxpParseOptions::Keys() {
+  std::vector<std::string> keys;
+  for (auto const& doc : DocMap() ) {
+    keys.push_back(std::string(doc.first));
+  }
+  return keys;
+}
+
+std::string TxpParseOptions::DocString(const std::string &key) {
+  auto doc = DocMap().find(key);
+  if (doc == DocMap().end())
+    return std::string("");
+  return std::string(doc->second.use_msg_);
 }
 
 }  // namespace kaldi
