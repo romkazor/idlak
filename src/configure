@@ -90,6 +90,7 @@ Configuration options:
                         If provided, it is prepended to all toolchain programs.
   --android-incdir=DIR  Android include directory
   --pyidlak             Build Python Wrappers [default=yes]
+  --swig-path=DIR       Directory for swig binary [default=]
   --pydev-incdir=DIR    Python development library include directory [default=/usr/include/python3.5m]
   --pydev-libdir=DIR    Python development library path [default=]
   --pydev-lib=lib       Python development library [default=python3.5m]
@@ -865,7 +866,7 @@ FSTROOT=`rel2abs ../tools/openfst`
 EXPATROOT=`rel2abs ../tools/expat-2.1.0/`
 PCREROOT=`rel2abs ../tools/pcre-8.20/`
 PUJIXMLROOT=`rel2abs ../tools/pugixml-1.2/`
-SWIGROOT=`rel2abs ../tools/swig-3.0.12/`
+SWIGROOT=`if which swig >&/dev/null ; then dirname $(which swig) ; fi`
 
 PYTHONDEVINC= #/usr/include/python3.5m
 PYTHONDEVLIB= #python3.5m
@@ -1020,6 +1021,9 @@ do
   --pyidlak=no)
     pyidlak=false;
     shift ;;
+  --swig-path=*)
+    SWIGROOT=`read_dirname $1`;
+    shift;;
   --pydev-incdir=*)
     PYTHONDEVINC=`read_dirname $1`;
     shift;;
@@ -1140,8 +1144,7 @@ fi
 if [ $pyidlak ]; then
     echo "Checking Swig Binary in $SWIGROOT"
     if [ ! -f $SWIGROOT/swig  ]; then
-            failure "Could not find file $SWIGROOT/swig:
-        you may not have installed Swig.  See ../tools/install_idlak.sh"
+        failure "Could not swig"
     fi
     if [ ! -f $SPTKROOT/lib/libSPTK.a  ]; then
             failure "Could not find file $SPTKROOT/lib/libSPTK.a:

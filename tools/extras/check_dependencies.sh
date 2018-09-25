@@ -106,7 +106,7 @@ function verlte()
 
 if ! which python3.5 >&/dev/null; then
   if which python3 >&/dev/null; then
-     python_ver=`python3 --version | awk '{print $2}'` 
+     python_ver=`python3 --version | awk '{print $2}'`
      verlte 3.5.0 $python_ver && pythonok=true || pythonok=false
      if [ $pythonok = "false" ]; then
         echo "$0: python3 has a version which is too low. Please install python3.5 or higher"
@@ -207,6 +207,11 @@ if which grep >&/dev/null && pwd | grep -E 'JOB|LMWT' >/dev/null; then
   echo "*** $0: Kaldi scripts will fail if the directory name contains"
   echo "***  either of the strings 'JOB' or 'LMWT'."
   status=1;
+fi
+
+if ! which swig >&/dev/null; then
+  echo "*** $0: Warning: swig is not on the default PATH"
+  echo "***   PyIdlak cannot be built unless swig path is set during configuration"
 fi
 
 if ! $printed && [ $status -eq 0 ]; then

@@ -25,6 +25,7 @@ addons:
       - python3.5
       - libpython3.5-dev
       - sox
+      - swig
 
 branches:
   only:
