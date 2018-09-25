@@ -1,4 +1,4 @@
-// pyIdlak/vocoder/pyIdlak_vocoder.i
+// pyIdlak/vocoder/pyIdlak_gen.i
 
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude)
 
@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-%module pyIdlak_vocoder
+%module pyIdlak_gen
 
 %include <std_string.i>
 %include <std_vector.i>
@@ -35,10 +35,7 @@ namespace std {
 %apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
 
 %{
-#include "python-vocoder-api.h"
+#include "python-gen-api.h"
 %}
 
-%include "python-vocoder-api.h"
-
-
-
+%include "python-gen-api.h"

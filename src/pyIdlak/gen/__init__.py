@@ -15,9 +15,4 @@
 # limitations under the License.
 
 # SWIG wrapped API
-from . import pyIdlak_vocoder as c_api
-
-
-from .vocoders import MCEPVocoder, MCEPExcitation
-
-from . import excitation
+from . import pyIdlak_gen as c_api
