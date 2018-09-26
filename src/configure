@@ -1140,7 +1140,7 @@ fi
 
 if [ $pyidlak ]; then
     if [ ! which $SWIG ]; then
-            failure "Could not run swig"
+            failure "Could not find swig as $SWIG "
     fi
     if [ ! -f $SPTKROOT/lib/libSPTK.a  ]; then
             failure "Could not find file $SPTKROOT/lib/libSPTK.a:
