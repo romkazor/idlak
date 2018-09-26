@@ -210,6 +210,7 @@ if which grep >&/dev/null && pwd | grep -E 'JOB|LMWT' >/dev/null; then
 fi
 
 if ! which swig >&/dev/null; then
+  # TODO: check version / see if swig has been overridden
   echo "*** $0: Warning: swig is not on the default PATH"
   echo "***   PyIdlak cannot be built unless swig path is set during configuration"
 fi
