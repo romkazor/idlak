@@ -101,6 +101,7 @@ Following environment variables can be used to override the default toolchain.
   AR          Archive maintenance utility [default=ar]
   AS          Assembler [default=as]
   RANLIB      Archive indexing utility [default=ranlib]
+  SWIG        swig binary [default=swig]
 
 If a host triple is provided, it is prepended to CXX, AR, AS and RANLIB.
 
@@ -836,6 +837,7 @@ CXX=${CXX:-g++}
 AR=${AR:-ar}
 AS=${AS:-as}
 RANLIB=${RANLIB:-ranlib}
+SWIG=${SWIG:swig}
 
 # These environment variables can be used to provide additional flags to the
 # compiler/linker. We want these flags to override the flags determined by the
@@ -865,7 +867,6 @@ FSTROOT=`rel2abs ../tools/openfst`
 EXPATROOT=`rel2abs ../tools/expat-2.1.0/`
 PCREROOT=`rel2abs ../tools/pcre-8.20/`
 PUJIXMLROOT=`rel2abs ../tools/pugixml-1.2/`
-SWIGROOT=`rel2abs ../tools/swig-3.0.12/`
 
 PYTHONDEVINC= #/usr/include/python3.5m
 PYTHONDEVLIB= #python3.5m
@@ -1088,8 +1089,8 @@ if [ -f kaldi.mk ]; then
   cp kaldi.mk kaldi.mk.bak
 fi
 
-# Generate the new kaldi.mk file
 echo "# This file was generated using the following command:" > kaldi.mk
+# Generate the new kaldi.mk file
 echo "# $cmd_line" >> kaldi.mk
 echo >> kaldi.mk
 echo "CONFIGURE_VERSION := $CONFIGURE_VERSION" >> kaldi.mk
@@ -1101,7 +1102,7 @@ echo "CXX = $CXX" >> kaldi.mk
 echo "AR = $AR" >> kaldi.mk
 echo "AS = $AS" >> kaldi.mk
 echo "RANLIB = $RANLIB" >> kaldi.mk
-echo "SWIG = $SWIGROOT/swig" >> kaldi.mk
+echo "SWIG = $SWIG" >> kaldi.mk
 echo >> kaldi.mk
 
 echo "Checking compiler $CXX ..."
@@ -1138,10 +1139,8 @@ if [ ! -f $PUJIXMLROOT/src/pugixml.hpp  ]; then
 fi
 
 if [ $pyidlak ]; then
-    echo "Checking Swig Binary in $SWIGROOT"
-    if [ ! -f $SWIGROOT/swig  ]; then
-            failure "Could not find file $SWIGROOT/swig:
-        you may not have installed Swig.  See ../tools/install_idlak.sh"
+    if [ ! which $SWIG ]; then
+            failure "Could not find swig as $SWIG "
     fi
     if [ ! -f $SPTKROOT/lib/libSPTK.a  ]; then
             failure "Could not find file $SPTKROOT/lib/libSPTK.a:
@@ -1192,7 +1191,6 @@ echo PYIDLAK = $pyidlak >> kaldi.mk
 echo PCREROOT = $PCREROOT >> kaldi.mk
 echo EXPATROOT = $EXPATROOT >> kaldi.mk
 echo PUJIXMLROOT = $PUJIXMLROOT >> kaldi.mk
-echo SWIGROOT = $SWIGROOT >> kaldi.mk
 echo PYTHONDEVINC = $PYTHONDEVINC >> kaldi.mk
 echo PYTHONDEVLIB = $PYTHONDEVLIB >> kaldi.mk
 echo PYTHONDEVLIBDIR = $PYTHONDEVLIBDIR >> kaldi.mk
