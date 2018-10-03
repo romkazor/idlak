@@ -373,7 +373,6 @@ def load_file(filename, dim):
             sys.exit(-2)
         if dim == 1:
             return np.reshape(ll, (-1, ))
-        print(dim)
         return np.reshape(ll, (-1, dim))
 
 
