@@ -171,7 +171,7 @@ if [ $stage -le 1 ]; then
     incr_stage
 fi
 
-tpdb=$KALDI_ROOT/idlak-data/en/ga/
+tpdb=$KALDI_ROOT/idlak-data/
 dict=data/local/dict
 
 ############################################
