@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<rules>
+    <!--
+    <rule name="name of the rule">
+        <comment>there can be multiple patterns in the rule</comment>
+        <pattern rgx="regex for matching token pronounciation"
+                 pos="part of speech to match to token, if empty pos matching is skipped"
+                 index="index of token of which the pronounciation is going to be matched,
+                        if -1 - previous token, 0 - current token, 1 - next token"
+        />
+        <comment>there can only be one action in the rule that proccesses the current token</comment>
+        <action rgx="regex to match pronounciation that will be replaced, has to contain a group"
+                grp="index of group that should be replaced. To replace the full regex match use -1 as group"
+                replace="a string to replace marked group"
+        />
+    </rule>
+    -->
+</rules>
