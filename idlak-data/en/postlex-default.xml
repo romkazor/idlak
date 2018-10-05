@@ -3,8 +3,9 @@
     <!--
     <rule name="name of the rule">
         <comment>there can be multiple patterns in the rule</comment>
-        <pattern rgx="regex for matching token pronounciation"
-                 pos="part of speech to match to token, if empty pos matching is skipped"
+        <pattern rgx="regex for matching input"
+                 input_type="pos (part of speech) | norm (normalised token) |
+                             pron (pronounciation of the token)"
                  index="index of token of which the pronounciation is going to be matched,
                         if -1 - previous token, 0 - current token, 1 - next token"
         />

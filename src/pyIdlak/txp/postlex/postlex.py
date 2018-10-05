@@ -24,44 +24,55 @@ from lxml import etree
 from pcre import compile
 from .. import idargparse, xmldoc, pyIdlak_txp, pytxplib
 
+_valid_input_types = ['pron', 'pos', 'norm']
+
 
 class Pattern:
 
-    def __init__(self, index, pos, rgx):
+    def __init__(self, index, input_type, rgx, verboselvl=0):
+        self.verboselvl = verboselvl
         self.index = index
-        self.pos = pos
+        if input_type not in _valid_input_types and self.verboselvl:
+            sys.stderr.write("WARNING: The input type {} is invalid, valid " +
+                             "input types: {}".format(input_type,
+                                                      _valid_input_types))
+
+        self.input_type = input_type
         self.rgx = compile(rgx)
 
     def __repr__(self):
-        return "{{Pattern: index {}, pos {}, rgx {}}}".format(self.index,
-                                                              self.pos,
-                                                              self.rgx)
+        return ("{{Pattern: index {}, input type {}, rgx {}}}"
+                .format(self.index, self.input_type, self.rgx))
 
     @staticmethod
-    def create_pattern(xml):
+    def create_pattern(xml, verboselvl=0):
         index = 0
-        pos = ""
+        input_type = ""
         rgx = ""
         if xml.tag == "pattern":
             index = int(xml.get("index"))
-            pos = xml.get("pos")
+            input_type = xml.get("input_type")
             rgx = xml.get("rgx")
-        return Pattern(index, pos, rgx)
+        return Pattern(index, input_type, rgx, verboselvl)
 
     def apply(self, tkxml):
-        pos = tkxml.get("pos")
-        pron = tkxml.get("pron")
-        if pron == "":
+        # check the input type
+        input = tkxml.get(self.input_type)
+        # in case the tokens did not go through a normaliser
+        if input is None and self.input_type == "norm":
+            input = tkxml.get("tknorm")
+        # reject if the input is empty or was not found
+        if input is None or input == "":
             return False
-        if self.pos != "" and pos != self.pos:
-            return False
-        if self.rgx.match(pron) is not None:
+        if self.rgx.match(input) is not None:
             return True
+        return False
 
 
 class Action:
 
-    def __init__(self, rgx, grp, replace):
+    def __init__(self, rgx, grp, replace, verboselvl=0):
+        self.verboselvl = verboselvl
         self.rgx = compile(rgx)
         self.grp = grp
         self.replace = replace
@@ -72,7 +83,7 @@ class Action:
                                                                self.replace)
 
     @staticmethod
-    def create_action(xml):
+    def create_action(xml, verboselvl=0):
         rgx = ""
         grp = 0
         replace = ""
@@ -80,7 +91,7 @@ class Action:
             rgx = xml.get("rgx")
             grp = int(xml.get("grp"))
             replace = xml.get("replace")
-        return Action(rgx, grp, replace)
+        return Action(rgx, grp, replace, verboselvl)
 
     def apply(self, tkxml):
         pron = tkxml.get("pron")
@@ -166,14 +177,17 @@ class PostlexRules:
             for r_child in rulexml.getchildren():
                 # create patterns and append to pattern list
                 if r_child.tag == "pattern":
-                    rule.append_pattern(Pattern.create_pattern(r_child))
+                    rule.append_pattern(Pattern
+                                        .create_pattern(r_child,
+                                                        self.verboselvl))
                     if self.minoffset > int(r_child.get('index')):
                         self.minoffset = int(r_child.get('index'))
                     if self.maxoffset < int(r_child.get('index')):
                         self.maxoffset = int(r_child.get('index'))
                 # create and set action of the rule
                 elif r_child.tag == "action":
-                    rule.set_action(Action.create_action(r_child))
+                    rule.set_action(Action.create_action(r_child,
+                                                         self.verboselvl))
                 elif self.verboselvl:
                     sys.stderr.write("Unrecognised element detected: " +
                                      etree.tostring(r_child))
