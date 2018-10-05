@@ -23,7 +23,7 @@ import math, random, sys, re
 ### Parse options
 ###
 
-print >> sys.stderr, sys.argv
+sys.stderr.write(' '.join(sys.argv))
 
 from optparse import OptionParser
 usage="%prog [options] <feat-dim> <num-leaves> <num-hid-layers> <num-hid-neurons> >nnet-proto-file"
@@ -126,46 +126,46 @@ if num_hid_layers == 0 and o.bottleneck_dim != 0:
   assert(num_hid_layers == 0)
   if o.bottleneck_trick:
     # 25% smaller stddev -> small bottleneck range, 10x smaller learning rate
-    print "<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f <LearnRateCoef> %f" % \
+    print ("<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f <LearnRateCoef> %f" % \
      (feat_dim, o.bottleneck_dim, \
-      (o.param_stddev_factor * Glorot(feat_dim, o.bottleneck_dim) * 0.75 ), 0.1)
+      (o.param_stddev_factor * Glorot(feat_dim, o.bottleneck_dim) * 0.75 ), 0.1))
     # 25% smaller stddev -> smaller gradient in prev. layer, 10x smaller learning rate for weigts & biases
-    print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f <MaxNorm> %f" % \
+    print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f <MaxNorm> %f" % \
      (o.bottleneck_dim, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
-      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons) * 0.75 ), 0.1, 0.1, o.max_norm)
+      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons) * 0.75 ), 0.1, 0.1, o.max_norm))
   else:
-    print "<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f" % \
+    print ("<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f" % \
      (feat_dim, o.bottleneck_dim, \
-      (o.param_stddev_factor * Glorot(feat_dim, o.bottleneck_dim)))
-    print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f" % \
+      (o.param_stddev_factor * Glorot(feat_dim, o.bottleneck_dim))))
+    print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f" % \
      (o.bottleneck_dim, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
-      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons)), o.max_norm)
-  print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts) # Non-linearity
+      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons)), o.max_norm))
+  print ("%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts)) # Non-linearity
   # Last AffineTransform (10x smaller learning rate on bias)
-  print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f" % \
+  print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f" % \
    (num_hid_neurons, num_leaves, 0.0, 0.0, \
-    (o.param_stddev_factor * Glorot(num_hid_neurons, num_leaves)), 1.0, 0.1)
+    (o.param_stddev_factor * Glorot(num_hid_neurons, num_leaves)), 1.0, 0.1))
   # Optionaly append softmax
   if o.with_softmax:
     if o.block_softmax_dims == "":
-      print "<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves)
+      print ("<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves))
     else:
-      print "<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims)
-  print "</NnetProto>"
+      print ("<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims))
+  print ("</NnetProto>")
   # We are done!
   sys.exit(0)
 
 # NO HIDDEN LAYERS!
 # Add only last layer (logistic regression)
 if num_hid_layers == 0:
-  print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f" % \
-        (feat_dim, num_leaves, 0.0, 0.0, (o.param_stddev_factor * Glorot(feat_dim, num_leaves)))
+  print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f" % \
+        (feat_dim, num_leaves, 0.0, 0.0, (o.param_stddev_factor * Glorot(feat_dim, num_leaves))))
   if o.with_softmax:
     if o.block_softmax_dims == "":
-      print "<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves)
+      print ("<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves))
     else:
-      print "<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims)
-  print "</NnetProto>"
+      print ("<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims))
+  print ("</NnetProto>")
   # We are done!
   sys.exit(0)
 
@@ -176,67 +176,66 @@ assert(num_hid_layers > 0)
 
 # Begin the prototype,
 # First AffineTranform,
-print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
+print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
       (feat_dim, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
        (o.param_stddev_factor * Glorot(feat_dim, num_hid_neurons) * \
-        (math.sqrt(1.0/12.0) if o.smaller_input_weights else 1.0)), o.max_norm, o.affine_opts)
+        (math.sqrt(1.0/12.0) if o.smaller_input_weights else 1.0)), o.max_norm, o.affine_opts))
       # Note.: compensating dynamic range mismatch between input features and Sigmoid-hidden layers,
       # i.e. mapping the std-dev of N(0,1) (input features) to std-dev of U[0,1] (sigmoid-outputs).
       # This is done by multiplying with stddev(U[0,1]) = sqrt(1/12).
       # The stddev of weights is consequently reduced with scale 0.29,
-print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts)
+print ("%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts))
 if o.with_dropout:
-  print "<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts)
+  print ("<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts))
 
 
 # Internal AffineTransforms,
 for i in range(num_hid_layers-1):
-  print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
+  print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
         (num_hid_neurons, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
-         (o.param_stddev_factor * Glorot(num_hid_neurons, num_hid_neurons)), o.max_norm, o.affine_opts)
-  print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts)
+         (o.param_stddev_factor * Glorot(num_hid_neurons, num_hid_neurons)), o.max_norm, o.affine_opts))
+  print ("%s <InputDim> %d <OutputDim> %fd %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts))
   if o.with_dropout:
-    print "<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts)
+    print ("<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts))
 
 # Optionaly add bottleneck,
 if o.bottleneck_dim != 0:
   assert(o.bottleneck_dim > 0)
   if o.bottleneck_trick:
     # 25% smaller stddev -> small bottleneck range, 10x smaller learning rate
-    print "<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f <LearnRateCoef> %f" % \
+    print ("<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f <LearnRateCoef> %f" % \
      (num_hid_neurons, o.bottleneck_dim, \
-      (o.param_stddev_factor * Glorot(num_hid_neurons, o.bottleneck_dim) * 0.75 ), 0.1)
+      (o.param_stddev_factor * Glorot(num_hid_neurons, o.bottleneck_dim) * 0.75 ), 0.1))
     # 25% smaller stddev -> smaller gradient in prev. layer, 10x smaller learning rate for weigts & biases
-    print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f <MaxNorm> %f %s" % \
+    print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f <MaxNorm> %f %s" % \
      (o.bottleneck_dim, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
-      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons) * 0.75 ), 0.1, 0.1, o.max_norm, o.affine_opts)
+      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons) * 0.75 ), 0.1, 0.1, o.max_norm, o.affine_opts))
   else:
     # Same learninig-rate and stddev-formula everywhere,
-    print "<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f" % \
+    print ("<LinearTransform> <InputDim> %d <OutputDim> %d <ParamStddev> %f" % \
      (num_hid_neurons, o.bottleneck_dim, \
-      (o.param_stddev_factor * Glorot(num_hid_neurons, o.bottleneck_dim)))
-    print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
+      (o.param_stddev_factor * Glorot(num_hid_neurons, o.bottleneck_dim))))
+    print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <MaxNorm> %f %s" % \
      (o.bottleneck_dim, num_hid_neurons, o.hid_bias_mean, o.hid_bias_range, \
-      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons)), o.max_norm, o.affine_opts)
-  print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts)
+      (o.param_stddev_factor * Glorot(o.bottleneck_dim, num_hid_neurons)), o.max_norm, o.affine_opts))
+  print ("%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, num_hid_neurons, num_hid_neurons, o.activation_opts))
   if o.with_dropout:
-    print "<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts)
+    print ("<Dropout> <InputDim> %d <OutputDim> %d %s" % (num_hid_neurons, num_hid_neurons, o.dropout_opts))
 
 # Last AffineTransform (10x smaller learning rate on bias)
-print "<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f" % \
+print ("<AffineTransform> <InputDim> %d <OutputDim> %d <BiasMean> %f <BiasRange> %f <ParamStddev> %f <LearnRateCoef> %f <BiasLearnRateCoef> %f" % \
       (num_hid_neurons, num_leaves, 0.0, 0.0, \
-       (o.param_stddev_factor * Glorot(num_hid_neurons, num_leaves)), 1.0, 0.1)
+       (o.param_stddev_factor * Glorot(num_hid_neurons, num_leaves)), 1.0, 0.1))
 
 # Optionaly append softmax
 if o.with_softmax:
   if o.block_softmax_dims == "":
-    print "<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves)
+    print ("<Softmax> <InputDim> %d <OutputDim> %d" % (num_leaves, num_leaves))
   else:
-    print "<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims)
+    print ("<BlockSoftmax> <InputDim> %d <OutputDim> %d <BlockDims> %s" % (num_leaves, num_leaves, o.block_softmax_dims))
 
 if o.activation_final:
-  print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_final, num_leaves, num_leaves, o.activation_opts)
+  print ("%s <InputDim> %d <OutputDim> %d %s" % (o.activation_final, num_leaves, num_leaves, o.activation_opts))
 
 # We are done!
 sys.exit(0)
-
