@@ -87,8 +87,8 @@ def make_fullctx_mlf_dnn(mlffile, fullctx, outputfile, framerate_htk = 50000, ph
                     frame_ctxt.append(p)
                 klab += 1
             if klab >= len(lab) and pid < len(fctx) -1:
-                print "Something terrible happened!"
-        print id, len(fctx), len(lab), len(frame_ctxt), len(state_pos), len(phone_pos)
+                print ("Something terrible happened!")
+        print (id, len(fctx), len(lab), len(frame_ctxt), len(state_pos), len(phone_pos))
         ofp.write("%s [\n" % id)
         for ctx, spos, ppos in zip(frame_ctxt, state_pos, phone_pos):
             #print ctx, spos, ppos
@@ -107,7 +107,7 @@ def main():
     opts, args = parser.parse_args()
     if len(args) == 3:
         make_fullctx_mlf_dnn(args[0], args[1], args[2], extra_feats=opts.extra_feats)
-    else: 
+    else:
         parser.error('Mandatory arguments missing or excessive number of arguments')
 
 if __name__ == '__main__':
