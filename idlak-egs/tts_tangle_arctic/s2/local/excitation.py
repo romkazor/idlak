@@ -95,7 +95,7 @@ class RESD:
             if self.midbands:
                 # if the middle of the bands are specified then use linear interpolation
 
-                noiseweights = np.array(map(lambda b: np.power(10., b / 20.), bndaps))
+                noiseweights = np.array(list(map(lambda b: np.power(10., b / 20.), bndaps)))
                 noiseweights = noiseweights.clip(0., 1.)
 
                 # make sure it starts and ends at the right point
@@ -107,7 +107,7 @@ class RESD:
                     mb = mb + [self.len/2]
                     noiseweights = np.hstack((noiseweights, [1.]))
 
-                noiseWeights = np.interp(range(self.len/2), mb, noiseweights)
+                noiseWeights = np.interp(range(int(self.len/2)), mb, noiseweights)
                 pulseWeights = np.sqrt(1 - noiseWeights**2).clip(0.,1.)
                 noiseWeights = np.array(np.hstack((noiseWeights,noiseWeights[::-1])), dtype=complex)
                 pulseWeights = np.array(np.hstack((pulseWeights,pulseWeights[::-1])), dtype=complex)
@@ -199,7 +199,7 @@ class RESD:
         self.lstsample = 0
         while excitation_frame_idx < self.nrframes and self.lstsample <  raw.size:
             if verbose:
-                print ("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
+                print("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
 
             # Get the f0 for the frame (NOT LOG F0)
             if excitation_frame_idx > self.f0s.size:
@@ -230,7 +230,7 @@ class RESD:
             #    pulse_pre = np.zeros((self.len - len(pulse)) / 2)
             #    pulse_post = np.zeros(self.len - len(pulse) - len(pulse_pre))
             #    pulse = np.concatenate((pulse_pre, pulse, pulse_post))
-            pulse[self.hlen] = pulse_magnitude
+            pulse[int(self.hlen)] = pulse_magnitude
             pulse *= np.sqrt(pitch_period / sum(pulse ** 2))
 
             #pylab.figure(); pylab.plot(pulse); pylab.show()
@@ -239,12 +239,12 @@ class RESD:
 
             # Noise only needs to covers the middle of window
             noise = np.zeros(self.len)
-            start_point =  self.hlen - pitch_period_prv
+            start_point = int(self.hlen - pitch_period_prv)
             #if (start_point < 0): print self.hlen, pitch_period_prv
             flen =  pitch_period_prv + pitch_period_int
             # To ensure the energy of noise is the same as pulse
             noise_norm_fact = np.sqrt(pitch_period / flen)
-            noise[start_point: start_point + flen] = np.random.normal(0., 1.0 * noise_norm_fact, flen)
+            noise[int(start_point):int(start_point + flen)] = np.random.normal(0., 1.0 * noise_norm_fact, flen)
             #sys.stderr.write("nrgs: %f <> %f\n" % ( sum(pulse ** 2), sum(noise ** 2)))
 
             # Pitch synch hanning window
@@ -274,7 +274,7 @@ class RESD:
 
         excitation = np.divide(raw, np.where(self.hanning > 0, self.hanning, 1))
         #return excitation
-        t_start = self.len/2 - self.frame_shift
+        t_start = int(self.len/2) - self.frame_shift
         return excitation[t_start:]
 
 
@@ -286,7 +286,7 @@ class RESD:
     def pitch_sync_hann(self, left_period, right_period, hlen = None):
 
         if hlen is None:
-            hlen = self.hlen
+            hlen = int(self.hlen)
 
         left = np.hanning(left_period*4)[:left_period*2]
         right = np.hanning(right_period*4)[-right_period*2:]
@@ -309,7 +309,7 @@ class RESD:
     def overlap_and_add(self, raw, excitation, hanning, start_time):
         excitation = excitation * hanning
 
-        hlen = self.hlen
+        hlen = int(self.hlen)
         win_center = start_time #int((i + 0.5) * period)
         win_lb = win_center - hlen
         win_ub = win_lb + hlen * 2
@@ -367,9 +367,9 @@ def load_file(filename, dim):
             return np.reshape(dd, (-1,))
         return np.reshape(dd, (-1, dim))
     else:
-        ll = [map(float, l.strip().split()) for l in open(filename).readlines()]
-        if len(list(ll[0])) != dim:
-            print ("Dim mismatch: %d <> %d" % (dim, len(ll[0])))
+        ll = [list(map(float, l.strip().split())) for l in open(filename).readlines()]
+        if len(ll[0]) != dim:
+            print("Dim mismatch: %d <> %d" % (dim, len(ll[0])))
             sys.exit(-2)
         if dim == 1:
             return np.reshape(ll, (-1, ))
@@ -422,7 +422,7 @@ def main():
     if outfile == "-":
         out = sys.stdout
     else:
-        out = open(outfile, "w")
+        out = open(outfile, "wb")
 
     f0s = load_file(f0file, 1)
     if bndapfile:
@@ -444,7 +444,6 @@ def main():
     sys.stderr.write("Excitation: duration %f\n" % (len(excitation) / float(opts.srate)))
 
     out.write(array.array('f', excitation * float(opts.gain)).tostring())
-
 
 
 if __name__ == '__main__':
