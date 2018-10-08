@@ -422,7 +422,7 @@ def main():
     if outfile == "-":
         out = sys.stdout
     else:
-        out = open(outfile, "w")
+        out = open(outfile, "wb")
 
     f0s = load_file(f0file, 1)
     if bndapfile:
@@ -443,7 +443,7 @@ def main():
     excitation = residual.vocode(f0s, bndaps)
     sys.stderr.write("Excitation: duration %f\n" % (len(excitation) / float(opts.srate)))
 
-    out.write(str(array.array('f', excitation * float(opts.gain)).tostring()))
+    out.write(array.array('f', excitation * float(opts.gain)).tostring())
 
 
 if __name__ == '__main__':
