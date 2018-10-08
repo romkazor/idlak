@@ -199,7 +199,7 @@ class RESD:
         self.lstsample = 0
         while excitation_frame_idx < self.nrframes and self.lstsample <  raw.size:
             if verbose:
-                print ("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
+                print("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
 
             # Get the f0 for the frame (NOT LOG F0)
             if excitation_frame_idx > self.f0s.size:
@@ -368,7 +368,7 @@ def load_file(filename, dim):
         return np.reshape(dd, (-1, dim))
     else:
         ll = [list(map(float, l.strip().split())) for l in open(filename).readlines()]
-        if len(list(ll[0])) != dim:
+        if len(ll[0]) != dim:
             print("Dim mismatch: %d <> %d" % (dim, len(ll[0])))
             sys.exit(-2)
         if dim == 1:
@@ -443,7 +443,7 @@ def main():
     excitation = residual.vocode(f0s, bndaps)
     sys.stderr.write("Excitation: duration %f\n" % (len(excitation) / float(opts.srate)))
 
-    out.write(np.array2string(np.array(excitation * float(opts.gain))))
+    out.write(str(array.array('f', excitation * float(opts.gain)).tostring()))
 
 
 if __name__ == '__main__':
