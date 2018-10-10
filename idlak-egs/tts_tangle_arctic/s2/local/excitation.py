@@ -367,8 +367,8 @@ def load_file(filename, dim):
             return np.reshape(dd, (-1,))
         return np.reshape(dd, (-1, dim))
     else:
-        ll = [map(float, l.strip().split()) for l in open(filename).readlines()]
-        if len(list(ll[0])) != dim:
+        ll = [list(map(float, l.strip().split())) for l in open(filename).readlines()]
+        if list(ll[0]) != dim:
             print ("Dim mismatch: %d <> %d" % (dim, len(ll[0])))
             sys.exit(-2)
         if dim == 1:
