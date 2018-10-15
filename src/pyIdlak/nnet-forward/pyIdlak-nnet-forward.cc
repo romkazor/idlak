@@ -1,4 +1,4 @@
-// pyIdlak/pylib/python-pylib-api.cc
+// pyIdlak/nnet-forward/pyIdlak-nnet-forward.cc
 
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude
 //                                         Matthew Aylett
@@ -21,7 +21,7 @@
 #include "pyIdlak-nnet-forward.h"
 
 
-int ForwardPass(NnetForwardOpts * opts) {
+int ForwardPass(PyNnetForwardOpts * opts) {
   using namespace kaldi;
   using namespace kaldi::nnet1;
   try {
