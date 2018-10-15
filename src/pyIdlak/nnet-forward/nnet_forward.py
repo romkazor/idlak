@@ -4,14 +4,25 @@ import pyIdlak_nnet_forward as nnet_fwd
 
 
 def nnet_forward(nnet1_in, feature_rspecifier, feature_wspecifier,  # main args
-                 feature_transform="", reverse_transform=False,     # optn args
-                 no_softmax=False, apply_log=False, use_gpu="no"):  # optn args
+                 class_frame_counts="", prior_scale=1.0,            # optn args
+                 prior_floor=1e-10, feature_transform="",           # optn args
+                 reverse_transform=False, no_softmax=False,         # optn args
+                 apply_log=False, use_gpu="no"):                    # optn args
     """ Perform forward pass through Neural Network
 
     Attributes:
         nnet1_in (str)
         feature_rspecifier (str)
         feature_wspecifier (str)
+        class_frame_counts (str):   optional - Vector with frame-counts of pdfs
+                                    to compute log-priors. (priors are
+                                    typically subtracted from log-posteriors
+                                    or pre-softmax activations), default=''
+        prior_scale (float):        optional - Scaling factor to be applied on
+                                    pdf-log-priors, default=1.0
+        prior_floor (float):        optional - Flooring constatnt for prior
+                                    probability (i.e. label rel. frequency),
+                                    default=1e-10
         feature_transform (str):    optional - Feature transform in front of
                                     main network (in nnet format), default=''
         reverse_transform (bool):   optional - Feature transform applied in
@@ -41,9 +52,11 @@ def nnet_forward(nnet1_in, feature_rspecifier, feature_wspecifier,  # main args
     if use_gpu not in ['no', 'yes', 'optional']:
         raise ValueError('use_gpu can only be no|yes|optional, not {}!'
                          .format(use_gpu))
-
     # create a nnet forward option object
     nnet_forward_opts = nnet_fwd.NnetForwardOpts()
+    nnet_forward_opts.class_frame_counts = class_frame_counts
+    nnet_forward_opts.prior_scale = prior_scale
+    nnet_forward_opts.prior_floor = prior_floor
     nnet_forward_opts.feature_transform = feature_transform
     nnet_forward_opts.reverse_transform = reverse_transform
     nnet_forward_opts.no_softmax = no_softmax

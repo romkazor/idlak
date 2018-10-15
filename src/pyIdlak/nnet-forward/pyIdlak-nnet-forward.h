@@ -12,6 +12,9 @@ typedef struct NnetForwardOpts NnetForwardOpts;
 int ForwardPass(NnetForwardOpts * opts);
 
 struct NnetForwardOpts {
+    std::string class_frame_counts = "";
+    BaseFloat prior_scale = 1.0;
+    BaseFloat prior_floor = 1e-10;
     std::string feature_transform = "";
     bool reverse_transform = false;
     bool no_softmax = false;

@@ -23,6 +23,15 @@ e.g.: pyIdlak-nnet-forward-main.py final.nnet ark:input.ark ark:output.ark
     formatter = argparse.RawDescriptionHelpFormatter
     parser = argparse.ArgumentParser(description=descrp,
                                      formatter_class=formatter)
+    parser.add_argument('--class-frame-counts', help='Vector with frame-' +
+                        'counts of pdfs to compute log-priors. (priors are ' +
+                        'typically subtracted from log-posteriors or ' +
+                        'pre-softmax activations)', default='')
+    parser.add_argument('--prior-scale', help='Scaling factor to be ' +
+                        'applied on pdf-log-priors', default=1.0, type=float)
+    parser.add_argument('--prior-floor', help='Flooring constatnt for prior ' +
+                        'probability (i.e. label rel. frequency)',
+                        default=1e-10, type=float)
     parser.add_argument('--feature-transform', help='Feature transform in ' +
                         'front of main network (in nnet format)', default='')
     parser.add_argument('--reverse-transform', help='Feature transform ' +
@@ -42,7 +51,8 @@ e.g.: pyIdlak-nnet-forward-main.py final.nnet ark:input.ark ark:output.ark
     args = parser.parse_args()
 
     nnet_fwd(args.nnet1_in[0], args.feature_rspecifier[0],
-             args.feature_wspecifier[0], args.feature_transform,
+             args.feature_wspecifier[0], args.class_frame_counts,
+             args.prior_scale, args.prior_floor, args.feature_transform,
              tobool(args.reverse_transform), tobool(args.no_softmax),
              tobool(args.apply_log), args.use_gpu)
 

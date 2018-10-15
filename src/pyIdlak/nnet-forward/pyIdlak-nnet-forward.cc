@@ -29,6 +29,11 @@ int ForwardPass(NnetForwardOpts * opts) {
     using namespace kaldi::nnet1;
     typedef kaldi::int32 int32;
 
+    PdfPriorOptions prior_opts;
+    prior_opts.class_frame_counts = opts->class_frame_counts;
+    prior_opts.prior_scale = opts->prior_scale;
+    prior_opts.prior_floor = opts->prior_floor;
+
     // check if required parameters are provided
     if (opts->model_filename.empty()) {
         KALDI_ERR << "Argument model_filename is missing or is empty";
@@ -70,6 +75,9 @@ int ForwardPass(NnetForwardOpts * opts) {
       KALDI_ERR << "Cannot use both --apply-log=true --no-softmax=true, "
                 << "use only one of the two!";
     }
+
+    // we will subtract log-priors later,
+    PdfPrior pdf_prior(prior_opts);
 
     // disable dropout,
     nnet_transf.SetDropoutRate(0.0);
@@ -138,6 +146,11 @@ int ForwardPass(NnetForwardOpts * opts) {
         }
         nnet_out.Add(1e-20);  // avoid log(0),
         nnet_out.ApplyLog();
+      }
+
+      // subtract log-priors from log-posteriors or pre-softmax,
+      if (prior_opts.class_frame_counts != "") {
+        pdf_prior.SubtractOnLogpost(&nnet_out);
       }
 
       // download from GPU,
