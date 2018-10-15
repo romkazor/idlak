@@ -35,6 +35,8 @@ namespace std {
    %template(ConstCharVector) vector<const char*>;
 };
 
+%typemap(in) BaseFloat = float;
+
 %apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
 
 %{
