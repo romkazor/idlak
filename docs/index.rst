@@ -21,19 +21,12 @@ Idlak is hosted on Github: `https://github.com/Idlak/idlak <https://github.com/I
 Language resources for Idlak are also on Github: `https://github.com/Idlak/idlak_resources <https://github.com/Idlak/idlak_resources>`_
 
 Contents:
-
+===============
 .. toctree::
    :maxdepth: 2
+   :caption: Idlak
 
    language_resources
    accents
    tangle_voices
    rest_server
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

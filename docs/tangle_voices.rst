@@ -1,3 +1,5 @@
+.. _tangle-voices:
+
 #############
 Tangle Voices
 #############
@@ -155,4 +157,3 @@ Arctic have the form ``arctic_a0nnn`` and ``arctic_b0nnn`` which are remapped to
 # a symbolic link is then made between this directory and wavdir/16000 which is always
 # the true input to the kaldi voice build system. If audio preprocessing is carried out
 # then remove this link and create copies as appropriate.
-

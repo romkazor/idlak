@@ -234,4 +234,3 @@ Available languages
 * English
 * Dutch
 * Russian
-

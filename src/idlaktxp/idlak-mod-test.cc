@@ -33,7 +33,7 @@
 // mod-<MODULENAME>-outNNN-verbose.xml
 // ie mod-tokenise-out000-verbose.xml
 
-
+#include <bits/stdc++.h>
 #include <pugixml.hpp>
 #include "base/kaldi-common.h"
 #include "util/common-utils.h"
@@ -49,6 +49,11 @@ static bool testModule(kaldi::TxpModule* mod, const std::string &dirin,
                        const std::string &input, kaldi::int32 fno,
                        std::string* new_output_file);
 
+static bool testNormaliser(const std::string &dirin, const std::string &input,
+                          kaldi::int32 fno, std::string* new_output_file,
+                          std::string tpdb, const char* lang,
+                          const char* acc);
+
 static bool regressionTest(const std::string &output,
                            const std::string &regression);
 
@@ -62,7 +67,7 @@ int main(int argc, char *argv[]) {
   std::string filein;
   std::string fileout;
   std::string filereg;
-  std::string tpdb = "../../idlak-data/en/ga";
+  std::string tpdb = "../../idlak-data/";
   std::string configf;
   kaldi::int32 i, fno = 0;
   bool error = false, anyerror = false;

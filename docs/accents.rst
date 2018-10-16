@@ -18,11 +18,8 @@ English
 *******
 
 rp - Received Pronunciation
----------------------------
-
 
 ga - General American
----------------------
 
 
 ******************
@@ -42,4 +39,3 @@ Russian
 *******
 
 ru - Russian
-

@@ -34,9 +34,9 @@
 namespace kaldi {
 
 /// Maps a regular expression name to a pcre regular expression item
-typedef std::map<std::string, pcre*> RgxMap;
+typedef std::map<std::string, const pcre*> RgxMap;
 /// Regular expression name/ pcre regular expression pair
-typedef std::pair<std::string, pcre*> RgxItem;
+typedef std::pair<std::string, const pcre*> RgxItem;
 /// Lookup map of lookup maps
 typedef std::map<std::string, LookupMap * > LookupMapMap;
 /// string/LookupMap pair
