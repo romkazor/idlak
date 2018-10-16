@@ -10,8 +10,8 @@ except:
   pass
 
 class RESD:
-    
-    
+
+
     # Set up constants
     def __init__(self, fftlen, srate, fshift, extra_opts):
         self.len = int(fftlen)
@@ -22,12 +22,12 @@ class RESD:
         self.uvf0 = .5 / self.fshift
         self.rnd_val = 0
         self.frame_shift = int(self.fshift * self.srate)
-        
+
         if hasattr(extra_opts, 'no_mix'):
             self.no_mix = extra_opts.no_mix
         else:
             self.no_mix = False
-        
+
         if hasattr(extra_opts, 'verbose'):
             self.verbose = extra_opts.verbose
         else:
@@ -39,11 +39,11 @@ class RESD:
             self.midbands = None
 
     ########################################################
-    
+
     # f0 is fundamental frequency in Hz, while fs is sampling frequency
-    # N2 is glottal opening duration, N1 is "duty" of the cycle 
+    # N2 is glottal opening duration, N1 is "duty" of the cycle
     def rosenberg_pulse(self, N1, N2, pulselength, randomize=False):
-        
+
         #T = 1/f0 # period
         #pulselength = math.floor(T*fs)
         N2 = int(math.floor(pulselength*N2))
@@ -77,9 +77,9 @@ class RESD:
         gn = np.fft.irfft(pulse_fft)
         gn = np.fft.ifftshift(gn)
         return gn
-    
+
     #def rms(self, v):
-        
+
     # Mixed excitation
     def mixed_excitation(self, _pulse, _noise, bndaps, pitch_period=0.0, voiced=True):
 
@@ -95,19 +95,19 @@ class RESD:
             if self.midbands:
                 # if the middle of the bands are specified then use linear interpolation
 
-                noiseweights = np.array(map(lambda b: np.power(10., b / 20.), bndaps))
+                noiseweights = np.array(list(map(lambda b: np.power(10., b / 20.), bndaps)))
                 noiseweights = noiseweights.clip(0., 1.)
 
                 # make sure it starts and ends at the right point
                 mb = copy.copy(self.midbands)
-                if mb[0] != 0: 
+                if mb[0] != 0:
                     mb = [0] + mb
                     noiseweights = np.hstack(([0.], noiseweights))
-                if mb[-1] != self.len/2: 
+                if mb[-1] != self.len/2:
                     mb = mb + [self.len/2]
                     noiseweights = np.hstack((noiseweights, [1.]))
 
-                noiseWeights = np.interp(range(self.len/2), mb, noiseweights)
+                noiseWeights = np.interp(range(int(self.len/2)), mb, noiseweights)
                 pulseWeights = np.sqrt(1 - noiseWeights**2).clip(0.,1.)
                 noiseWeights = np.array(np.hstack((noiseWeights,noiseWeights[::-1])), dtype=complex)
                 pulseWeights = np.array(np.hstack((pulseWeights,pulseWeights[::-1])), dtype=complex)
@@ -146,63 +146,63 @@ class RESD:
         #excitation = pulse + noise
 
         # Normalise energy
-        excitation /= np.sqrt(pitch_period / sum(excitation ** 2)) 
-        
-        
-        return excitation, pulse, noise 
-    
+        excitation /= np.sqrt(pitch_period / sum(excitation ** 2))
+
+
+        return excitation, pulse, noise
+
     ###################################################################
 
 
-    
 
 
-    
-    
+
+
+
     ###################################################################
-    
-    
+
+
     # Apply the vocoder
     def vocode(self, f0, bands, verbose = False, opts=None):
-        
+
         verbose = self.verbose or verbose
-        
+
         self.opts_ = opts
         # Make sure the inputs are numpy arrays
         self.f0s = np.array(f0)
         self.bndaps = np.array(bands)
-        
+
         # orders
         self.O_bndap = self.bndaps.shape[1]
-        
+
         self.calculate_bands(self.O_bndap)
         self.nrframes = max(f0.size, bands.shape[0])
-        
+
         # reinitialise the memory of the filters and the random number seed
         np.random.seed(0)
         self.iteration = 0
         self.current_coefs = None
-                
+
         # Raw wav out
         raw = np.zeros(self.nrframes * self.frame_shift)
         # Coefficients for OLA
         self.hanning = np.zeros(self.nrframes * self.frame_shift)
-        
+
 
         time = 0.
         time_idx = 0
         excitation_frame_idx = 0
         mcep_frame_idx = 0
         pitch_period_prv = int(float(self.srate) / self.uvf0)
-        
-       
+
+
         self.lstsample = 0
         while excitation_frame_idx < self.nrframes and self.lstsample <  raw.size:
             if verbose:
-                print "Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes)
-                
+                print("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
+
             # Get the f0 for the frame (NOT LOG F0)
-            if excitation_frame_idx > self.f0s.size: 
+            if excitation_frame_idx > self.f0s.size:
                 frame_f0 = 0.0
             else:
                 frame_f0 = self.f0s[excitation_frame_idx]
@@ -230,7 +230,7 @@ class RESD:
             #    pulse_pre = np.zeros((self.len - len(pulse)) / 2)
             #    pulse_post = np.zeros(self.len - len(pulse) - len(pulse_pre))
             #    pulse = np.concatenate((pulse_pre, pulse, pulse_post))
-            pulse[self.hlen] = pulse_magnitude
+            pulse[int(self.hlen)] = pulse_magnitude
             pulse *= np.sqrt(pitch_period / sum(pulse ** 2))
 
             #pylab.figure(); pylab.plot(pulse); pylab.show()
@@ -239,12 +239,12 @@ class RESD:
 
             # Noise only needs to covers the middle of window
             noise = np.zeros(self.len)
-            start_point =  self.hlen - pitch_period_prv
+            start_point = int(self.hlen - pitch_period_prv)
             #if (start_point < 0): print self.hlen, pitch_period_prv
             flen =  pitch_period_prv + pitch_period_int
             # To ensure the energy of noise is the same as pulse
             noise_norm_fact = np.sqrt(pitch_period / flen)
-            noise[start_point: start_point + flen] = np.random.normal(0., 1.0 * noise_norm_fact, flen)
+            noise[int(start_point):int(start_point + flen)] = np.random.normal(0., 1.0 * noise_norm_fact, flen)
             #sys.stderr.write("nrgs: %f <> %f\n" % ( sum(pulse ** 2), sum(noise ** 2)))
 
             # Pitch synch hanning window
@@ -274,23 +274,23 @@ class RESD:
 
         excitation = np.divide(raw, np.where(self.hanning > 0, self.hanning, 1))
         #return excitation
-        t_start = self.len/2 - self.frame_shift 
+        t_start = int(self.len/2) - self.frame_shift
         return excitation[t_start:]
 
 
     ###################################################################
 
-    
+
 
     # Builds a pitch synchronous hanning filter
     def pitch_sync_hann(self, left_period, right_period, hlen = None):
 
         if hlen is None:
-            hlen = self.hlen
+            hlen = int(self.hlen)
 
         left = np.hanning(left_period*4)[:left_period*2]
         right = np.hanning(right_period*4)[-right_period*2:]
-        
+
         leftzeros = []
         rightzeros = []
         if left.size < hlen:
@@ -309,7 +309,7 @@ class RESD:
     def overlap_and_add(self, raw, excitation, hanning, start_time):
         excitation = excitation * hanning
 
-        hlen = self.hlen
+        hlen = int(self.hlen)
         win_center = start_time #int((i + 0.5) * period)
         win_lb = win_center - hlen
         win_ub = win_lb + hlen * 2
@@ -338,7 +338,7 @@ class RESD:
             self.bands = []
             for b in range(nr_bands):
                 startf = 1960 / (26.81 / (b + 0.53) - 1)
-                startf = round (startf / 100 ) * 100   
+                startf = round (startf / 100 ) * 100
                 bs = startf * self.len / self.srate
 
 
@@ -367,15 +367,15 @@ def load_file(filename, dim):
             return np.reshape(dd, (-1,))
         return np.reshape(dd, (-1, dim))
     else:
-        ll = [map(float, l.strip().split()) for l in open(filename).readlines()]
+        ll = [list(map(float, l.strip().split())) for l in open(filename).readlines()]
         if len(ll[0]) != dim:
-            print "Dim mismatch: %d <> %d" % (dim, len(ll[0]))
+            print("Dim mismatch: %d <> %d" % (dim, len(ll[0])))
             sys.exit(-2)
         if dim == 1:
             return np.reshape(ll, (-1, ))
         return np.reshape(ll, (-1, dim))
-    
-    
+
+
 def main():
     from optparse import OptionParser
     usage="usage: %prog [options] <f0file> [<bndapfile> [<output>]]\n" \
@@ -387,14 +387,14 @@ def main():
                       help = 'fft length')
     parser.add_option('-F','--fshift', default = 0.005,
                       help = 'frame shift')
-    
+
     parser.add_option('-b','--bndaporder', default = 25,
                       help = 'bndap order')
     parser.add_option('-n','--no-mix', default = False, action="store_true",
                       help = 'Disable mixed excitation')
     parser.add_option('-G','--gain', default = 1.0,
                       help = 'Change output gain')
-    parser.add_option('-B', '--midbands', default = None, 
+    parser.add_option('-B', '--midbands', default = None,
                       help = 'comma separated mid points of each band')
                       # kaldi bands = 8,15,22,30,38,47,58,69,81,95,110,127,147,169,194,224,259,301,353,416,498,606,757,980,1344
 
@@ -418,12 +418,12 @@ def main():
     else:
         if len(args) == 2:
             outfile = args[1]
-    
+
     if outfile == "-":
         out = sys.stdout
     else:
-        out = open(outfile, "w")
-    
+        out = open(outfile, "wb")
+
     f0s = load_file(f0file, 1)
     if bndapfile:
         bndaps = load_file(bndapfile, int(opts.bndaporder))
@@ -436,17 +436,15 @@ def main():
     if opts.midbands:
         opts.midbands = [int(b) for b in opts.midbands.split(',')]
         if not opts.bndaporder == len(opts.midbands):
-            print "bandap order does not match number of mid band points"
+            print ("bandap order does not match number of mid band points")
             sys.exit(-1)
 
     residual = RESD(opts.fftlen, int(opts.srate), float(opts.fshift), opts)
     excitation = residual.vocode(f0s, bndaps)
     sys.stderr.write("Excitation: duration %f\n" % (len(excitation) / float(opts.srate)))
-    
+
     out.write(array.array('f', excitation * float(opts.gain)).tostring())
-    
 
 
 if __name__ == '__main__':
     main()
-
