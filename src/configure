@@ -1138,7 +1138,7 @@ if [ ! -f $PUJIXMLROOT/src/pugixml.hpp  ]; then
     you may not have installed PUJIXML.  See ../tools/install_idlak.sh"
 fi
 
-if [ $pyidlak ]; then
+if [ $pyidlak == true ]; then
     if [ ! which $SWIG ]; then
             failure "Could not find swig as $SWIG "
     fi
@@ -1155,7 +1155,8 @@ if [ $pyidlak ]; then
         else
             if which python >&/dev/null; then
                 PYTHONEXE=`which python`
-                pymajorver=`$PYTONEXE --version | cut -c 8`
+                pyver=$(($PYTHONEXE --version) 2>&1)
+                pymajorver=$(echo $pyver | cut -c 8)
                 if [ $pymajorver != 3 ]; then
                     failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
                 fi
