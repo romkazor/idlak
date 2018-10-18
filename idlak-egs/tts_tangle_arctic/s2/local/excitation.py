@@ -151,16 +151,6 @@ class RESD:
 
         return excitation, pulse, noise
 
-    ###################################################################
-
-
-
-
-
-
-
-    ###################################################################
-
 
     # Apply the vocoder
     def vocode(self, f0, bands, verbose = False, opts=None):
@@ -276,9 +266,6 @@ class RESD:
         #return excitation
         t_start = int(self.len/2) - self.frame_shift
         return excitation[t_start:]
-
-
-    ###################################################################
 
 
 
