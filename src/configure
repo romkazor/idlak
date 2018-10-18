@@ -1168,7 +1168,7 @@ if [ $pyidlak == true ]; then
                 pyver=$(($PYTHONEXE --version) 2>&1)
                 pymajorver=$(echo $pyver | cut -c 8)
                 if [ $pymajorver != 3 ]; then
-		    failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
+                    failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
                 fi
             else
                 failure "Could not find python3 as either 'python3.5' or 'python3'."
