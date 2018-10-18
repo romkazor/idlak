@@ -87,8 +87,8 @@ def make_fullctx_mlf_dnn(mlffile, fullctx, outputfile, framerate_htk = 50000, ph
                     frame_ctxt.append(p)
                 klab += 1
             if klab >= len(lab) and pid < len(fctx) -1:
-                print "Something terrible happened!"
-        print id, len(fctx), len(lab), len(frame_ctxt), len(state_pos), len(phone_pos)
+                print ("Something terrible happened!")
+        print (id, len(fctx), len(lab), len(frame_ctxt), len(state_pos), len(phone_pos))
         ofp.write("%s [\n" % id)
         for ctx, spos, ppos in zip(frame_ctxt, state_pos, phone_pos):
             #print ctx, spos, ppos

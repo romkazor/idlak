@@ -22,8 +22,10 @@ addons:
       - liblapack-dev
       - clang-3.8
       - csh
+      - python3.5
       - libpython3.5-dev
       - sox
+      - swig3.0
 
 branches:
   only:
@@ -34,6 +36,7 @@ before_install:
   - export XROOT=~/xroot
   - tools/extras/travis_install_bindeps.sh $XROOT
   - export PATH=$XROOT/usr/bin:$PATH
+  - export SWIG=swig3.0
 
 before_script:
   - which ccache
