@@ -838,6 +838,9 @@ AR=${AR:-ar}
 AS=${AS:-as}
 RANLIB=${RANLIB:-ranlib}
 SWIG=${SWIG:swig}
+if [ ! $SWIG ]; then
+  SWIG=swig
+fi
 
 # These environment variables can be used to provide additional flags to the
 # compiler/linker. We want these flags to override the flags determined by the
@@ -1139,8 +1142,15 @@ if [ ! -f $PUJIXMLROOT/src/pugixml.hpp  ]; then
 fi
 
 if [ $pyidlak == true ]; then
-    if [ ! which $SWIG ]; then
+    echo "Checking for SWIG ... "
+    if which $SWIG >&/dev/null; then
+            echo "SWIG set to \"$SWIG\""
+    else
             failure "Could not find swig as $SWIG "
+    fi
+    badswigver=`$SWIG -version | grep "SWIG Version [1-2]"`
+    if [ ! -z "$badswigver" ]; then
+            failure "Swig version is below 3. $($SWIG -version | grep Version)"
     fi
     if [ ! -f $SPTKROOT/lib/libSPTK.a  ]; then
             failure "Could not find file $SPTKROOT/lib/libSPTK.a:
