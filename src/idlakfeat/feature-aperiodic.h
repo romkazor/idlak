@@ -25,6 +25,7 @@
 #include "feat/feature-functions.h"
 #include "feat/feature-window.h"
 #include "idlakfeat/banks-computations.h"
+#include "idlakfeat/feature-window-ext.h"
 
 namespace kaldi {
 
@@ -102,13 +103,19 @@ class AperiodicEnergy {
 
   int32 Dim() { return opts_.banks_opts.num_bins; }
 
+  Vector<BaseFloat> CenterFreqs() { return freq_banks_->GetCenterFreqs(); }
+
   void Compute(const VectorBase<BaseFloat> &wave,
                const VectorBase<BaseFloat> &voicing_prob,
                const VectorBase<BaseFloat> &f0,
-               Matrix<BaseFloat> *output,
-               Vector<BaseFloat> *wave_remainder = NULL);
+               Matrix<BaseFloat> *output);
+  
+  const Vector<BaseFloat> &GetBandStarts() const { return band_starts_; }
+  const Vector<BaseFloat> &GetBandCenters() const { return band_centers_; }
+  const Vector<BaseFloat> &GetBandEnds() const { return band_ends_; }
 
  private:
+  void FindBandLocations();
   void IdentifyNoiseRegions(const VectorBase<BaseFloat> &power_spectrum,
                             BaseFloat f0,
                             std::vector<bool> *noise_indices);
@@ -123,6 +130,10 @@ class AperiodicEnergy {
   SplitRadixRealFft<BaseFloat> *srfft_;
   FrequencyBanks *freq_banks_;
   int32 padded_window_size_;
+  
+  Vector<BaseFloat> band_starts_;
+  Vector<BaseFloat> band_centers_;
+  Vector<BaseFloat> band_ends_;
 
   KALDI_DISALLOW_COPY_AND_ASSIGN(AperiodicEnergy);
 };

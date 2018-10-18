@@ -1,5 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
+set -euo pipefail
 extra_feats=
 input_xml=
 input_text=
@@ -27,6 +27,8 @@ synth=excitation
 voice_dir=$1
 outdir=$2
 
+mkdir -p $outdir
+
 source $voice_dir/voice.conf
 
 cex_freq=$voice_dir/lang/cex.ark.freq
@@ -34,10 +36,11 @@ var_cmp=$voice_dir/lang/var_cmp.txt
 durdnndir=$voice_dir/dur
 f0dnndir=$voice_dir/pitch
 dnndir=$voice_dir/acoustic
+cleanup=
 datadir=`mktemp -d`
-tpdb=`readlink -f $voice_dir/lang/$tpdbvar`
+tpdb=`readlink -f $voice_dir/lang/`
 
-[ -f path.sh ] && . ./path.sh; 
+[ -f path.sh ] && . ./path.sh;
 
 if [ ! -z "$input_xml" ]; then
     cp $input_xml $datadir/text_full.xml
@@ -49,15 +52,18 @@ else
     fi
 
     # Generate CEX features for test set.
-    idlaktxp --pretty --tpdb=$tpdb $datadir/text.xml - \
-        | idlakcex --pretty --cex-arch=default --tpdb=$tpdb - $datadir/text_full.xml
+    idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/text.xml - \
+        | idlakcex --pretty --general-lang=$lng --general-acc=$acc --cex-arch=default --tpdb=$tpdb - $datadir/text_full.xml
 fi
+
 python local/idlak_make_lang.py --mode 2 -r "test" \
-    $datadir/text_full.xml $cex_freq $datadir/cex.ark > $datadir/cex_output_dump
+    $datadir/text_full.xml $cex_freq $datadir/cex.ark #> $datadir/cex_output_dump
+
 # Generate input feature for duration modelling
 cat $datadir/cex.ark \
     | awk -v extras="$extra_feats" '{print $1, "["; $1=""; na = split($0, a, ";"); for (i = 1; i < na; i++) for (state = 0; state < 5; state++) print extras, a[i], state; print "]"}' \
     | copy-feats ark:- ark,scp:$datadir/in_durfeats.ark,$datadir/in_durfeats.scp
+
 
 # Duration based test set
 lbldurdir=$datadir/lbldur
@@ -111,7 +117,7 @@ local/make_forward_fmllr.sh $durdnndir $lbldurdir $duroutdir ""
         }
    }
    pd = 0;
-}' 
+}'
 done) > $datadir/synth_lab.mlf
 # 3. Turn them into DNN input labels (i.e. one sample per frame)
 python local/make_fullctx_mlf_dnn.py --extra-feats="$extra_feats" $datadir/synth_lab.mlf $datadir/cex.ark $datadir/feat.ark
@@ -187,5 +193,9 @@ done
 mkdir -p $outdir/wav_mlpg/; for cmp in $outdir/cmp/*.cmp; do
     local/mlsa_synthesis_pitch_mlpg.sh --mlpgf0done true --synth $synth --voice_thresh $voice_thresh --alpha $alpha --fftlen $fftlen --srate $srate --bndap_order $bndap_order --mcep_order $mcep_order --delta_order $delta_order $cmp $outdir/wav_mlpg/`basename $cmp .cmp`.wav $var_cmp
 done
+
+if [ cleanup ]; then
+  rm -rf $datadir
+fi
 
 echo "Done. Samples are in $outdir/wav_mlpg/"

@@ -21,17 +21,16 @@
 namespace kaldi {
 
 TxpPronounce::TxpPronounce() : TxpModule("pronounce") {}
-    
+
 TxpPronounce::~TxpPronounce() {
 }
 
 bool TxpPronounce::Init(const TxpParseOptions &opts) {
   opts_ = &opts;
   tpdb_ = opts.GetTpdb();
-  nrules_.Init(opts, std::string(GetOptValue("arch")));
   lex_.Init(opts, std::string(GetOptValue("arch")));
   lts_.Init(opts, std::string(GetOptValue("arch")));
-  if (nrules_.Parse(tpdb_) && lex_.Parse(tpdb_) && lts_.Parse(tpdb_)) return true;
+  if (lex_.Parse(tpdb_) && lts_.Parse(tpdb_)) return true;
   return false;
 }
 
@@ -52,6 +51,8 @@ bool TxpPronounce::Process(pugi::xml_document* input) {
        ++it) {
     pugi::xml_node node = (*it).node();
     word = node.attribute("norm").value();
+    if (std::string(word).compare("") == 0)
+        word = node.attribute("tknorm").value();
     lexlkp.Reset();
     // Check to see if token is first daughter of a lex tag
     parent = node.parent();
@@ -71,29 +72,10 @@ bool TxpPronounce::Process(pugi::xml_document* input) {
     // If pron is set use that pron
     if (lex_pron && *lex_pron) {
       node.append_attribute("pron").set_value(lex_pron);
-    } else if (!nrules_.IsAlpha(word_str)) {
-      // If normalised content has non lexical chars then read out using lookup
-      p = word;
-      while (*p) {
-        clen = utf8.Clen(p);
-        utfchar = std::string(p, clen);
-        if (!nrules_.IsAlpha(utfchar)) {
-          symbol = nrules_.Lkp(std::string("symbols"), utfchar);
-          if (symbol) {
-            AppendPron(NULL, *symbol, &lexlkp);
-          } else {
-            symbol = nrules_.Lkp(std::string("asdigits"), utfchar);
-            if (symbol) AppendPron(NULL, *symbol, &lexlkp);
-          }
-        } else {
-          AppendPron(NULL, utfchar, &lexlkp);
-        }
-        p += clen;
-      }
-      node.append_attribute("pron").set_value(lexlkp.pron.c_str());
     } else {
       // standard lookup of word
       AppendPron(lex_entry, std::string(word), &lexlkp);
+      // TODO: put out a warning if any phonemes are not from the phoneme set
       node.append_attribute("pron").set_value(lexlkp.pron.c_str());
       if (lexlkp.lts) {
         node.append_attribute("lts").set_value("true");
