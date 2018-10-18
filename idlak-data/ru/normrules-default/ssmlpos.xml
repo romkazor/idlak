@@ -1,0 +1,174 @@
+<nrules>
+
+  <rules>
+
+    <rule name="basic_car_acc_f">
+      <comment>
+      POS tag - singular/plural accusative feminine
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_acc_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_accusative_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_dat_mn">
+      <comment>
+      POS tag - masculine/neuter singular/plural dative
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_dat_mn" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_dative"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_loc_f">
+      <comment>
+      POS tag - singular/plural locative
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_loc_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_prepositive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_prep_f_for_thousands">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="of_thousands" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_prep_f">
+      <comment>
+      POS tag - feminine singular/plural genitive/prepositive
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_gen_prep_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_dat_prep_f">
+      <comment>
+      POS tag - feminine singular/plural dative/prepositive
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_dat_prep_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_dative_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen">
+      <comment>
+      POS tag - masculine/neuter singular/plural genitive
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m2" name="pos_gen_mn" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_inst">
+      <comment>
+      POS tag - masculine/neuter singular/plural instrumental
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_inst_mn" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_instrumentative"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_inst_f">
+      <comment>
+      POS tag - masculine/neuter singular/plural instrumental
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_inst_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_instrumentative_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_loc_mn">
+      <comment>
+      POS tag - singular/plural locative
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_loc_mn" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_prepositive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_nom">
+      <comment>
+      POS tag - singular/plural nominative/accusative masculine
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal_ending_1_or_2" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_nom_acc_m" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_nom_f">
+      <comment>
+      POS tag - singular/plural nominative feminine
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal_ending_1_or_2" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_nom_f" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_nom_n">
+      <comment>
+      POS tag - singular/plural nominative neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal_ending_1_or_2" src="lcase" offset="0"/>
+        <rgx id="m1" name="pos_nom_n" src="pos" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

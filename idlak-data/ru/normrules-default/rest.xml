@@ -1,0 +1,77 @@
+<nrules>
+
+  <rules>
+
+    <rule name="split_alpha_numeric">
+      <comment>
+      GJL - Split sonda24 into tokens 'sonda' '24'
+    </comment>
+      <match>
+        <rgx id="m0" name="alpha_numeric" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="split_numeric_alpha">
+      <comment>
+      GJL - Split 24sonda into tokens '24' 'sonda'
+    </comment>
+      <match>
+        <rgx id="m0" name="numeric_alpha" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="strip_brackets_right">
+      <comment>
+      GJL - Remove square, angle and curly brackets, e.g editar[segun]
+    </comment>
+      <match>
+        <rgx id="m0" name="alpha_strict" src="lcase" offset="-1"/>
+        <rgx id="m1" name="strip_left_bracket" src="lcase" offset="0"/>
+        <rgx id="m2" name="alpha_strict" src="lcase" offset="1"/>
+        <rgx id="m3" name="strip_right_bracket" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="filter" from="m0" grp="0" offset="-1"/>
+        <cpy val="" offset="0"/>
+        <fnc name="filter" from="m2" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="strip_brackets_left">
+      <comment>
+      GJL - Remove square, angle and curly brackets, e.g [editar]segun
+    </comment>
+      <match>
+        <rgx id="m0" name="strip_left_bracket" src="lcase" offset="0"/>
+        <rgx id="m1" name="alpha_strict" src="lcase" offset="1"/>
+        <rgx id="m2" name="strip_right_bracket" src="lcase" offset="2"/>
+        <rgx id="m3" name="alpha_strict" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+        <fnc name="filter" from="m1" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+        <fnc name="filter" from="m3" grp="0" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="aschars">
+      <comment/>
+      <match>
+        <rgx id="m0" name="not_alpha" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m0" offset="0"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

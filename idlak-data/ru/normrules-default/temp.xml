@@ -1,0 +1,382 @@
+<nrules>
+
+  <rules>
+
+    <rule name="temp_int_1_split_num_degree_symb">
+      <comment>
+      Covers temperatures.
+      1 °C -&gt; один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="int_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="degree_symbol_temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_1" from="m1" grp="0" offset="1"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_split_num_degree_symb">
+      <comment>
+      Example: "12 °C" -&gt; двенадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="degree_symbol_temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="0" offset="1"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_split_num_degree_symb">
+      <comment>
+      Example: "2 °C" -&gt; два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="degree_symbol_temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_2_4" from="m1" grp="0" offset="1"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_float_sign">
+      <comment>
+      Covers temperatures.
+      Example: "+1,4°C" -&gt; плюс один запятая четыре градусов цельсия
+      Covers all floats - +0,5°C +2,5°C -5,6°C
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_float" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="4" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="5" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_float">
+      <comment>
+      Covers temperatures.
+      Example: "1,2°C" -&gt; один запятая два градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_float" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="4" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="5" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1_sign_split">
+      <comment>
+      Covers temperatures.
+      Example: "-1° C" -&gt; минус один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_1_degree" src="lcase" offset="0"/>
+        <rgx id="m2" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="temp_1" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_sign_split">
+      <comment>
+      Covers temperatures.
+      Example: "-5° C" -&gt; минус пять градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_5_20_degree" src="lcase" offset="0"/>
+        <rgx id="m2" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_sign_split">
+      <comment>
+      Covers temperatures.
+      Example: "-2° C" -&gt; плюс два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_2_4_degree" src="lcase" offset="0"/>
+        <rgx id="m2" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="temp_2_4" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1_split">
+      <comment>
+      Covers temperatures.
+      Example: "1° C"  -&gt; один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1_degree" src="lcase" offset="0"/>
+        <rgx id="m1" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="temp_1" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_split">
+      <comment>
+      Covers temperatures.
+      Example: "12° C" -&gt; двенадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="int_5_20_degree" src="lcase" offset="0"/>
+        <rgx id="m1" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_split">
+      <comment>
+      Covers temperatures.
+      Example: "2° C" -&gt; dwa stopnie celsjusza
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4_degree" src="lcase" offset="0"/>
+        <rgx id="m1" name="temp_unit" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_2_4" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1_sign">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-1°C" -&gt; минус один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <lkp name="temp_1" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_sign">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-16°C" -&gt; минус шестнадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_sign">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-2°C" -&gt; плюс два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <lkp name="temp_2_4" from="m1" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1_no_degree">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-1C" -&gt; минус один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_1_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <cpy val="градус" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_no_degree">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-20C" -&gt; минус двадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_5_20_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <cpy val="градусов" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_no_degree">
+      <comment>
+      Covers temperatures. The preceding sign ('+'/'-') gets tokenized.
+      Example: "-2C" -&gt; плюс двадцать два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-1"/>
+        <rgx id="m1" name="temp_int_2_4_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0"/>
+        <cpy val="градуса" offset="0"/>
+        <lkp name="temp_pl" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1">
+      <comment>
+      Covers temperatures.
+      Example: "1°C" -&gt; один градус цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_1" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20">
+      <comment>
+      Covers temperatures.
+      Example: "20°C" -&gt; двадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4">
+      <comment>
+      Covers temperatures.
+      Example: "22°C" -&gt; двадцать два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="temp_2_4" from="m0" grp="1" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_1_no_degree">
+      <comment>
+      Covers temperatures.
+      Example: "1C" -&gt; jeden stopnień celsjusza
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_1_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="градус" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_5_20_no_degree">
+      <comment>
+      Covers temperatures.
+      Example: "16C" -&gt; шестнадцать градусов цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_5_20_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="градусов" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="temp_int_2_4_no_degree">
+      <comment>
+      Covers temperatures.
+      Example: "22C" -&gt; двадцать два градуса цельсия
+    </comment>
+      <match>
+        <rgx id="m0" name="temp_int_2_4_no_degree" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="градуса" offset="0"/>
+        <lkp name="temp_pl" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>
