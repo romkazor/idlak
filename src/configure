@@ -1165,9 +1165,10 @@ if [ $pyidlak ]; then
         else
             if which python >&/dev/null; then
                 PYTHONEXE=`which python`
-                pymajorversion=`$PYTHONEXE -c "from __future__ import print_function; import sys; print(sys.version_info[0])"`
-                if [ $pymajorversion != 3 ]; then
-                    failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
+		pyver=$(($PYTHONEXE --version) 2>&1)
+                pymajorver=$(echo $pyver | cut -c 8)
+                if [ $pymajorver != 3 ]; then
+		    failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
                 fi
             else
                 failure "Could not find python3 as either 'python3.5' or 'python3'."
