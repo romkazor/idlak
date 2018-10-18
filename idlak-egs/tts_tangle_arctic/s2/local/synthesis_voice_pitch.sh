@@ -38,7 +38,7 @@ f0dnndir=$voice_dir/pitch
 dnndir=$voice_dir/acoustic
 cleanup=
 datadir=`mktemp -d`
-tpdb=`readlink -f $voice_dir/lang/$tpdbvar`
+tpdb=`readlink -f $voice_dir/lang/`
 
 [ -f path.sh ] && . ./path.sh;
 

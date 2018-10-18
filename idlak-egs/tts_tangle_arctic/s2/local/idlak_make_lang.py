@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys, os, xml.sax, re, time
+import sys, os, io, xml.sax, re, time
 from xml.dom.minidom import parse, parseString, getDOMImplementation
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -20,12 +20,13 @@ logopts = {'logging':{
     'logtostderr':"True"}
 }
 
-#from alignsetup_def import saxhandler as idlak_saxhandler
-#from build_configuration import Logger
+# from alignsetup_def import saxhandler as idlak_saxhandler
+# from build_configuration import Logger
 
-## Logger
+
+# # Logger
 class Logger:
-    loglevels = {'none':5, 'critical':4, 'error':3, 'warn':2, 'info':1, 'debug':0}
+    loglevels = {'none': 5, 'critical': 4, 'error': 3, 'warn':2, 'info':1, 'debug':0}
     curlevel = 0
     module = None
     logfname = None
@@ -36,7 +37,7 @@ class Logger:
     def __init__(self, module, data):
         self.module = module
         if data['logging']['loglevel']:
-            if not self.loglevels.has_key(data['logging']['loglevel'].lower()):
+            if data['logging']['loglevel'].lower() not in self.loglevels:
                 self.log('Warning', 'Bad log level in configuration: %s' % (level))
             else:
                 self.curlevel = self.loglevels[data['logging']['loglevel'].lower()]
@@ -60,7 +61,7 @@ class Logger:
         if self.nolog:
             return
         # check valid logging level
-        if self.loglevels.has_key(level.lower()):
+        if level.lower() in self.loglevels:
             # check logging at this level
             if self.loglevels[level.lower()] >= self.curlevel:
                 msg = self.module.upper() + '[' + time.asctime() + '] ' + level.upper() + ':' \
@@ -95,7 +96,10 @@ class idlak_saxhandler(xml.sax.ContentHandler):
                 self.ids.append(self.id)
         elif name == "tk":
             try:
-                word = attrs['norm'].upper().encode('utf8')
+                at = 'norm'
+                if 'norm' not in attrs:
+                    at = 'tknorm'
+                word = str(attrs[at].upper())
             except:
                 print("Failed parsing '{0}': word {1}, 'norm' missing or not utf8, attrs: {2}".format(
                     self.id, attrs.getValue('wordid'), ', '.join(attrs.getNames())))
@@ -146,7 +150,7 @@ def forward_context(logger, input_fname, input_freqtable_fname, cexoutput_filena
                         lookuptables[key][v] = mapping
                         mapping += 1
                 lookuptables_len[key] = len(vals)
-                if lookuptables[key].has_key('0'):
+                if '0' in lookuptables[key]:
                     lookuptables_len[key] -= 1
                 break
 
@@ -207,9 +211,9 @@ def forward_context(logger, input_fname, input_freqtable_fname, cexoutput_filena
             for i, v in enumerate(p):
                 # replace symbols with integers^H binary arrays
                 table = 'cex' + ('000' + str(i))[-3:]
-                if lookuptables.has_key(table):
+                if table in lookuptables:
                     #v = str(lookuptables[table][v])
-                    if not lookuptables[table].has_key(v):
+                    if v not in lookuptables[table]:
                         logger.log('critical', ' no such key %s in row %s' % (v, table))
                         v = lookuptables[table].keys()[0]
                     v = binary_array(lookuptables[table][v], lookuptables_len[table])
@@ -245,9 +249,9 @@ def update_freq_table(logger, cex_string, freqtables):
     # keep track of frequencies
     for i in range(len(cexs)):
         key = 'cex' + ('000' + str(i))[-3:]
-        if not freqtables.has_key(key):
+        if key not in freqtables:
             freqtables[key] = {}
-        if not freqtables[key].has_key(cexs[i]):
+        if cexs[i] not in freqtables[key]:
             freqtables[key][cexs[i]] = 1
         else:
             freqtables[key][cexs[i]] += 1
@@ -291,7 +295,7 @@ def make_output_kaldidnn_cex(logger, input_filename, output_filename, cexoutput_
     p = xml.sax.make_parser()
     handler = idlakcexhandler()
     p.setContentHandler(handler)
-    p.parse(open(input_filename, "r"))
+    p.parse(io.open(input_filename, "r",encoding='utf8'))
 
 
 
@@ -361,7 +365,7 @@ def make_output_kaldidnn_cex(logger, input_filename, output_filename, cexoutput_
                         lookuptables[key][v] = mapping
                         mapping += 1
                 lookuptables_len[key] = len(vals)
-                if lookuptables[key].has_key('0'):
+                if '0' in lookuptables[key]:
                     lookuptables_len[key] -= 1
                 break
     print(lookuptables, lookuptables_len)
@@ -379,7 +383,7 @@ def make_output_kaldidnn_cex(logger, input_filename, output_filename, cexoutput_
             for i, v in enumerate(p):
                 # replace symbols with integers^H binary arrays
                 table = 'cex' + ('000' + str(i))[-3:]
-                if lookuptables.has_key(table):
+                if table in lookuptables:
                     #v = str(lookuptables[table][v])
                     v = binary_array(lookuptables[table][v], lookuptables_len[table])
                 fp.write(v + ' ')
@@ -394,13 +398,14 @@ def idlak_make_lang(textfile, datadir, langdir):
         handler = idlak_saxhandler()
         p.setContentHandler(handler)
         p.parse(open(textfile, "rb"))
+        print(textfile)
         fp = open(os.path.join(datadir, "text"), 'wb')
         for i in range(len(handler.ids)):
             #if valid_ids.has_key(handler.ids[i]):
             # If we are forcing beginning and end silences add <SIL>s
             #fp.write(("%s %s\n" % (handler.ids[i], ' '.join(handler.data[i]))).encode("utf8"))
             s = handler.ids[i] + u" "
-            s += ' '.join(map(lambda x: x.decode('utf-8'), handler.data[i])) + "\n"
+            s += ' '.join(handler.data[i]) + "\n"
             #s = u"%s %s\n" % (handler.ids[i], u' '.join(handler.data[i]))
             fp.write(s.encode('utf-8'))
         fp.close()
@@ -423,9 +428,8 @@ def idlak_make_lang(textfile, datadir, langdir):
         for w in words:
             prons = list(handler.lex[w].keys())
             prons.sort()
-            utf8w = w.decode('utf8')
             # get all the characters as a check on normalisation
-            for c in utf8w:
+            for c in w:
                 chars[c] = 1
             # get phone set from transcription lexicon
             for p in prons:
@@ -433,9 +437,9 @@ def idlak_make_lang(textfile, datadir, langdir):
                     pp = p.split()
                     for phone in pp:
                         phones[phone] = 1
-                    fplex.write(("%s %s\n" % (utf8w, p)).encode('utf-8'))
+                    fplex.write(("%s %s\n" % (w, p)).encode('utf-8'))
             if w in handler.oov:
-                fpoov.write(("%s %s\n" % (utf8w, prons[0])).encode('utf-8'))
+                fpoov.write(("%s %s\n" % (w, prons[0])).encode('utf-8'))
         fplex.close()
         fpoov.close()
         # write phone set
@@ -509,10 +513,10 @@ def load_labs(labfile, statefile = None):
 def load_words(wordfile):
     out = {}
     cur_times = {}
-    for l in open(wordfile).readlines():
+    for l in open(wordfile, errors='replace').readlines():
         ll = l.strip().split()
         key = ll[0]
-        if not out.has_key(key):
+        if key not in out:
             out[key] = []
             cur_times[key] = 0.0
         start_time = round(float(ll[2]), 4)
@@ -541,7 +545,7 @@ def write_xml_textalign(breaktype, breakdef, labfile, wordfile, output, statefil
     #labs.sort()
     all_labs = load_labs(labfile, statefile)
     all_words = load_words(wordfile)
-    f = open(output, 'w')
+    f = io.open(output, 'w',encoding='utf8')
     f.write('<document>\n')
     for id in sorted(all_labs.keys()):
         lab = all_labs[id]
@@ -593,7 +597,7 @@ def write_xml_textalign(breaktype, breakdef, labfile, wordfile, output, statefil
                     break_element = document.createElement("break")
                     fileid_element.appendChild(break_element)
                     break_element.setAttribute('type', btype)
-        f.write(fileid_element.toxml() + '\n')
+        f.write(str(fileid_element.toxml()) + '\n')
 
     f.write('</document>')
     f.close()
