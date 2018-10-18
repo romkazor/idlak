@@ -1,0 +1,3529 @@
+<nrules>
+
+  <rules>
+
+    <rule name="dmy_fivetok_shortyear_90s_genitive">
+      <comment>
+      Example: До 25/10/99 -&gt; до двадцать пятого октября тысяча девятьсот девяносто девятого года
+      Should expand to 1999, 1992, etc, as Russian doesn't use the short year format when spoken
+	AB: Actually it does, we are likely to ommit a thousand and a century if speak about the XXth century - до двадцать пятого октября 		девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="short_year_90s" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="тысяча девятьсот" offset="3"/>
+        <fnc name="numbers_ru" from="m5" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_shortyear_90s_dative">
+      <comment>
+      Example: к 25/10/99 -&gt; к двадцать пятому октября тысяча девятьсот девяносто девятого года
+      Should expand to 1999, 1992, etc, as Russian doesn't use the short year format when spoken
+	AB: -//-
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="short_year_90s" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="тысяча девятьсот" offset="3"/>
+        <fnc name="numbers_ru" from="m5" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_shortyear_90s">
+      <comment>
+      Example: 25/10/99 -&gt; двадцать пятое октября тысяча девятьсот девяносто девятого года
+      Should expand to 1999, 1992, etc, as Russian doesn't use the short year format when spoken
+	AB: -//-
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m2" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m4" name="short_year_90s" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m2" grp="0" offset="2"/>
+        <cpy val="тысяча девятьсот" offset="3"/>
+        <fnc name="numbers_ru" from="m4" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_shortyear_genitive">
+      <comment>
+      Example: До 25/10/08 -&gt; до двадцать пятого октября две тысячи восьмого года
+      Expand to 2008, 2029, etc. as Russian doesn't use the short year format when spoken
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="short_year" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="две тысячи" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_shortyear_dative">
+      <comment>
+      Example: к 25/10/08 -&gt; к двадцать пятому октября две тысячи восьмого года
+      Expand to 2008, 2029, etc. as Russian doesn't use the short year format when spoken
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="short_year" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="две тысячи" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_shortyear">
+      <comment>
+      Example: 25/10/08 -&gt; двадцать пятое октября две тысячи восьмого года
+      Expand to 2008, 2029, etc. as Russian doesn't use the short year format when spoken
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m2" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m4" name="short_year" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m2" grp="0" offset="2"/>
+        <cpy val="две тысячи" offset="3"/>
+        <fnc name="numbers_ru" from="m4" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_21st_c_genitive">
+      <comment>
+      Example: до 25/10/2008 -&gt; до двадцать пятого октября две тысячи восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="year_2_4" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="3" case="digitlkp_fem"/>
+        <cpy val="тысячи" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_genitive_millennium">
+      <comment>
+      Example: до 25/10/2000 -&gt; до двадцать пятого октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="millennium" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_genitive_century">
+      <comment>
+      Example: до 25/10/1990 -&gt; до двадцать пятого октября тысяча девятьсот девяностого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="century_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="millennia" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_genitive">
+      <comment>
+      Example: до 25/10/1998 -&gt; до двадцать пятого октября тысяча девятьсот девяносто восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="year_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="centuries" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_dative_millennium">
+      <comment>
+      Example: к 25/10/2000 -&gt; к двадцать пятому октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="millennium" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_dative_century">
+      <comment>
+      Example: к 25/10/1900 -&gt; к двадцать пятому октября тысяча девятисотого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="century_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="millennia" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_dative">
+      <comment>
+      Example: к 25/10/1998 -&gt; к двадцать пятому октября тысяча девятьсот девяносто восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m3" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m5" name="year_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m3" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="centuries" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_millennium">
+      <comment>
+      Example: 25/10/2000 -&gt; двадцать пятое октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m2" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m4" name="millennium" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m2" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <fnc name="numbers_ru" from="m4" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok_century">
+      <comment>
+      Example: 25/10/1900 -&gt; двадцать пятое октября тысяча девятисотого года
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m2" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m4" name="century_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m2" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="millennia" from="m4" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m4" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_fivetok">
+      <comment>
+      Example: 25/10/1998 -&gt; двадцать пятое октября тысяча девятьсот девяносто восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="date_sep" src="lcase" offset="1"/>
+        <rgx id="m2" name="date_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="date_sep" src="lcase" offset="3"/>
+        <rgx id="m4" name="year_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <cpy val="" offset="1"/>
+        <lkp name="months_n" from="m2" grp="0" offset="2"/>
+        <cpy val="" offset="3"/>
+        <lkp name="centuries" from="m4" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m4" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots_90s_genitive">
+      <comment>
+      Example: до 25.10.99, need to expand to 1999, as spoken Russian doesn't use short date format
+      до 25.10.99 -&gt; до двадцать пятого октября тысяча девятьсот девяносто девятого года
+	AB: easily could be 'до двадцать пятого октября девяносто девятого года'
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_shortyear_dots_nineties" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <cpy val="тысяча девятьсот" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots_90s_dative">
+      <comment>
+      Example: к 25.10.99, need to expand to 1999, as spoken Russian doesn't use short date format
+      к 25.10.99 -&gt; к двадцать пятому октября тысяча девятьсот девяносто девятого года
+	AB: easily could be 'к двадцать пятому октября девяносто девятого года'
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_shortyear_dots_nineties" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <cpy val="тысяча девятьсот" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots_90s">
+      <comment>
+      Example: 25.10.99, need to expand to 1999, as spoken Russian doesn't use short date format
+      25.10.99 -&gt; двадцать пятое октября тысяча девятьсот девяносто девятого года
+	AB: easily could be 'двадцать пятое октября девяносто девятого года'
+    </comment>
+      <match>
+        <rgx id="m0" name="date_shortyear_dots_nineties" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months_n" from="m0" grp="1" offset="0"/>
+        <cpy val="тысяча девятьсот" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots_genitive">
+      <comment>
+      Example: до 25.10.08, need to expand to 2008, as spoken Russian doesn't use short date format
+      до 25.10.08 -&gt; до двадцать пятого октября две тысячи восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_shortyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <cpy val="две тысячи" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots_dative">
+      <comment>
+      Example: к 25.10.08, need to expand to 2008, as spoken Russian doesn't use short date format
+      к 25.10.08 -&gt; к двадцать пятому октября две тысячи восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_shortyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <cpy val="две тысячи" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_shortyear_dots">
+      <comment>
+      Example: 25.10.08, need to expand to 2008, as spoken Russian doesn't use short date format
+      25.10.08 -&gt; двадцать пятое октября две тысячи восьмого года
+    </comment>
+      <match>
+        <rgx id="m0" name="date_shortyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months_n" from="m0" grp="1" offset="0"/>
+        <cpy val="две тысячи" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_millennium_dots_genitive">
+      <comment>
+      Example: до 25.10.2000 -&gt; до двадцать пятого октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_millennium_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_century_dots_genitive">
+      <comment>
+      Example: до 25.10.1900 -&gt; до двадцать пятого октября тысяча девятисотого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_century_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <lkp name="millennia" from="m1" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_dots_genitive">
+      <comment>
+      Example: до 25.10.1999 -&gt; до двадцать пятого октября тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <lkp name="centuries" from="m1" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_millennium_dots_dative">
+      <comment>
+      Example: к 25.10.2000 -&gt; к двадцать пятому октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_millennium_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_century_dots_dative">
+      <comment>
+      Example: к 25.10.1900 -&gt; к двадцать пятому октября тысяча девятисотого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_century_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <lkp name="millennia" from="m1" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_dots_dative">
+      <comment>
+      Example: к 25.10.1999 -&gt; к двадцать пятому октября тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="date_longyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months_n" from="m1" grp="1" offset="0"/>
+        <lkp name="centuries" from="m1" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_millennium_dots">
+      <comment>
+      Example: 25.10.2000 -&gt; двадцать пятое октября двухтысячного года
+    </comment>
+      <match>
+        <rgx id="m0" name="date_longyear_millennium_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months_n" from="m0" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="2" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_century_dots">
+      <comment>
+      Example: 25.10.1900 -&gt; двадцать пятое октября тысяча девятисотого года
+    </comment>
+      <match>
+        <rgx id="m0" name="date_longyear_century_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months_n" from="m0" grp="1" offset="0"/>
+        <lkp name="millennia" from="m0" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="dmy_longyear_dots">
+      <comment>
+      Example: 25.10.1999 -&gt; двадцать пятое октября тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="date_longyear_dots" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months_n" from="m0" grp="1" offset="0"/>
+        <lkp name="centuries" from="m0" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_dmy_with_goda">
+      <comment>
+      Example: ... from 26 June to 13 July 2008 ...
+      с 26 июня по 13 июля 1999 года -&gt; с двадцать шестого июня по тринадцатое июля тысяча девятьсот девяносто девятого года
+      с 26 июня - 13 июля 1999 года -&gt; с двадцать шестого июня по тринадцатое июля тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="prep_acc_or_hyphen" src="lcase" offset="2"/>
+        <rgx id="m4" name="day_of_month" src="lcase" offset="3"/>
+        <rgx id="m5" name="month_name" src="lcase" offset="4"/>
+        <rgx id="m6" name="year_any" src="lcase" offset="5"/>
+        <rgx id="m7" name="year_g" src="lcase" offset="6"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="prep_acc" from="m3" offset="2"/>
+        <fnc name="numbers_ru" from="m4" offset="3" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m5" offset="4"/>
+        <lkp name="centuries" from="m6" grp="0" offset="5"/>
+        <fnc name="numbers_ru" from="m6" grp="1" offset="5" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="6"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dM_dMy_millennium">
+      <comment>
+      Example: ... from 26 June to 13 July 1900 ...
+      с 26 июня по 13 июля 1900 -&gt;
+      с 26 июня - 13 июля 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="prep_acc_or_hyphen" src="lcase" offset="2"/>
+        <rgx id="m4" name="day_of_month" src="lcase" offset="3"/>
+        <rgx id="m5" name="month_name" src="lcase" offset="4"/>
+        <rgx id="m6" name="millennium" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="prep_acc" from="m3" offset="2"/>
+        <fnc name="numbers_ru" from="m4" offset="3" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m5" offset="4"/>
+        <fnc name="numbers_ru" from="m6" grp="0" offset="5" case="ordinal_gen_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dM_dMy_century">
+      <comment>
+      Example: ... from 26 June to 13 July 1900 ...
+      с 26 июня по 13 июля 1900 -&gt;
+      с 26 июня - 13 июля 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="prep_acc_or_hyphen" src="lcase" offset="2"/>
+        <rgx id="m4" name="day_of_month" src="lcase" offset="3"/>
+        <rgx id="m5" name="month_name" src="lcase" offset="4"/>
+        <rgx id="m6" name="century_any" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="prep_acc" from="m3" offset="2"/>
+        <fnc name="numbers_ru" from="m4" offset="3" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m5" offset="4"/>
+        <lkp name="millennia" from="m6" grp="0" offset="5"/>
+        <fnc name="numbers_ru" from="m6" grp="1" offset="5" case="ordinal_gen_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dM_dMy">
+      <comment>
+      Example: ... from 26 June to 13 July 2008 ...
+      с 26 июня по 13 июля 1999 -&gt; с двадцать шестого июня по тринадцатое июля тысяча девятьсот девяносто девятого
+      с 26 июня - 13 июля 1999 -&gt; с двадцать шестого июня по тринадцатое июля тысяча девятьсот девяносто девятого
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="prep_acc_or_hyphen" src="lcase" offset="2"/>
+        <rgx id="m4" name="day_of_month" src="lcase" offset="3"/>
+        <rgx id="m5" name="month_name" src="lcase" offset="4"/>
+        <rgx id="m6" name="year_any" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="prep_acc" from="m3" offset="2"/>
+        <fnc name="numbers_ru" from="m4" offset="3" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m5" offset="4"/>
+        <lkp name="centuries" from="m6" grp="0" offset="5"/>
+        <fnc name="numbers_ru" from="m6" grp="1" offset="5" case="ordinal_gen_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dm_night">
+      <comment>
+      Example: ... in the night from 26 to 31 July ...
+      в ночь с 26 на 31 июля -&gt; в ночь с двадцать шестого на тридцать первого июля
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-3"/>
+        <rgx id="m1" name="night" src="lcase" offset="-2"/>
+        <rgx id="m2" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m4" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m5" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m6" name="month_name" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m2" offset="-1"/>
+        <fnc name="numbers_ru" from="m3" offset="0" case="ordinal_gen_masc"/>
+        <cpy from="m4" offset="1"/>
+        <fnc name="numbers_ru" from="m5" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m6" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_m_m">
+      <comment>
+      Example: ... from 1000 to 2000 ...
+      с 1000 по 2000 года -&gt; с тысячного по двухтысячный года
+      с 1000 - 2000 года -&gt; с тысячного по двухтысячный года
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_m_c">
+      <comment>
+      Example: ... from 2000 to 2100 ...
+      с 2000 по 2100 года -&gt;
+      с 2000 - 2100 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_m_y">
+      <comment>
+      Example: ... from 2000 to 2016 ...
+      с 2000 по 2016 года -&gt;
+      с 2000 - 2016 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_c_m">
+      <comment>
+      Example: ... from 1900 to 2000 ...
+      с 1900 по 2000 года -&gt;
+      с 1900 - 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_c_c">
+      <comment>
+      Example: ... from 1800 to 1900 ...
+      с 1800 по 1900 года -&gt;
+      с 1800 - 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_c_y">
+      <comment>
+      Example: ... from 1900 to 1917 ...
+      с 1900 по 1917 года -&gt;
+      с 1900 - 1917 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_y_m">
+      <comment>
+      Example: ... from 1995 to 2000 ...
+      с 1995 по 2000 года -&gt;
+      с 1995 - 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_y_c">
+      <comment>
+      Example: ... from 1895 to 1900 ...
+      с 1895 по 1900 года -&gt;
+      с 1895 - 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_y_y">
+      <comment>
+      Example: ... from 1995 to 1998 ...
+      с 1995 по 1998 года -&gt; с тысяча девятьсот девяносто пятого по тысяча девятьсот девяносто восьмой годa
+      с 1995 - 1998 года -&gt; с тысяча девятьсот девяносто пятого по тысяча девятьсот девяносто восьмой годa
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <lkp name="year_g" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_dm">
+      <comment>
+      Example: ... from 26 June to 13 July ...
+      с 26 июня по 13 июля -&gt; с двадцать шестого июня по тринадцатое июля
+      с 26 июня - 13 июля -&gt; с двадцать шестого июня по тринадцатое июля
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="prep_acc_or_hyphen" src="lcase" offset="2"/>
+        <rgx id="m4" name="day_of_month" src="lcase" offset="3"/>
+        <rgx id="m5" name="month_name" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="prep_acc" from="m3" offset="2"/>
+        <fnc name="numbers_ru" from="m4" offset="3" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m5" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy_millennium_with_goda">
+      <comment>
+      Example: ... (from 26 to 13 July 2000) ...
+      с 26 по 13 июля 2000 года -&gt;
+      с 26 - 13 июля 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="millennium" src="lcase" offset="4"/>
+        <rgx id="m6" name="year_g" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="5"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy_century_with_goda">
+      <comment>
+      Example: ... (from 26 to 13 July 1900) ...
+      с 26 по 13 июля 1900 года -&gt;
+      с 26 - 13 июля 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="century_any" src="lcase" offset="4"/>
+        <rgx id="m6" name="year_g" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <lkp name="millennia" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="5"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy_with_goda">
+      <comment>
+      Example: ... (from 26 to 13 July 2008) ...
+      с 26 по 13 июля 1996 года -&gt; с двадцать шестого по тринадцатый июля тысяча девятьсот девяносто шестого года
+      с 26 - 13 июля 1996 года -&gt; с двадцать шестого по тринадцатый июля тысяча девятьсот девяносто шестого года
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="year_any" src="lcase" offset="4"/>
+        <rgx id="m6" name="year_g" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <lkp name="centuries" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="5"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy_millennium">
+      <comment>
+      Example: ... (from 13 to 26 July 2000) ...
+      с 13 по 26 июля 2000 -&gt;
+      с 13 - 26 июля 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="millennium" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <fnc name="numbers_ru" from="m5" grp="0" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy_century">
+      <comment>
+      Example: ... (from 13 to 26 July 1900) ...
+      с 13 по 26 июля 1900 -&gt;
+      с 13 - 26 июля 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="century_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <lkp name="millennia" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dmy">
+      <comment>
+      Example: ... (from 13 to 26 July 2008) ...
+      с 13 по 26 июля 1996 -&gt; с тринадцатого по двадцать шестое июля тысяча девятьсот девяносто шестого года
+      с 13 - 26 июля 1996 -&gt; с тринадцатого по двадцать шестое июля тысяча девятьсот девяносто шестого года
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+        <rgx id="m5" name="year_any" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+        <lkp name="centuries" from="m5" grp="0" offset="4"/>
+        <fnc name="numbers_ru" from="m5" grp="1" offset="4" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="4"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dm">
+      <comment>
+      Example: ... from 26 to 31 July ...
+      с 26 по 31 июля -&gt; двадцать шестого по тридцать первое июля
+      с 26 - 31 июля -&gt; двадцать шестого по тридцать первое июля
+    </comment>
+      <match>
+        <rgx id="m0" name="conjunction_g" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc_or_hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="prep_acc" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_millennium_gen_with_goda">
+      <comment>
+      Example: с 25 января 2000 г, с 25 янв 2000 г
+      с 25 янв 2000 г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_century_gen_with_goda">
+      <comment>
+      Example: с 25 января 1900 г, с 25 янв 1900 г
+      с 25 янв 1900 г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_gen_with_goda">
+      <comment>
+      Example: с 25 января 1999 г, с 25 янв 1999 г
+      с 25 янв 1999 г -&gt; с двадцать пятого января тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_millennium_nom_with_goda">
+      <comment>
+      Example: 25 января 2000 г, 25 янв 2000 г
+      25 января 2000 г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_century_nom_with_goda">
+      <comment>
+      Example: 25 января 1900 г, 25 янв 1900 г
+      25 января 1900 г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <lkp name="millennia" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_nom_with_goda">
+      <comment>
+      Example: 25 января 1999 г, 25 янв 1999 г
+      25 января 1999 г -&gt; двадцать пятое января тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_g" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <lkp name="centuries" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_millennium_genitive">
+      <comment>
+      Example: до 25 января 2000, до 25 янв 2000
+      до 25 января 2000	-&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_century_genitive">
+      <comment>
+      Example: до 25 января 1900, до 25 янв 1900
+      до 25 января 1900	-&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_genitive">
+      <comment>
+      Example: до 25 января 1999, до 25 янв 1999
+      до 25 января 1999	-&gt; до двадцать пятого января тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_millennium_dative">
+      <comment>
+      Example: к 25 января 2000, к 25 янв 2000
+      к 25 янв 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_century_dative">
+      <comment>
+      Example: к 25 января 1900, к 25 янв 1900
+      к 25 янв 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_dative">
+      <comment>
+      Example: к 25 января 1999, к 25 янв 1999
+      к 25 янв 1999 -&gt; к двадцать пятому января тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_nom_millennium">
+      <comment>
+      Example: 25 января 2000, 25 янв 2000
+      25 янв 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_nom_century">
+      <comment>
+      Example: 25 января 1900, 25 янв 1900
+      25 янв 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <lkp name="millennia" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dmy_nom">
+      <comment>
+      Example: 25 января 1999, 25 янв 1999
+      25 янв 1999 -&gt; двадцать пятое января тысяча девятьсот девяносто девятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m1" offset="1"/>
+        <lkp name="centuries" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_y_y_range_with_gody">
+      <comment>
+      Example: за 2013-2015 годы -&gt; за две тысячи тренадцатые две тысячи пятнадцатые годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_pl" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_nomin_plural"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_plural"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_y_y_range">
+      <comment>
+      Example: за 2013-2015 -&gt; за две тысячи тренадцатые две тысячи пятнадцатые годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_nomin_plural"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_plural"/>
+        <cpy val="годы" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_genitive_with_preposition">
+      <comment>
+      Example: до 25 янв, до 25 января
+      до 25 янв -&gt; до двадцать пятого января
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_genitive_pos">
+      <comment>
+      Example: пройдут 4 июня -&gt; пройдут четвёртого июня
+    </comment>
+      <match>
+        <rgx id="m0" name="pos_verb_forces_genitive" src="pos" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_dative">
+      <comment>
+      Example: к 25 янв, к 25 января
+      к 25 янв -&gt; к двадцать пятому января
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_dat_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_prep_range_same_month">
+      <comment>
+      Example:
+      cо 2 по 8 мая - со апреля по восьмое июня
+    </comment>
+      <match>
+        <rgx id="m0" name="date_dm_prep_range" src="lcase" offset="-3"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="-2"/>
+        <rgx id="m2" name="prep_prepositional" src="lcase" offset="-1"/>
+        <rgx id="m3" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m4" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="-2" case="ordinal_gen_masc"/>
+        <fnc name="numbers_ru" from="m3" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months" from="m4" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_prep_range">
+      <comment>
+      Example:
+      cо 2 апреля по 8 мая - со второго апреля по восьмое июня
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name" src="lcase" offset="-2"/>
+        <rgx id="m1" name="prep_prepositional" src="lcase" offset="-1"/>
+        <rgx id="m2" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m3" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months" from="m3" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="prep_na_for_dates">
+      <comment>
+      Example:
+      встреча перенесена на 24 сентября -&gt; встреча перенесена на двадцать четвёртое сентября
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_na_for_dates" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_dates_month_standalone"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_prep">
+      <comment>
+      Example:
+      о 24 сентября -&gt; о двадцать четвёртом сентября
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_prepositional" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_prep_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_ddm_nom">
+      <comment>
+      Example: Пон 25 янв, Пон 25 января
+      25 янв -&gt; понедельник двадцать пятое январ
+    </comment>
+      <match>
+        <rgx id="m0" name="days" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="days" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_gen_with_verb">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+        <rgx id="m2" name="verbs_genitive_date" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_with_genitive_day">
+      <comment>
+      на утро понедельника 9 марта -&gt; на утро понедельника девятого марта
+    </comment>
+      <match>
+        <rgx id="m0" name="days_genitive" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_d_dm">
+      <comment>
+      Example: 25-26 янв, 25-26 января
+      25 мая -&gt; двадцать шестого мая
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="is_hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="day_of_month" src="lcase" offset="2"/>
+        <rgx id="m3" name="month_name" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m2" offset="2" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m3" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_inst">
+      <comment>
+      Example: по 25 янв, 25 января
+      по 25 янв -&gt; по двадцать пятое январ
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_instrumental" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_instr_masc"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_nom_prep">
+      <comment>
+      Example: по 25 янв
+      по 25 янв -&gt; по двадцать пятое января
+    </comment>
+      <match>
+        <rgx id="m0" name="pre_date_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m2" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm">
+      <comment>
+      Example: 25 янв, 25 января
+      25 мая -&gt; двадцать шестого мая
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="months" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_dm_nom">
+      <comment>
+      Example: 25 янв, 25 января
+      25 янв -&gt; двадцать пятое января
+    </comment>
+      <match>
+        <rgx id="m0" name="day_of_month" src="lcase" offset="0"/>
+        <rgx id="m1" name="month_name" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <lkp name="months_nodate" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_with_ending_with_godu">
+      <comment>
+      Example: в 2000-м году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_ordinal_ending" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_n" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy val="" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_with_ending">
+      <comment>
+      Example: в 2000-м
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_ordinal_ending" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_with_ending_with_godu">
+      <comment>
+      Example: в 1800-м году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_ordinal_ending" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_n" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy val="" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_with_ending">
+      <comment>
+      Example: в 1800-м
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_ordinal_ending" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_with_ending_with_godu">
+      <comment>
+      Example: в 1806-м году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_ordinal_ending" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_n" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy val="" offset="2"/>
+        <cpy val="" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_with_qualifier">
+      <comment>
+      Example: в далеком 2000 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m3" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_with_qualifier_n">
+      <comment>
+      Example: в далеком 2000г -&gt; в далеком двухтысячном году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="millennium_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium">
+      <comment>
+      Example: в 2000 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_nospace">
+      <comment>
+      Example: в 2000г -&gt; в двухтысячном году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_with_qualifier">
+      <comment>
+      Example: в далеком 1800 году -&gt; в далеком тысяча восьмисотом году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m3" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m2" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_with_qualifier_nospace">
+      <comment>
+      Example: в далеком 1800г -&gt; в далеком тысяча восьмисотом году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="century_any_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m2" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century">
+      <comment>
+      Example: в 1800 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_nospace">
+      <comment>
+      Example: в 1800г
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_with_qualifier">
+      <comment>
+      Example: в далеком 1806 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m3" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m2" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_with_qualifier_nospace">
+      <comment>
+      Example: в далеком 1806г
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-2"/>
+        <rgx id="m1" name="year_qualifier" src="lcase" offset="-1"/>
+        <rgx id="m2" name="year_any_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m2" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_millennium_to_millennium">
+      <comment>
+      Example: с 1000 по 2000 гг. -&gt; с тысячного по двухтысячный годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_century_to_millennium">
+      <comment>
+      Example: с 1900 по 2000 гг. -&gt; с тысяча девятисотого по двухтысячный годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_millennium_to_century">
+      <comment>
+      Example: с 2000 по 2100 гг. -&gt; с двухтысячного по две тысячи второй годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_year_to_millennium">
+      <comment>
+      Example: с 1990 по 2000 гг. -&gt; с тысяча девятьсот девяностого по двухтысячный годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_millennium_to_year">
+      <comment>
+      Example: с 2000 по 2010 гг. -&gt; с двухтысячного по две тысячи второй годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_century_to_century">
+      <comment>
+      Example: с 1800 по 1900 гг. -&gt; с тысяча восьмисотого по тысяча девятисотый годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_year_to_century">
+      <comment>
+      Example: с 1850 по 1900 гг. -&gt; с тысяча восьмисотого по тысяча девятисотый годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_century_to_year">
+      <comment>
+      Example: с 1900 по 1950 гг. -&gt; с тысяча девятисотого по тысяча девятьсот пятидесятый годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_from_to">
+      <comment>
+      Example: с 1978 по 2004 гг. -&gt; с тысяча девятьсот семьдесят восьмого по две тысячи четвертый годы
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="prep_acc" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godiy" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_nomin_masc"/>
+        <cpy val="годы" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_millennium">
+      <comment>
+      Example: в 1000 - 2000 годах -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_millennium">
+      <comment>
+      Example: в 1900 - 2000 годах -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_century">
+      <comment>
+      Example: в 2000 - 2100 годах -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_year">
+      <comment>
+      Example: в 2000 - 2010 годах -&gt; в двухтысячном две тысячи десятом годах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_year_to_millennium">
+      <comment>
+      Example: в 1990 - 2000 годах -&gt; в тысяча девятьсот девяностом двухтысячном годах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_century">
+      <comment>
+      Example: в 1800 - 1900 годах -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_year">
+      <comment>
+      Example: в 1800 - 1950 годах -&gt; тысяча восьмисотом тысяча девятьсот пятидесятом годах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_year_to_century">
+      <comment>
+      Example: в 1850 - 1900 годах -&gt; тысяча восемьсот пятидесятом тысяча девятисотом годах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range">
+      <comment>
+      Example: в 2005 - 2010 годах -&gt; в две тысячи пятом две тысячи десятом годах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_millennium_no_godach">
+      <comment>
+      Example: в 1000 - 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_millennium_no_godach">
+      <comment>
+      Example: в 1900 - 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_century_no_godach">
+      <comment>
+      Example: в 2000 - 2100 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_millennium_to_year_no_godach">
+      <comment>
+      Example: в 2000 - 2010 -&gt; в двухтысячном две тысячи десятом
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_year_to_millennium_no_godach">
+      <comment>
+      Example: в 1990 - 2000 годах -&gt; в тысяча девятьсот девяностом двухтысячном
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="millennium" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" grp="0" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_century">
+      <comment>
+      Example: в 1800 - 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_century_to_year_no_godach">
+      <comment>
+      Example: в 1800 - 1950 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range_year_to_century_no_godach">
+      <comment>
+      Example: в 1850 - 1900 -&gt; тысяча восемьсот пятидесятом тысяча девятисотом
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="century_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_range">
+      <comment>
+      Example: в 2005 - 2010 -&gt; в две тысячи пятом две тысячи десятом
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="year_range_century_to_year_genitive_plural">
+      <comment>
+      Example: купюры образца 1900—1945 годов -&gt; купюры образца тысяча восемьсот шестидесяти одного тысяча девятисот годов
+    </comment>
+      <match>
+        <rgx id="m0" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_gen_pl" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="year_range_year_to_century_genitive_plural">
+      <comment>
+      Example: купюры образца 1861—1900 годов -&gt; купюры образца тысяча восемьсот шестидесяти одного тысяча девятисот годов
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="century_any" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_gen_pl" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+        <lkp name="millennia" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="year_range_genitive_plural">
+      <comment>
+      Example: купюры образца 1961—1992 годов -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_gen_pl" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+        <lkp name="centuries" from="m2" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="2" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="in_years">
+      <comment>
+      Example: в 2005 и 2010 году -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="and" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any" src="lcase" offset="2"/>
+        <rgx id="m4" name="year_n" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_years_nospace">
+      <comment>
+      Example: в 2005 и 2010г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="and" src="lcase" offset="1"/>
+        <rgx id="m3" name="year_any_n" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <lkp name="centuries" from="m3" grp="0" offset="2"/>
+        <fnc name="numbers_ru" from="m3" grp="1" offset="2" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="o_year">
+      <comment>
+      Example: о 1806 годе
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_o" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_gode" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="годе" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_godom">
+      <comment>
+      Example: 1572 годом
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_godom" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_instr_masc"/>
+        <cpy val="годом" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year">
+      <comment>
+      Example: в 1806 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_nospace">
+      <comment>
+      Example: в 1806г
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any_n" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="году" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium">
+      <comment>
+      в 2000 -&gt; в двухтысячном
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade_prep">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: в 60-х годах
+      в 1960-х годах -&gt; в шестидесятых годах
+    </comment>
+      <match>
+        <rgx id="m0" name="decade_prep" src="lcase" offset="-1"/>
+        <rgx id="m1" name="number_decade_full" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="x" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <lkp name="ordinal_gen_plural" from="m1" grp="1" offset="0"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade_full">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 1960-е
+      1960-е -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="number_decade_full" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="e" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <lkp name="ordinal_nomin_plural" from="m0" grp="1" offset="0"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_year_restricted">
+      <comment>
+      This makes the assumption that it is a year, so restrict range from 1901 to 2099
+      в 1941 -&gt; в тысяча девятьсот сорок первом
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_restricted" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="ordinal_prep_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_genitive">
+      <comment>
+      Example: до 2000 года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_genitive">
+      <comment>
+      Example: до 1800 года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_genitive">
+      <comment>
+      Example: до 1806 года
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_date" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_accusitive">
+      <comment>
+      Example: на 2000 год
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_accusitive">
+      <comment>
+      Example: на 1800 год
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_accusitive">
+      <comment>
+      Example: на 1806 год
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_dative">
+      <comment>
+      Example: к 2000 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy offset="1">
+          <lex entry="digitlkp_dative"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="century_dative">
+      <comment>
+      Example: к 1900 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy offset="1">
+          <lex entry="digitlkp_dative"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="year_dative">
+      <comment>
+      Example: к 1999 году
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_n" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="году" offset="1"/>
+        <cpy offset="1">
+          <lex entry="digitlkp_dative"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="millennium_my_with_goda">
+      <comment>
+      Example: Июль 2000 года
+      Июль 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_my_with_goda">
+      <comment>
+      Example: Июль 1900 года
+      Июль 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_my_with_goda">
+      <comment>
+      Example: Июль 1985 года
+      Июль 1985 года -&gt; июль тысяча девятьсот восемьдесят пятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_my_year_suffix">
+      <comment>
+      в ноябре 2000-го -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="masc_sing_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_my_goda">
+      <comment>
+      For dates like "in July 2000".
+      Example: в январе 2000 года-&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="in_months" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_millennium_my">
+      <comment>
+      For dates like "in July 2000".
+      Example: в январе 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="in_months" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_my_year_suffix">
+      <comment>
+      в ноябре 1900-го -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="masc_sing_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_my_goda">
+      <comment>
+      For dates like "in_July 1900".
+      Example: в Июле 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_century_my">
+      <comment>
+      For dates like "in_July 1900".
+      Example: в Июле 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_date_my_year_suffix">
+      <comment>
+      в ноябре 1942-го -&gt; в ноябре тысяча девятьсот сорок второго
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="masc_sing_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="in_date_my_goda">
+      <comment>
+      For dates like "July 1985".
+      Example: в Июле 1985
+      Июль 1985 года -&gt; июль тысяча девятьсот восемьдесят пятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="in_date_my">
+      <comment>
+      For dates like "July 1985".
+      Example: в Июле 1985
+      Июль 1985 -&gt; июль тысяча девятьсот восемьдесят пятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="in_month" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="in_month" from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_my">
+      <comment>
+      For dates like "July 2000".
+      Example: Июль 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="century_my">
+      <comment>
+      For dates like "July 1900".
+      Example: Июль 1900 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="date_my">
+      <comment>
+      For dates like "July 1985".
+      Example: Июль 1985
+      Июль 1985 -&gt; июль тысяча девятьсот восемьдесят пятого года
+    </comment>
+      <match>
+        <rgx id="m0" name="month_name_nominativ" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="months_nodate" from="m0" offset="-1"/>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_SY_goda">
+      <comment>
+      For dates like "summer 2000".
+      Example: Летом 2000 года
+      Летом 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_SY">
+      <comment>
+      For dates like "summer 2000".
+      Example: Летом 2000
+      Летом 2000 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="millennium" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="century_SY_goda">
+      <comment>
+      For dates like "summer 1900".
+      Example: Летом 1900 года
+      Летом 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_SY">
+      <comment>
+      For dates like "summer 1900".
+      Example: Летом 1900
+      Летом 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="century_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="date_SY_goda">
+      <comment>
+      For dates like "summer 1985".
+      Example: Летом 1985 года
+      Летом 1985 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_g" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="date_SY">
+      <comment>
+      For dates like "summer 1985".
+      Example: Летом 1985
+      Летом 1985 -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="season" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="int_letni_masc_with_ending">
+      <comment>
+      82-х летний
+      For instance, 20 years old (20-letni) for a male
+      This rule has to go here, otherwise the decade rules below break it
+      GJL201703124 - Check this one
+    </comment>
+      <match>
+        <rgx id="m0" name="max_3_digits" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="x" src="lcase" offset="2"/>
+        <rgx id="m3" name="n_letni_masc" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+        <cpy from="m3" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade_prep">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: в 60-х годах
+      в 60-х годах -&gt; в шестидесятых годах
+    </comment>
+      <match>
+        <rgx id="m0" name="decade_prep" src="lcase" offset="-1"/>
+        <rgx id="m1" name="number_decade" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="x" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="ordinal_gen_plural" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 60-е
+      60-е -&gt; шестидесятые
+    </comment>
+      <match>
+        <rgx id="m0" name="number_decade" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="e" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="ordinal_nomin_plural" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade_no_hyphen">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 1960х -&gt; шестидесятых
+    </comment>
+      <match>
+        <rgx id="m0" name="number_decade_full_no_hyphen" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <lkp name="ordinal_gen_plural" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="date_decade_no_hyphen">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 60х -&gt; шестидесятых
+    </comment>
+      <match>
+        <rgx id="m0" name="number_decade_no_hyphen" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="ordinal_gen_plural" from="m0" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_decade_no_hyphen">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 1960е -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_decade_full_no_hyphen" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <lkp name="ordinal_nomin_plural" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_decade_no_hyphen">
+      <comment>
+      Covers the cases like '20s', as in 1920s, with a preposition.
+      Example: 60е -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="in_number_decade_no_hyphen" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="ordinal_nomin_plural" from="m0" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millenium_simple_genitive">
+      <comment>
+      Example: for use in contexts like к концу 2000 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_g_strict" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_simple_genitive">
+      <comment>
+      Example: for use in contexts like к концу 1900 года -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_g_strict" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_simple_genitive">
+      <comment>
+      Example: for use in contexts like к концу 1806 года -&gt;
+	к концу тысяча восемьсот шестого года
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_g_strict" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="года" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="millennium_simple">
+      <comment>
+      Example: 1000 год, 2000 г
+    </comment>
+      <match>
+        <rgx id="m0" name="millennium" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="century_simple">
+      <comment>
+      Example: 1900 год, 1900 г
+    </comment>
+      <match>
+        <rgx id="m0" name="century_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="millennia" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_simple_exception">
+      <comment>
+	Exception from the rule below to catch things like 'she became 31' (meaning age), or '31 years 			have passed'
+	ей исполнился 31 год -&gt; тридцать один год
+	прошёл 51 год -&gt; прошёл пятьдесят один год
+    </comment>
+      <match>
+        <rgx id="m0" name="year_simple_exception" src="lcase" offset="-1"/>
+        <rgx id="m1" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m2" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="year_simple">
+      <comment>
+      Example: 1806 год, 1806 г
+	1806 год -&gt; тысяча восемьсот шестой год
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="year_a" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="год" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="in_decade_with_godach">
+      <comment>
+      Example: в 1990-х г -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="plural_gen" src="lcase" offset="2"/>
+        <rgx id="m3" name="year_godach" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_gen_plural"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+        <cpy val="годах" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="in_decade">
+      <comment>
+      Example: в 1990-х годах -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="year_any" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="plural_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="centuries" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="ordinal_gen_plural"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

@@ -1,0 +1,439 @@
+<nrules>
+
+  <rules>
+
+    <rule name="squared_measure">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="squared_short" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="квадратных" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_1_genitive">
+      <comment>
+      Example: около $22,51 млн -&gt; около двадцати двух запятая пятидесяти одного миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="float_1" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_2_4" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_genitive">
+      <comment>
+      Example: около $22,55 млн -&gt; около двадцать два запятая пятьдесят пять миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="float_1" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_pl" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_1_reverse_genitive">
+      <comment>
+      Example: около 22,501$ млн -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="float_1" src="lcase" offset="0"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_2_4" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_reverse_genitive">
+      <comment>
+      Example: около 22,5$ млн -&gt; около двадцати двух запятая пяти миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="float" src="lcase" offset="0"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_pl" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1_genitive">
+      <comment>
+      Example: около $21 млн -&gt; около двадцати одного миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="ends_one" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_2_4" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_genitive">
+      <comment>
+      Example: около $12 млн -&gt; около двенадцати миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="cardinal" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_pl" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1_genitive_reverse">
+      <comment>
+      Example: около 1$ млн -&gt; около одного миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="ends_one" src="lcase" offset="0"/>
+        <rgx id="m2" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_2_4" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m2" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_genitive_reverse">
+      <comment>
+      Example: около 4$ млн -&gt; около четырёх миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m2" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m3" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_scale_pl" from="m3" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m2" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_asdigits">
+      <comment>
+      Example: $22,012 млн -&gt; двадцать два запятая ноль один два миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_asdigits" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_1">
+      <comment>
+      Example: $22,21 млн -&gt; двадцать два запятая двадцать один миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_1" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_2_4">
+      <comment>
+      Example: $22,24 млн -&gt; двадцать два запятая двадцать четыре миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_2_4" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_scale_2_4" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float">
+      <comment>
+      Example: $22,5 млн -&gt; двадцать два запятая пять миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="float" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_reverse_asdigits">
+      <comment>
+      Example: 22,012$ млн -&gt; двадцать два запятая ноль один два миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_asdigits" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_reverse_1">
+      <comment>
+      Example: 22,121$ млн -&gt; двадцать два запятая сто двадцать один миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_reverse_2_4">
+      <comment>
+      Example: 22,24$ млн -&gt; двадцать два запятая двадцать четыре миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_scale_2_4" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_float_reverse">
+      <comment>
+      Example: 22,5$ млн -&gt; двадцать два запятая пять миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="float" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_5_20">
+      <comment>
+      Example: $5 млн -&gt; пять миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_2_4">
+      <comment>
+      Example: $4 млн -&gt; четыре миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_2_4" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_scale_2_4" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1_only">
+      <comment>
+      Example: $1 млн -&gt;  миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_1" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="0"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1">
+      <comment>
+      Example: $21 млн -&gt;  двадцать один миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_masc_and_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="up_to_3digits_ends_1" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m0" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_5_20_reverse">
+      <comment>
+      Example: 5$ млн -&gt; пять миллионов долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_scale_pl" from="m2" grp="0" offset="1"/>
+        <cpy val="целых и" offset="0"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_2_4_reverse">
+      <comment>
+      Example: 4$ млн -&gt; четыре миллиона долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_scale_2_4" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1_only_reverse">
+      <comment>
+      Example: 1$ млн -&gt;  миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="0"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_scale_1_reverse">
+      <comment>
+      Example: 21$ млн -&gt;  двадцать один миллион долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_masc_and_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="currency_scale" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_scale_1" from="m2" grp="0" offset="1"/>
+        <lkp name="currency_pl" from="m1" grp="0" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>
