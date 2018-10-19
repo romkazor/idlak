@@ -1,0 +1,275 @@
+<nrules>
+
+  <rules>
+
+    <rule name="address_building">
+      <comment>
+	ул. Спортивная, д.11, стр. 2, кв. 45 -&gt; улица спортивная, дом одиннадцать, строение 2, квартира 45
+	Sportivnaya street, house 11, building 2, apartment 45 - DOESN'T WORK YET
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="-1"/>
+        <rgx id="m1" name="building" src="lcase" offset="0"/>
+        <rgx id="m2" name="cardinal_for_building" src="lcase" offset="1"/>
+        <rgx id="m3" name="apartment" src="lcase" offset="2"/>
+        <rgx id="m4" name="apartment_3digits" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="строение" offset="0"/>
+        <fnc name="numbers_ru" from="m2" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_ordinal_fem">
+      <comment>
+      Екатерина II -&gt; екатерина вторая
+    </comment>
+      <match>
+        <rgx id="m0" name="proper_name_fem" src="mcase" offset="-1"/>
+        <rgx id="m1" name="roman_numerals_lt20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m1" offset="0" case="ordinal_nomin_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_ordinal">
+      <comment>
+      Александр II -&gt; александр второй
+    </comment>
+      <match>
+        <rgx id="m0" name="proper_name" src="mcase" offset="-1"/>
+        <rgx id="m1" name="roman_numerals_lt20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m1" offset="0" case="ordinal_nomin_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="centuries_range">
+      <comment>
+      в XIX — XXI вв. -&gt; в девятнадцатом двадцать первом веках
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="roman_numerals_lt30" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="roman_numerals_lt30" src="lcase" offset="2"/>
+        <rgx id="m4" name="preps_for_centuries" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m1" grp="0" offset="0" case="year_ordinal"/>
+        <cpy val="" offset="1"/>
+        <fnc name="roman" from="m3" grp="0" offset="2" case="year_ordinal"/>
+        <cpy val="веках" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_in_century">
+      <comment>
+      В XX веке -&gt; в двадцатом веке
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="roman_numerals_lt30" src="lcase" offset="0"/>
+        <rgx id="m2" name="century" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m1" offset="0" case="year_ordinal"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_dative_century">
+      <comment>
+       К XVII веку -&gt; к семнадцатому веку
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="roman_numerals_lt30" src="lcase" offset="0"/>
+        <rgx id="m2" name="century" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m1" offset="0" case="ordinal_dat_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_genitive_century">
+      <comment>
+      С XX века -&gt; с двадцатого века
+      GJL20180214 - Making this rule more general by removing prep_gen
+    </comment>
+      <match>
+        <rgx id="m0" name="roman_numerals_lt30" src="lcase" offset="0"/>
+        <rgx id="m1" name="century" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m0" offset="0" case="year_ordinal_gen"/>
+      </replace>
+    </rule>
+
+    <rule name="word_to">
+      <comment>
+      Any word ending in -то should use a reduced form of the word то
+    </comment>
+      <match>
+        <rgx id="m0" name="word_hyphen_to" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy offset="0">
+          <lex entry="reduced"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="date_bc">
+      <comment>
+      до н. э. -&gt; до нашей эры
+    </comment>
+      <match>
+        <rgx id="m0" name="do" src="lcase" offset="-1"/>
+        <rgx id="m1" name="n_only" src="mcase" offset="0"/>
+        <rgx id="m2" name="e_only" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="нашей" offset="0"/>
+        <cpy val="эры" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="saints">
+      <comment>
+      С. Петербург -&gt; санкт петербург
+    </comment>
+      <match>
+        <rgx id="m0" name="st" src="mcase" offset="0"/>
+        <rgx id="m1" name="common_saints" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="санкт" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="letter_not_word">
+      <comment>
+      К. Лютер -&gt; к лютер
+    </comment>
+      <match>
+        <rgx id="m0" name="single_letter_word" src="mcase" offset="0"/>
+        <rgx id="m1" name="word_starting_uppercase" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy offset="0">
+          <lex entry="letter"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="city_of">
+      <comment>
+      Г. Москва -&gt; город москва (City of Moscow)
+    </comment>
+      <match>
+        <rgx id="m0" name="gorod_abb" src="mcase" offset="0"/>
+        <rgx id="m1" name="large_cities" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="город" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="address_building">
+      <comment>
+	ул. Спортивная, д.11, стр. 2, кв. 45 -&gt; улица спортивная, дом одиннадцать, строение 2, квартира 45
+	Sportivnaya street, house 11, building 2, apartment 45 - DOESN'T WORK YET
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="-1"/>
+        <rgx id="m1" name="building" src="lcase" offset="0"/>
+        <rgx id="m2" name="cardinal_for_building" src="lcase" offset="1"/>
+        <rgx id="m3" name="apartment" src="lcase" offset="2"/>
+        <rgx id="m4" name="apartment_3digits" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="строение" offset="0"/>
+        <fnc name="numbers_ru" from="m2" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="page_pered">
+      <comment>
+	перед c. 13 -&gt; перед страницей 13 (before page 13)
+    </comment>
+      <match>
+        <rgx id="m0" name="page_pered" src="lcase" offset="-1"/>
+        <rgx id="m1" name="page" src="mcase" offset="0"/>
+        <rgx id="m2" name="cardinal" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="страницей" offset="0"/>
+        <fnc name="numbers_ru" from="m2" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="page_go_to">
+      <comment>
+	перейти на c. 13 -&gt; перейти на страницу 13 (go to page 13)
+    </comment>
+      <match>
+        <rgx id="m0" name="page_go_to" src="lcase" offset="-2"/>
+        <rgx id="m1" name="prep_prepositional" src="lcase" offset="-1"/>
+        <rgx id="m2" name="page" src="mcase" offset="0"/>
+        <rgx id="m3" name="cardinal" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="страницу" offset="0"/>
+        <fnc name="numbers_ru" from="m3" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="page_prep_genitive">
+      <comment>
+	до c. 13 -&gt; до страницы 13 (before page 13)
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_genitive_full" src="lcase" offset="-1"/>
+        <rgx id="m1" name="page" src="mcase" offset="0"/>
+        <rgx id="m2" name="cardinal" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="страницы" offset="0"/>
+        <fnc name="numbers_ru" from="m2" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="page_prepositional">
+      <comment>
+	на c. 13 -&gt; на странице 13 (on page 13)
+	на cтр. 13 -&gt; на странице 13 (on page 13)
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_prepositional" src="lcase" offset="-1"/>
+        <rgx id="m1" name="page" src="mcase" offset="0"/>
+        <rgx id="m2" name="cardinal" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="странице" offset="0"/>
+        <fnc name="numbers_ru" from="m2" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="page">
+      <comment>
+	c. 13 -&gt; страница 13 (page 13)
+	cтр. 13 -&gt; страница 13 (page 13)
+    </comment>
+      <match>
+        <rgx id="m0" name="page" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="страница" offset="0"/>
+        <fnc name="numbers_ru" from="m1" offset="1" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

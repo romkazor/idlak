@@ -1,0 +1,35 @@
+<nrules>
+  <replacefunction>
+    <function name="number" reverse_tens="f" separator="." agree_all="f" case=""/>
+    <function name="numbers_ru" reverse_tens="f" separator="." agree_all="f" case="" gender=""/>
+    <function name="filter" reverse_tens="f" separator="." symbols="symbols" leading_zero="t" ignore_minus="t"/>
+    <function name="asdigits"/>
+    <function name="aschars"/>
+    <function name="numbers_pl" case=""/>
+    <function name="roman" case=""/>
+  </replacefunction>
+  <ruleset>
+    <rs name="ssmlpre"/>
+    <rs name="ssmlbasic"/>
+    <rs name="temp"/>
+    <rs name="pretele"/>
+    <rs name="preteledigit"/>
+    <rs name="tele"/>
+    <rs name="www"/>
+    <rs name="time"/>
+    <rs name="date"/>
+    <rs name="premeasure"/>
+    <rs name="measure"/>
+    <rs name="currency"/>
+    <rs name="prefractions"/>
+    <rs name="ssmlpos"/>
+    <rs name="fractions"/>
+    <rs name="predigit"/>
+    <rs name="digit"/>
+    <rs name="ssmlodd"/>
+    <rs name="odd"/>
+    <rs name="signs"/>
+    <rs name="rest"/>
+    <rs name="ssml"/>
+  </ruleset>
+</nrules>

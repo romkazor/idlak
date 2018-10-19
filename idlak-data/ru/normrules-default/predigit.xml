@@ -1,0 +1,19 @@
+<nrules>
+
+  <rules>
+
+    <rule name="in_place">
+      <comment>
+      занимает 12 место (occupies 12th place) -&gt; занимает двенадцатое место
+      This rule can possibly be extended for similar inflections
+    </comment>
+      <match>
+        <rgx id="m0" name="max_3_digits" src="lcase" offset="0"/>
+        <rgx id="m1" name="place" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>
