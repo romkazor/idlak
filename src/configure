@@ -1086,7 +1086,6 @@ is_set $OPENBLASROOT && echo "Configuring KALDI to use OPENBLAS"&& export MATHLI
 
 echo "Configuring ..."
 
-echo "CXX = $CXX" >> kaldi.mk
 # Back up the old kaldi.mk in case we modified it
 if [ -f kaldi.mk ]; then
   echo "Backing up kaldi.mk to kaldi.mk.bak ..."
@@ -1102,6 +1101,7 @@ echo >> kaldi.mk
 
 echo "# Toolchain configuration" >> kaldi.mk
 echo >> kaldi.mk
+echo "CXX = $CXX" >> kaldi.mk
 echo "AR = $AR" >> kaldi.mk
 echo "AS = $AS" >> kaldi.mk
 echo "RANLIB = $RANLIB" >> kaldi.mk
@@ -1141,7 +1141,7 @@ if [ ! -f $PUJIXMLROOT/src/pugixml.hpp  ]; then
     you may not have installed PUJIXML.  See ../tools/install_idlak.sh"
 fi
 
-if [ $pyidlak ]; then
+if [ $pyidlak == true ]; then
     echo "Checking for SWIG ... "
     if which $SWIG >&/dev/null; then
             echo "SWIG set to \"$SWIG\""
@@ -1165,8 +1165,9 @@ if [ $pyidlak ]; then
         else
             if which python >&/dev/null; then
                 PYTHONEXE=`which python`
-                pymajorversion=`$PYTHONEXE -c "from __future__ import print_function; import sys; print(sys.version_info[0])"`
-                if [ $pymajorversion != 3 ]; then
+                pyver=$(($PYTHONEXE --version) 2>&1)
+                pymajorver=$(echo $pyver | cut -c 8)
+                if [ $pymajorver != 3 ]; then
                     failure "Could not find python3 as either 'python3.5', 'python3' or 'python'"
                 fi
             else

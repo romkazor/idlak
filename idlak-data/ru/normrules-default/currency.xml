@@ -1,0 +1,746 @@
+<nrules>
+
+  <rules>
+
+    <rule name="currency_float_genitive">
+      <comment>
+      Example: около $25,25 -&gt; около двадцати пяти долларов и двадцати пяти центов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m2" name="float_asnumber" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m2" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_minor_pl" from="m1" offset="1"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_genitive_asdigits">
+      <comment>
+      Example: около $25,05 -&gt; около двадцати пяти долларов и ноль пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m2" name="float" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="asdigits" from="m2" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m1" offset="1"/>
+        <cpy val="" offset="1"/>
+        <cpy val="целых и" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_genitive_reverse">
+      <comment>
+      Example: около 25,25$ -&gt; около двадцати пяти долларов и двадцати пяти центов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="float_asnumber" src="lcase" offset="0"/>
+        <rgx id="m2" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m2" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_minor_pl" from="m2" offset="1"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_genitive_reverse_asdigits">
+      <comment>
+      Example: около 25,05$ -&gt; около двадцати пяти долларов и ноль пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="float" src="lcase" offset="0"/>
+        <rgx id="m2" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m2" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="asdigits" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m2" offset="1"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_pl">
+      <comment>
+      Example: $21,25 -&gt; двадцать один доллар и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_1_point_pl" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_2_4">
+      <comment>
+      Example: $21,24 -&gt; двадцать один доллар и двадцать четыре цента
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_1_point_2_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_1">
+      <comment>
+      Example: $21,21 -&gt; двадцать один доллар и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_1_point_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_asdigits">
+      <comment>
+      Example: $21,123 -&gt; двадцать один доллар запятая один два три
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_1_point_digits" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m1" grp="3" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_pl">
+      <comment>
+      Example: $24,25 -&gt; двадцать четыре доллара и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_2_4_point_pl" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_2_4">
+      <comment>
+      Example: $24,24 -&gt; двадцать четыре доллара и двадцать четыре цент
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_2_4_point_2_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_1">
+      <comment>
+      Example: $24,21 -&gt; двадцать четыре доллара и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_2_4_point_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_asdigits">
+      <comment>
+      Example: $24,123 -&gt; двадцать четыре доллара запятая один два три
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_2_4_point_digits" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m1" grp="3" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_pl">
+      <comment>
+      Example: $25,25 -&gt; двадцать пять долларов и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_pl_point_pl" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_2_4">
+      <comment>
+      Example: $25,24 -&gt; двадцать пять долларов и двадцать четыре цента
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_pl_point_2_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_1">
+      <comment>
+      Example: $25,21 -&gt; двадцать пять долларов и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_pl_point_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_digits">
+      <comment>
+      Example: $25,123 -&gt; двадцать пять долларов запятая один два три
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="float_pl_point_digits" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m1" grp="3" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_2_4_reverse">
+      <comment>
+      Example: 21,24$ -&gt; двадцать один доллар и двадцать четыре цента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_pl_reverse">
+      <comment>
+      Example: 21,25$ -&gt; двадцать один доллар и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_1_point_1_reverse">
+      <comment>
+      Example: 21,21$ -&gt; двадцать один доллар и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_1" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_pl_reverse">
+      <comment>
+      Example: 24,25$ -&gt; двадцать четыре доллара и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_2_4_point_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_2_4_reverse">
+      <comment>
+      Example: 24,24$ -&gt; двадцать четыре доллара и двадцать четыре цента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_2_4_point_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_2_4_point_1_reverse">
+      <comment>
+      Example: 24,21$ -&gt; двадцать четыре доллара и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="float_2_4_point_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_pl_reverse">
+      <comment>
+      Example: 25,25$ -&gt; двадцать пять долларов и двадцать пять центов
+    </comment>
+      <match>
+        <rgx id="m0" name="float_pl_point_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_2_4_reverse">
+      <comment>
+      Example: 25,24$ -&gt; двадцать пять долларов и двадцать четыре цента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_pl_point_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_float_pl_point_1_reverse">
+      <comment>
+      Example: 25,21$ -&gt; двадцать пять долларов и двадцать один цент
+    </comment>
+      <match>
+        <rgx id="m0" name="float_pl_point_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+        <lkp name="currency_minor_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_genitive">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около $25 -&gt; около двадцати пяти долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m2" name="int_gen" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_genitive_reverse">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около $25 -&gt; около двадцати пяти долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_gen" src="lcase" offset="0"/>
+        <rgx id="m2" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_fem_int_genitive">
+      <comment>
+      GJL - Feminine currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около ¥25 -&gt; около двадцать иен
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="int_gen" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive" gender="fem"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_fem_int_genitive_reverse">
+      <comment>
+      GJL - Feminine currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около 25¥ -&gt; около двадцати пяти иен
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="int_gen" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="currency_pl" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_genitive_1">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около $31 -&gt; около тридцати одного доллара
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m2" name="int_ends_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_genitive_1_reverse">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около 31$ -&gt; около тридцати одного доллара
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+        <rgx id="m2" name="int_ends_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_fem_int_genitive_1">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около ¥31 -&gt; около тридцати одной иены
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="0"/>
+        <rgx id="m2" name="int_ends_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_fem_int_genitive_1_reverse">
+      <comment>
+      GJL - Currency amounts not ending with a 1 (except 11) with genitive prepostion
+      Example: около 31¥ -&gt; около тридцати одной иены
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen_currency" src="lcase" offset="-1"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="1"/>
+        <rgx id="m2" name="int_ends_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m2" grp="0" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="currency_2_4" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_pl">
+      <comment>
+      GJL - Currency amounts ending 5,6,7,8,9,0, plus 11 to 19
+      Example: $25 -&gt; двадцать пять долларов
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_2_4">
+      <comment>
+      Example: $24 -&gt; двадцать четыре доллара
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_2_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_1">
+      <comment>
+      Example: £21 -&gt; двадцать один фунт
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_ends_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_fem_pl">
+      <comment>
+      Example: ¥25 -&gt; двадцать пять иен
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_pl" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_fem_2_4">
+      <comment>
+      Example: ¥22 -&gt; двадцать две иены
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_2_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_2_4" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_fem_1">
+      <comment>
+      Example: ¥21 -&gt; двадцать одна иена
+    </comment>
+      <match>
+        <rgx id="m0" name="currency_symb_fem" src="lcase" offset="0"/>
+        <rgx id="m1" name="int_ends_1" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_1" from="m0" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_reverse_pl">
+      <comment>
+      Example: 25£ -&gt; двадцать пять фунтов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_reverse_2_4">
+      <comment>
+      Example: 24£ -&gt; двадцать четыре фунта
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_reverse_1">
+      <comment>
+      Example: 21£ -&gt; двадцать один фунт
+    </comment>
+      <match>
+        <rgx id="m0" name="int_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="currency_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_fem_int_reverse_pl">
+      <comment>
+      Example: 25¥ -&gt; двадцать пять иен
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_reverse_2_4">
+      <comment>
+      Example: 24¥ -&gt; двадцать четыре иены
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="currency_int_reverse_1">
+      <comment>
+      Example: 21¥ -&gt; двадцать одна иена
+    </comment>
+      <match>
+        <rgx id="m0" name="int_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="currency_symb_fem" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp_fem"/>
+        <lkp name="currency_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

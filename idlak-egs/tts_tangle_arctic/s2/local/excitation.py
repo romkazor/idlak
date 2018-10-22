@@ -267,6 +267,7 @@ class RESD:
         return excitation[t_start:]
 
 
+
     # Builds a pitch synchronous hanning filter
     def pitch_sync_hann(self, left_period, right_period, hlen = None):
 
