@@ -1,4 +1,4 @@
-// idlaktxp/mod-pronounce.cc
+  // idlaktxp/mod-pronounce.cc
 
 // Copyright 2012 CereProc Ltd.  (Author: Matthew Aylett)
 
@@ -102,9 +102,9 @@ bool TxpPronounce::Process(pugi::xml_document* input) {
         // if no phoneme is found, pronounciation is removed
         const TxpPhoneDescr* found_phone = phone_.GetPhone(phone_2_chk.c_str());
         if (found_phone == NULL) {
-            KALDI_ERR << "Phoneme " << phone_2_chk << " from word " << word << " could not be found";
-            lexlkp.pron = "";
-            break;
+          KALDI_ERR << "Phoneme " << phone_2_chk << " from word " << word << " could not be found";
+          lexlkp.pron = "";
+          break;
         }
 
         st_phon_pos = end_phon_pos + 1;
