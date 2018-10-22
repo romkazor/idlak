@@ -1086,6 +1086,7 @@ is_set $OPENBLASROOT && echo "Configuring KALDI to use OPENBLAS"&& export MATHLI
 
 echo "Configuring ..."
 
+echo "CXX = $CXX" >> kaldi.mk
 # Back up the old kaldi.mk in case we modified it
 if [ -f kaldi.mk ]; then
   echo "Backing up kaldi.mk to kaldi.mk.bak ..."
@@ -1101,7 +1102,6 @@ echo >> kaldi.mk
 
 echo "# Toolchain configuration" >> kaldi.mk
 echo >> kaldi.mk
-echo "CXX = $CXX" >> kaldi.mk
 echo "AR = $AR" >> kaldi.mk
 echo "AS = $AS" >> kaldi.mk
 echo "RANLIB = $RANLIB" >> kaldi.mk
