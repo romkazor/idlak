@@ -1,0 +1,62 @@
+<nrules>
+
+  <rules>
+
+    <rule name="fractions_number_1">
+      <comment>
+      Read fractions such as "1/3" or "3/4". Fairly easy to spot since punctuations
+      marks have their own token.
+      2 1/2 -&gt; 	два и одна вторая
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinalr" src="lcase" offset="0"/>
+        <rgx id="m1" name="cardinal_1" src="lcase" offset="1"/>
+        <rgx id="m2" name="slash" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinalr" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="и" offset="1"/>
+        <lkp name="asdigits_fem" from="m1" offset="1"/>
+        <cpy val="" offset="2"/>
+        <fnc name="numbers_ru" from="m3" offset="3" case="ordinal_fraction"/>
+      </replace>
+    </rule>
+
+    <rule name="fractions_number">
+      <comment>
+      Read small fractions of format "x/[2-4]" such as 1/3. Fairly easy to spot since punctuations
+      marks have their own token.
+      2 2/3 -&gt; два и две третьих
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinalr" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinalr" src="lcase" offset="0"/>
+        <rgx id="m2" name="slash" src="lcase" offset="1"/>
+        <rgx id="m3" name="cardinalr" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="и" offset="0"/>
+        <lkp name="asdigits_fem" from="m1" offset="0"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="ordinal_fraction_pl"/>
+      </replace>
+    </rule>
+
+    <rule name="fractions_1">
+      <comment>
+      Read fractions such as "1/3" or "3/4". Fairly easy to spot since punctuations
+      marks have their own token.
+      1/4 -&gt; одна четвёртая
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="slash" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinalr" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m2" offset="2" case="ordinal_fraction"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

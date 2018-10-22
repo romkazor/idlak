@@ -1,0 +1,41 @@
+<nrules>
+
+  <rules>
+
+    <rule name="sub_start">
+      <comment>
+      Convert sub tag; replacement done on the first token, the others should be set to "".
+   </comment>
+      <match>
+        <xml id="m0" name="sub" attribute="alias" tag="open" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="@sub:alias" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="sub_startend">
+      <comment>
+      Convert sub tag; replacement done on the first token, the others should be set to "".
+    </comment>
+      <match>
+        <xml id="m0" name="sub" attribute="alias" tag="openclosed" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="@sub:alias" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="sub_default">
+      <comment>
+      Convert sub tag; replacement done on the first token, the others should be set to "".
+    </comment>
+      <match>
+        <xml id="m0" name="sub" attribute="alias" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

@@ -3,10 +3,12 @@
   <set name="phone" null="0">
     <item name="pau"/>
     <item name="aa"/>
+    <item name="a@"/>
     <item name="an"/>
     <item name="ah"/>
     <item name="au"/>
     <item name="ax"/>
+    <item name="au"/>
     <item name="b"/>
     <item name="d"/>
     <item name="eh"/>
@@ -22,6 +24,7 @@
     <item name="h"/>
     <item name="ih"/>
     <item name="iy"/>
+    <item name="in"/>
     <item name="j"/>
     <item name="k"/>
     <item name="l"/>

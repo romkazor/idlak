@@ -107,7 +107,7 @@ def main():
     opts, args = parser.parse_args()
     if len(args) == 3:
         make_fullctx_mlf_dnn(args[0], args[1], args[2], extra_feats=opts.extra_feats)
-    else:
+    else: 
         parser.error('Mandatory arguments missing or excessive number of arguments')
 
 if __name__ == '__main__':

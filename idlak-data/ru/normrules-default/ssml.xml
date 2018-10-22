@@ -1,0 +1,31 @@
+<nrules>
+
+  <rules>
+
+    <rule name="say-as_year">
+      <comment>
+      Internally, a 'year'-token (e.g. '1982') is marked as
+      '&lt;say-as interpret-as="year"&gt; 1982 &lt;/say-as&gt;'.
+    </comment>
+      <match>
+        <rgx id="m0" name="year" src="lcase" offset="0"/>
+        <xml id="m1" name="say-as" attribute="internal" val="year" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="year_ordinal"/>
+      </replace>
+    </rule>
+
+    <rule name="expand_leftover_acronyms">
+      <comment>
+      Acronyms in urls/emails aren't expanded, so fix common ones here
+    </comment>
+      <match>
+        <rgx id="m0" name="common_acronyms" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="common_acronyms" from="m0" grp="0" offset="0"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

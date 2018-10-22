@@ -1,0 +1,190 @@
+<nrules>
+
+  <rules>
+
+    <rule name="roman_fem">
+      <comment>
+	III книга -&gt; третья книга (third book)
+    </comment>
+      <match>
+        <rgx id="m0" name="roman_numerals_safe" src="lcase" offset="0"/>
+        <rgx id="m1" name="feminine_nouns" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m0" offset="0" case="ordinal_nomin_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_masc">
+      <comment>
+	III параграф -&gt; третий параграф (third paragraph)
+    </comment>
+      <match>
+        <rgx id="m0" name="roman_numerals_safe" src="lcase" offset="0"/>
+        <rgx id="m1" name="masculine_nouns" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m0" offset="0" case="ordinal_nomin_masc"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_neut">
+      <comment>
+	III изменение -&gt; третье изменение (third amendment)
+    </comment>
+      <match>
+        <rgx id="m0" name="roman_numerals_safe" src="lcase" offset="0"/>
+        <rgx id="m1" name="neuter_nouns" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="roman">
+      <comment>
+      Catch all for remaining Roman numerals
+      XX -&gt; двадцать
+    </comment>
+      <match>
+        <rgx id="m0" name="roman_numerals_safe" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="roman" from="m0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="acronyms-in-lexicon">
+      <comment>
+      Acronyms in lexicon =&gt; read as a normal word
+      This overrides all subsequent acronyms rules
+    </comment>
+      <match>
+        <rgx id="m0" name="upper_case_2_4" src="mcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy from="m1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="acronyms">
+      <comment>
+      Handles acronyms by splitting them up via 'H:aschars'.
+      Acronyms which should not be split, e.g. 'TUI' in German, have to
+      added to the abbreviations list (abb.txt).
+      времени UTC составляет 3 часа -&gt; времени u t c составляет три часа
+    </comment>
+      <match>
+        <rgx id="m0" name="not_upper_case" src="mcase" offset="-1"/>
+        <rgx id="m1" name="upper_case_2_4" src="mcase" offset="0"/>
+        <rgx id="m2" name="not_upper_case" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m1" offset="0"/>
+        <cpy offset="0">
+          <lex entry="letter"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="acronyms_start">
+      <comment>
+      Handles acronyms by splitting them up via 'H:aschars'.
+      Acronyms which should not be split, e.g. 'TUI' in German, have to
+      added to the abbreviations list (abb.txt).
+      СМИ рассказали об угрозе -&gt; с м и рассказали об угрозе
+    </comment>
+      <match>
+        <rgx id="m0" name="upper_case_2_4" src="mcase" offset="0"/>
+        <rgx id="m1" name="not_upper_case" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m0" offset="0"/>
+        <cpy offset="0">
+          <lex entry="letter"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="acronyms_end">
+      <comment>
+      Handles acronyms by splitting them up via 'H:aschars'.
+      Acronyms which should not be split, e.g. 'TUI' in German, have to
+      added to the abbreviations list (abb.txt).
+      Скачать как PDF -&gt; скачать как p d f
+    </comment>
+      <match>
+        <rgx id="m0" name="not_upper_case" src="mcase" offset="-1"/>
+        <rgx id="m1" name="upper_case_2_4" src="mcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m1" offset="0"/>
+        <cpy offset="0">
+          <lex entry="letter"/>
+        </cpy>
+      </replace>
+    </rule>
+
+    <rule name="acronyms_brackets">
+      <comment>
+      (PDF) -&gt; p d f
+    </comment>
+      <match>
+        <rgx id="m0" name="upper_case_2_4_brackets" src="mcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="acronyms_dot_2">
+      <comment>
+      Handles 'semi'-acronyms, strings of upper-case characters with dots between then.
+      Example: "S.A."
+    </comment>
+      <match>
+        <rgx id="m0" name="upper_case_2dotted" src="mcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy offset="0">
+          <lex lts="spell"/>
+        </cpy>
+        <lkp name="downcase" from="m0" offset="0"/>
+        <lkp name="downcase" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="acronyms_dot_3">
+      <comment>
+      Handles 'semi'-acronyms, strings of upper-case characters with dots between then.
+      Example: "S.A.S."
+    </comment>
+      <match>
+        <rgx id="m0" name="upper_case_3dotted" src="mcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy offset="0">
+          <lex lts="spell"/>
+        </cpy>
+        <lkp name="downcase" from="m0" offset="0"/>
+        <lkp name="downcase" from="m0" grp="1" offset="0"/>
+        <lkp name="downcase" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="char_digs">
+      <comment>
+      For tokens where a single character is followed by numbers, all in a single token.
+      Example: "U2"
+      GJL - Merged Latin and Russian versions of this rule
+    </comment>
+      <match>
+        <rgx id="m0" name="char_digs" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy from="m0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>
