@@ -77,8 +77,6 @@ class RESD:
         gn = np.fft.ifftshift(gn)
         return gn
 
-    #def rms(self, v):
-
     # Mixed excitation
     def mixed_excitation(self, _pulse, _noise, bndaps, pitch_period=0.0, voiced=True):
 
