@@ -38,7 +38,6 @@ class RESD:
         else:
             self.midbands = None
 
-    ########################################################
 
     # f0 is fundamental frequency in Hz, while fs is sampling frequency
     # N2 is glottal opening duration, N1 is "duty" of the cycle
@@ -77,8 +76,6 @@ class RESD:
         gn = np.fft.irfft(pulse_fft)
         gn = np.fft.ifftshift(gn)
         return gn
-
-    #def rms(self, v):
 
     # Mixed excitation
     def mixed_excitation(self, _pulse, _noise, bndaps, pitch_period=0.0, voiced=True):
