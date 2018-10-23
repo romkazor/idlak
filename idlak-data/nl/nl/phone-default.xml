@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <phonesetup>
   <phone name="p">
 		<description word_example="pak" pron_example="p_ah_k" ipa="p"/>
