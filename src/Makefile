@@ -188,5 +188,5 @@ kws: base util hmm tree matrix lat
 idlaktxp: base util matrix
 idlakfeat: base util hmm feat transform
 ifeq ($(PYIDLAK), true)
-pyIdlak: all
+pyIdlak: base util matrix idlakfeat feat transform gmm tree hmm idlaktxp
 endif
