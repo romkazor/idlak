@@ -1,4 +1,4 @@
-  // idlaktxp/mod-pronounce.cc
+// idlaktxp/mod-pronounce.cc
 
 // Copyright 2012 CereProc Ltd.  (Author: Matthew Aylett)
 
