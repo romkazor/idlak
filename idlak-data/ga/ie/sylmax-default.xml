@@ -147,20 +147,20 @@
 		<o pat="sh tj rj"/>
 	</onsets>
 	<nuclei stress="false">
-		<s pat="@"/>
-		<s pat="a"/>
-		<s pat="aa"/>
-		<s pat="ai"/>
-		<s pat="au"/>
-		<s pat="e"/>
-		<s pat="ee"/>
-		<s pat="eey"/>
-		<s pat="i"/>
-		<s pat="i@"/>
-		<s pat="o"/>
-		<s pat="oy"/>
-		<s pat="u@"/>
-		<s pat="uh"/>
-		<s pat="uu"/>
+		<n pat="@"/>
+		<n pat="a"/>
+		<n pat="aa"/>
+		<n pat="ai"/>
+		<n pat="au"/>
+		<n pat="e"/>
+		<n pat="ee"/>
+		<n pat="eey"/>
+		<n pat="i"/>
+		<n pat="i@"/>
+		<n pat="o"/>
+		<n pat="oy"/>
+		<n pat="u@"/>
+		<n pat="uh"/>
+		<n pat="uu"/>
 	</nuclei>
 </syl>
