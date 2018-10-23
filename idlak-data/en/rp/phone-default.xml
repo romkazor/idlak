@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <phonesetup>
-  <phone name="aa">
+  	<phone name="aa">
 		<description word_example="balm" pron_example="b_aa_m" ipa="ɑ"/>
 	</phone>
 	<phone name="ae">
