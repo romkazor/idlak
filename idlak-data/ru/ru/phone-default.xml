@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phonesetup>
+  <phone name="a">
+		<description word_example="брат" pron_example="b_r_a_t" ipa="æ"/>
+	</phone>
+	<phone name="o">
+		<description word_example="он" pron_example="o_n" ipa="o̞"/>
+	</phone>
+	<phone name="u">
+		<description word_example="дуб" pron_example="d_u_p" ipa="u"/>
+	</phone>
+	<phone name="ae">
+		<description word_example="эхо" pron_example="ae_x_@" ipa="ɛ"/>
+	</phone>
+	<phone name="iy">
+		<description word_example="дым" pron_example="d_iy_m" ipa="ɨ"/>
+	</phone>
+	<phone name="i">
+		<description word_example="тигр" pron_example="tj_i_g_r" ipa="i"/>
+	</phone>
+	<phone name="aj">
+		<description word_example="вода" pron_example="v_aj_d_a" ipa="ɐ"/>
+	</phone>
+	<phone name="@">
+		<description word_example="палка" pron_example="p_a_l_k_@" ipa="ə"/>
+	</phone>
+	<phone name="ie">
+		<description word_example="леса" pron_example="l_ie_s_a" ipa="e"/>
+	</phone>
+	<phone name="iye">
+		<description word_example="цена" pron_example="ts_iye_n_a" ipa="ɪ̈"/>
+	</phone>
+	<phone name="ij">
+		<description word_example="демократ" pron_example="dj_ij_m_aj_k_r_a_t" ipa="ɪ"/>
+	</phone>
+	<phone name="j">
+		<description word_example="яма" pron_example="j_a_m_@" ipa="j"/>
+	</phone>
+	<phone name="b">
+		<description word_example="бар" pron_example="b_a_r" ipa="b"/>
+	</phone>
+	<phone name="bj">
+		<description word_example="белка" pron_example="bj_ae_l_k_@" ipa="bʲ"/>
+	</phone>
+	<phone name="v">
+		<description word_example="диван" pron_example="d_i_v_a_n" ipa="v"/>
+	</phone>
+	<phone name="vj">
+		<description word_example="вьюн" pron_example="vj_j_u_n" ipa="vʲ"/>
+	</phone>
+	<phone name="g">
+		<description word_example="загар" pron_example="z_aj_g_a_r" ipa="ɡ"/>
+	</phone>
+	<phone name="gj">
+		<description word_example="гимн" pron_example="gj_i_m_n" ipa="ɡʲ"/>
+	</phone>
+	<phone name="d">
+		<description word_example="дар" pron_example="d_a_r" ipa="d"/>
+	</phone>
+	<phone name="dj">
+		<description word_example="медь" pron_example="mj_e_dj" ipa="dʲ"/>
+	</phone>
+	<phone name="z">
+		<description word_example="зал" pron_example="z_a_l" ipa="z"/>
+	</phone>
+	<phone name="zj">
+		<description word_example="бязь" pron_example="bj_a_zj" ipa="zʲ"/>
+	</phone>
+	<phone name="k">
+		<description word_example="кот" pron_example="k_o_t" ipa="k"/>
+	</phone>
+	<phone name="kj">
+		<description word_example="факир" pron_example="f_a_kj_i_r" ipa="kʲ"/>
+  </phone>
+	<phone name="l">
+		<description word_example="лоб" pron_example="l_o_p" ipa="l"/>
+	</phone>
+	<phone name="lj">
+		<description word_example="моль" pron_example="m_o_lj" ipa="lʲ"/>
+	</phone>
+	<phone name="m">
+		<description word_example="мал" pron_example="m_a_l" ipa="m"/>
+	</phone>
+	<phone name="mj">
+		<description word_example="мясо" pron_example="mj_a_s_@" ipa="mʲ"/>
+	</phone>
+	<phone name="n">
+		<description word_example="нам" pron_example="n_a_m" ipa="n"/>
+	</phone>
+	<phone name="nj">
+		<description word_example="пень" pron_example="pj_ae_nj" ipa="nʲ"/>
+	</phone>
+	<phone name="p">
+		<description word_example="пар" pron_example="p_a_r" ipa="p"/>
+	</phone>
+	<phone name="pj">
+		<description word_example="дробь" pron_example="d_r_o_pj" ipa="pʲ"/>
+	</phone>
+	<phone name="r">
+		<description word_example="рок" pron_example="r_o_k" ipa="r"/>
+	</phone>
+	<phone name="rj">
+		<description word_example="дверь" pron_example="d_vj_ae_rj" ipa="rʲ"/>
+	</phone>
+	<phone name="s">
+		<description word_example="сам" pron_example="s_a_m" ipa="s"/>
+	</phone>
+	<phone name="sj">
+		<description word_example="спесь" pron_example="s_pj_ae_sj" ipa="sʲ"/>
+	</phone>
+	<phone name="t">
+		<description word_example="там" pron_example="t_a_m" ipa="t"/>
+	</phone>
+	<phone name="tj">
+		<description word_example="брать" pron_example="b_r_a_tj" ipa="tʲ"/>
+	</phone>
+	<phone name="f">
+		<description word_example="фон" pron_example="f_o_n" ipa="f"/>
+	</phone>
+	<phone name="fj">
+		<description word_example="явь" pron_example="j_a_fj" ipa="fʲ"/>
+	</phone>
+	<phone name="x">
+		<description word_example="хам" pron_example="x_a_m" ipa="x"/>
+	</phone>
+	<phone name="xj">
+		<description word_example="хилый" pron_example="xj_i_l_iy_jj" ipa="xʲ"/>
+	</phone>
+	<phone name="ts">
+		<description word_example="царь" pron_example="ts_a_rj" ipa="ʦ"/>
+	</phone>
+	<phone name="zh">
+		<description word_example="жар" pron_example="zh_a_r" ipa="ʐ"/>
+	</phone>
+	<phone name="zhj">
+		<description word_example="жужжит" pron_example="zh_u_zhj_iy_t" ipa="ʑ"/>
+	</phone>
+	<phone name="ch">
+		<description word_example="чур" pron_example="ch_u_r" ipa="ʨ"/>
+	</phone>
+	<phone name="sh">
+		<description word_example="шар" pron_example="sh_a_r" ipa="ʂ"/>
+	</phone>
+	<phone name="shj">
+		<description word_example="щука" pron_example="shj_u_k_@" ipa="ɕ"/>
+	</phone>
+	<!--  archiphones must be listed last-->
+	<phone name="A">
+		<description word_example="" pron_example="word_final_reduced_ja" ipa="r"/>
+	</phone>
+	<phone name="_">
+		<description word_example="" pron_example="" ipa=""/>
+	</phone>
+</phonesetup>
