@@ -61,6 +61,7 @@ def main():
     modules.append(txp.modules.Pauses(args))
     modules.append(txp.modules.Phrasing(args))
     modules.append(txp.modules.Pronounce(args))
+    modules.append(txp.modules.PostLex(args))
     modules.append(txp.modules.Syllabify(args))
     if args.get('cex'):
         modules.append(txp.modules.ContextExtraction(args))
