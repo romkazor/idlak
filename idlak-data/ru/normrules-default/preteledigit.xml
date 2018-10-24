@@ -1,0 +1,363 @@
+<nrules>
+
+  <rules>
+
+    <rule name="trillionspace_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~trillions. We only process the first number, the rest will be handled
+      by other rules.
+      Exactly 1 trillion only:
+      1 000 000 000 000 -&gt; триллион
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal3" src="lcase" offset="3"/>
+        <rgx id="m4" name="number3" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <cpy val="биллион" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="trillionspace_5_20">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      5 000 000 000 000 -&gt; пять триллионов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal3" src="lcase" offset="3"/>
+        <rgx id="m4" name="number3" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="биллионов" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="trillionspace_ends_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      Trillions ending 1, except 11 are singluar
+      21 000 000 000 000 -&gt; двадцать один триллион
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal3" src="lcase" offset="3"/>
+        <rgx id="m4" name="number3" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="биллион" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="trillionspace_2_4">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      2 000 000 000 000 -&gt; два триллиона
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal3" src="lcase" offset="3"/>
+        <rgx id="m4" name="number3" src="lcase" offset="4"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="биллиона" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billion_zeros">
+      <comment>
+      This rule may look odd but is required to throw away the zeros in a larger number with
+      zero billions, due to the cascading digit rules.
+      Example: "5 000 500 500 000"
+    </comment>
+      <match>
+        <rgx id="m0" name="3_zeros" src="lcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="number3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billionspace_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      1 000 000 000 -&gt; миллиард
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="number3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <cpy val="миллиард" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billionspace_5_20">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      5 000 000 000 -&gt; пять миллиардов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="number3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллиардов" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billionspace_ends_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      51 000 000 000 -&gt; пятьдесят один миллиард
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="number3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллиард" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billionspace_2_4">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      2 000 000 000 -&gt; два миллиарда
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal3" src="lcase" offset="2"/>
+        <rgx id="m3" name="number3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллиарда" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="million_zeros">
+      <comment>
+      This rule may look odd but is required to throw away the zeros in a larger number with
+      zero millions, due to the cascading digit rules.
+      Example: "5 000 500 000"
+    </comment>
+      <match>
+        <rgx id="m0" name="3_zeros" src="lcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="number3" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millionspace_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      1 000 000 -&gt; миллион
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="number3" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="миллион" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millionspace_5_20">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      5 000 000 -&gt; пять миллионов
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="number3" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллионов" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millionspace_ends_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      21 000 000 -&gt; двадцать один миллион
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="number3" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллион" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millionspace_2_4">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~millions. We only process the first number, the rest will be handled
+      by other rules.
+      2 000 000 -&gt; два миллиона
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal3" src="lcase" offset="1"/>
+        <rgx id="m2" name="number3" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <cpy val="миллиона" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="thousand_zeros">
+      <comment>
+      This rule may look odd but is required to throw away the zeros in a larger number with
+      zero thousands, due to the cascading digit rules.
+      Example: "5 000 000"
+    </comment>
+      <match>
+        <rgx id="m0" name="3_zeros" src="lcase" offset="0"/>
+        <rgx id="m1" name="number3" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="1" case="digitlkp"/>
+        <lkp name="signs" from="m1" grp="3" offset="1"/>
+        <fnc name="numbers_ru" from="m1" grp="4" offset="1" case="digitlkp"/>
+        <fnc name="asdigits" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="thousandspace_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~thousands.
+      1000 -&gt; тысяча
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="number3" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="тысяча" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="1" case="digitlkp"/>
+        <lkp name="signs" from="m1" grp="3" offset="1"/>
+        <fnc name="numbers_ru" from="m1" grp="4" offset="1" case="digitlkp"/>
+        <fnc name="asdigits" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="thousandspace_5_20">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~thousands.
+      "5 000" -&gt; пять тысяч
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="mcase" offset="0"/>
+        <rgx id="m1" name="number3" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp"/>
+        <cpy val="тысяч" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="1" case="digitlkp"/>
+        <lkp name="signs" from="m1" grp="3" offset="1"/>
+        <fnc name="numbers_ru" from="m1" grp="4" offset="1" case="digitlkp"/>
+        <fnc name="asdigits" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="thousandspace_ends_1">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~thousands.
+      21 000 -&gt; двадцать одна тысяча
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="mcase" offset="0"/>
+        <rgx id="m1" name="number3" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp"/>
+        <cpy val="тысяча" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="1" case="digitlkp"/>
+        <lkp name="signs" from="m1" grp="3" offset="1"/>
+        <fnc name="numbers_ru" from="m1" grp="4" offset="1" case="digitlkp"/>
+        <fnc name="asdigits" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="thousandspace_2_4">
+      <comment>
+      Handles number with a space designating the boundary
+      between the ~thousands.
+      4000 -&gt; четыре тысячи
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="mcase" offset="0"/>
+        <rgx id="m1" name="number3" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0" case="digitlkp"/>
+        <cpy val="тысячи" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="1" case="digitlkp"/>
+        <lkp name="signs" from="m1" grp="3" offset="1"/>
+        <fnc name="numbers_ru" from="m1" grp="4" offset="1" case="digitlkp"/>
+        <fnc name="asdigits" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

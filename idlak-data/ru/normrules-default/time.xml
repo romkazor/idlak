@@ -1,0 +1,400 @@
+<nrules>
+
+  <rules>
+
+    <rule name="time_midnight_genitive">
+      <comment>
+      Example: После 00:00
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_midnight" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="полночи" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="time_midnight_dative">
+      <comment>
+      Example: к 00:00
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_midnight" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="полуночи" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="time_midnight">
+      <comment>
+      Example: 00:00
+    </comment>
+      <match>
+        <rgx id="m0" name="time_midnight" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="полночь" offset="0"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_1_gen">
+      <comment>
+      Example: около 1:00 -&gt; около часу
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_gen">
+      <comment>
+      Example: около 2:00 -&gt; около двух часов
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_1_dat">
+      <comment>
+      Example: к 1:00 - к часу
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_dat">
+      <comment>
+      Example: к 2:00 - к двум часам
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_dative"/>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh">
+      <comment>
+      Example: 1:00 (this rule also covers accusative as well)
+    </comment>
+      <match>
+        <rgx id="m0" name="time_hh" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="hours" from="m0" grp="0" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_gen_1">
+      <comment>
+      Example: около 1:01
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="minutes_genitive" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_gen_2_4">
+      <comment>
+      Example: около 1:02 -&gt; около одного часа двух минут
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="minutes_genitive" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_gen_5_20">
+      <comment>
+      Example: около 1:25 -&gt; около одного часа двадцати пяти минут
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="minutes_genitive" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_acc_1">
+      <comment>
+      Example: за 1:01 -&gt; за один час одну минуту
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_time" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp"/>
+        <lkp name="hours_accusative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_accusative_fem"/>
+        <lkp name="minutes_accusative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_acc_2_4">
+      <comment>
+      Example: за 1:02 -&gt; за один час две минуты
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_time" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp"/>
+        <lkp name="hours_accusative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_accusative_fem"/>
+        <lkp name="minutes_accusative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_acc_5_20">
+      <comment>
+      Example: за 1:25 -&gt; за один час двадцать пять минут
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_time" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp"/>
+        <lkp name="hours_accusative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_accusative_fem"/>
+        <lkp name="minutes_accusative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_dat_1">
+      <comment>
+      Example: к 1:01 -&gt; к одному часу одной минуте
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_dative"/>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_dative_fem"/>
+        <lkp name="minutes_dative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_dat_2_4">
+      <comment>
+      Example: к 1:04 -&gt; к одному часу четырём минутам
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_dative"/>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_dative_fem"/>
+        <lkp name="minutes_dative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_dat_5_20">
+      <comment>
+      Example: к 1:25 -&gt; к одному часу двадцати пяти минутам
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_dative"/>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_dative_fem"/>
+        <lkp name="minutes_dative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_1">
+      <comment>
+      Example: 1:01 -&gt; один час одна минута
+    </comment>
+      <match>
+        <rgx id="m0" name="time_hh_mm_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="hours" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <lkp name="minutes" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_2_4">
+      <comment>
+      Example: 1:02 -&gt; один час две минуты
+    </comment>
+      <match>
+        <rgx id="m0" name="time_hh_mm_2_4" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="hours" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <lkp name="minutes" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="time_hh_mm_5_20">
+      <comment>
+      Example: 1:24
+    </comment>
+      <match>
+        <rgx id="m0" name="time_hh_mm_5_20" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="hours" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <lkp name="minutes" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="duration_hh_mm_ss_gen">
+      <comment>
+      Example: около 1:24:20 -&gt; около одного часа двадцати четырёх минут и двадцати секунд
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_ss" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_genitive"/>
+        <lkp name="hours_genitive" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="minutes_genitive" from="m1" grp="1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="digitlkp_genitive_fem"/>
+        <lkp name="seconds_genitive" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="duration_hh_mm_ss_acc">
+      <comment>
+      Example: за 1:24:20 -&gt; за один час двадцать четыре минуты и двадцать секунд
+	AB: Does not work! Was a typo, I fixed
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc_time" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_ss" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0"/>
+        <lkp name="hours_accusative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_accusative_fem"/>
+        <lkp name="minutes_accusative" from="m1" grp="1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="digitlkp_accusative_fem"/>
+        <lkp name="seconds_accusative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="duration_hh_mm_ss_dat">
+      <comment>
+      Example: к 1:24:20 -&gt; одному часу двадцати четырём минутам и двадцати секундам
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dat" src="lcase" offset="-1"/>
+        <rgx id="m1" name="time_hh_mm_ss" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_dative"/>
+        <lkp name="hours_dative" from="m1" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_dative_fem"/>
+        <lkp name="minutes_dative" from="m1" grp="1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="2" offset="0" case="digitlkp_dative_fem"/>
+        <lkp name="seconds_dative" from="m1" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="duration_hh_mm_ss">
+      <comment>
+      Example: 1:24:20 -&gt; один час двадцать четыре минуты и двадцать секунд
+	AB: Does not work! Was a typo, I fixed
+    </comment>
+      <match>
+        <rgx id="m0" name="time_hh_mm_ss" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="hours" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <lkp name="minutes" from="m0" grp="1" offset="0"/>
+        <cpy val="и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="2" offset="0" case="digitlkp_fem"/>
+        <lkp name="seconds" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="in_minutes_prepositive">
+      <comment>
+      Put this  rule here to catch it before digit rules are called
+      This is prepositive fem, but the same as genitive fem
+      на 84-й минуте (in the 84th minute)
+      на 84-й минуте -&gt; на восемьдесят четвёртой минуте
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_acc" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="masc_sing_nom" src="lcase" offset="2"/>
+        <rgx id="m4" name="minutye" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="ordinal_gen_fem"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

@@ -1,0 +1,800 @@
+<nrules>
+
+  <rules>
+
+    <rule name="apartment_2tokens">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="apartment" src="lcase" offset="-1"/>
+        <rgx id="m1" name="apartment_3digits" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="квартира" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="apartment">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="apartment_number" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="квартира" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="house_2tokens">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="house" src="lcase" offset="-1"/>
+        <rgx id="m1" name="house_3digits" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="дом" offset="-1"/>
+        <fnc name="numbers_ru" from="m1" grp="0" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="house">
+      <comment>
+    </comment>
+      <match>
+        <rgx id="m0" name="house_number" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="дом" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="billions_comma_with_point">
+      <comment>
+      1.132.102.234,45 -&gt; миллиард сто тридцать два миллиона сто две тысячи двести тридцать четыре запятая четыре пять
+    </comment>
+      <match>
+        <rgx id="m0" name="billionscomma_withpoint" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="billions_comma">
+      <comment>
+      1.132.102.234 -&gt; миллиард сто тридцать два миллиона сто две тысячи двести тридцать четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="billionscomma_no_point" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millions_comma_with_point">
+      <comment>
+      2.102.234,09 -&gt; два миллиона сто две тысячи двести тридцать четыре запятая ноль девять
+    </comment>
+      <match>
+        <rgx id="m0" name="millionscomma_withpoint" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="millions_comma">
+      <comment>
+      2.102.234 -&gt; два миллиона сто две тысячи двести тридцать четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="millionscomma_no_point" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="thousands_comma_withzero">
+      <comment>
+      102.234,99 -&gt; сто две тысячи двести тридцать четыре запятая девять девять
+    </comment>
+      <match>
+        <rgx id="m0" name="thousandscomma_withpoint" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <cpy val="запятая" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="2" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="thousands_comma">
+      <comment>
+      102.234 -&gt; сто две тысячи двести тридцать четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="thousandscomma" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="zero_card">
+      <comment/>
+      <match>
+        <rgx id="m0" name="zero_card" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_thousandths_1">
+      <comment>
+      Read float as wholes and hundredths
+      1,001 -&gt; одна целая и одна тысячная
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_thousandths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячная" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_thousandths">
+      <comment>
+      Read float as wholes and hundredths
+      1,123 -&gt; одна целая и сто двадцать три тысячных
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_thousandths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячных" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_point_thousandths_1">
+      <comment>
+      Read float as wholes and hundredths
+      2,001 -&gt; две целых и одна тысячная
+    </comment>
+      <match>
+        <rgx id="m0" name="float_point_thousandths_1" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячная" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_point_thousandths">
+      <comment>
+      Read float as wholes and hundredths
+      2,345 -&gt; две целых и триста сорок пять тысячных
+    </comment>
+      <match>
+        <rgx id="m0" name="float_point_thousandths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячных" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_hundredths_1">
+      <comment>
+      Read float as wholes and hundredths
+      1,21 -&gt; одна целая и двадцать одна сотая
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_hundredths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотая" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_hundredths_gt1">
+      <comment>
+      Read float as wholes and hundredths
+      1,22 -&gt; одна целая и двадцать две сотых
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_gt1_hundredths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотых" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_hundredths_1">
+      <comment>
+      Read float as wholes and hundredths
+      12,21 -&gt; двенадцать целых и двадцать одна сотая
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_1_hundredths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотая" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_hundredths_gt1">
+      <comment>
+      Read float as wholes and hundredths
+      12,22 -&gt; двенадцать целых и двадцать две сотых
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_gt1_hundredths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотых" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_gt1_gen">
+      <comment>
+      Read float as wholes and tenths
+      больше 2,2 % -&gt; больше двух целых и двух десятых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="float_gt1_point_gt1_tenths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m1" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="digitlkp_genitive_fem"/>
+        <cpy val="десятых" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_gt1">
+      <comment>
+      Read float as wholes and tenths
+      2,2 -&gt; две целые и две десятые
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_gt1_tenths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятых" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_1">
+      <comment>
+      Read float as wholes and tenths
+      2,1 -&gt; две целых и одна десятая
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_1_tenths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятая" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_tenths_gt1">
+      <comment>
+      Read float as wholes and tenths
+      1,2 -&gt; одна целая и две десятых
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_gt1_tenths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятых" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_tenths_1">
+      <comment>
+      Read float as wholes and tenths
+      1,1 -&gt; одна целая и одна десятая
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_tenths" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятая" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_asnumber">
+      <comment>
+      Read float with numbers after point as number
+      10,44 -&gt; десять запятая сорок четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="float_asnumber" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float">
+      <comment>
+      Read float with numbers after point as digits
+      10,04 -&gt; десять запятая ноль четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="float" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="int_letni_aged">
+      <comment>
+      This rule catches '50-year-old man', etc., because the digits need to be genitive
+      E.g. '58-летней женщины' -&gt; пятидесяти восьми летней женщины
+    </comment>
+      <match>
+        <rgx id="m0" name="max_3_digits" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="letni_catch_all" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_masc_sing_nominative">
+      <comment>
+      1-й -&gt; первый
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="masc_sing_nom" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_nomin_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_masc_sing_genitive">
+      <comment>
+      1-го -&gt; первого
+      This rule also covers ord_masc_sing_acc, and ord_neutr_sing_gen
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="masc_sing_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_gen_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_masc_sing_dative">
+      <comment>
+      23-му -&gt; двадцать третьему
+      This rule also covers ord_neutr_sing_dat
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="masc_sing_dat" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_dat_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_masc_sing_instr">
+      <comment>
+      4-ым -&gt; четвёртым
+      This rule also covers ord_neutr_sing_instr and ord_plural_dat
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="masc_sing_instr" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_instr_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_masc_sing_prep">
+      <comment>
+      87-ом -&gt; восемьдесят седьмом
+      This rule also covers ord_neutr_sing_prep
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="masc_sing_prep" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_prep_masc"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_fem_sing_nominative">
+      <comment>
+      1-я, or 2-ая -&gt; первая, или вторая
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="fem_sing_nom" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_nomin_fem"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_fem_sing_genitive">
+      <comment>
+      4-ой -&gt; четвёртой
+      GJL - Also covers ord_fem_sing_dative, ord_fem_sing_inst, ord_fem_sing_prep
+      Need to add another test here to differentiate between this rule and ord_masc_sing_nominative
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="fem_sing_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_gen_fem"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_fem_sing_accusitive">
+      <comment>
+      4-ю -&gt; четвёртую
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="fem_sing_acc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" grp="0" offset="0" case="ordinal_acc_fem"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_neutr_sing_nominative">
+      <comment>
+      1-е -&gt; первое
+      This rule also covers ord_neutr_sing_accusative
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="neutr_sing_nom" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_nomin_neutr"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_plural_nominative">
+      <comment>
+      1-ые or 2-е or 3-и or 289-ые
+      GJL - A difficult rule to test, as some cases will match other rules with the same endings
+      This rule also applies for ord_plural_accusative
+      289-ые -&gt; двухсот восемьдесят девятые
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="plural_nom" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_nomin_plural"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_plural_genitive">
+      <comment>
+      4-ых or 5-х
+      GJL - This rule also applies for ord_plural_prep
+      4-ых -&gt; четвёртых
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="plural_gen" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_gen_plural"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="ord_plural_instr">
+      <comment>
+      4-ми -&gt; четвёртыми
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="plural_instr" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="number" from="m0" offset="0" case="ordinal_instr_plural"/>
+        <cpy val="" offset="1"/>
+        <cpy val="" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_digit">
+      <comment/>
+      <match>
+        <rgx id="m0" name="prep_genitive_full" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_dat">
+      <comment/>
+      <match>
+        <rgx id="m0" name="prep_dative" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_dative"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_nom_fem_no_prep">
+      <comment>
+      Covers nominative feminine
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="fem_nominative_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_nom_neut_no_prep">
+      <comment>
+      Covers nominative_neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="neut_nominative_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_neutr"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_masc_no_prep">
+      <comment>
+      Also covers genitive_neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="masc_neut_genitive_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_dat_masc_no_prep">
+      <comment>
+      Also covers dative_neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="masc_neut_dative_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_dative"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_inst_masc_no_prep">
+      <comment>
+      Also covers instr_neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="masc_neut_instr_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_instrumentative"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_inst_fem_no_prep">
+      <comment>
+      inst_fem
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="fem_instr_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_instrumentative" gender="fem"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_prep_masc_no_prep">
+      <comment>
+      Also covers prep_neuter
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="masc_neut_prepositional_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="prep"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_fem_no_prep">
+      <comment>
+      Covers gen_fem, dat_fem, prep_fem
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="fem_genitive_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive" gender="fem"/>
+      </replace>
+    </rule>
+
+    <rule name="anniversary">
+      <comment/>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m2" name="letija" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car_gen_test">
+      <comment>
+      более 20 лет -&gt; более двадцати лет
+      более needs the number to be genitive
+	AB - does not work!
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+      </replace>
+    </rule>
+
+    <rule name="roman_asarabic_genitive_century">
+      <comment>
+      С 20 века -&gt; с двадцатого века
+	copied from "roman_genitive_century" further below
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m1" name="century" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0" case="year_ordinal_gen"/>
+      </replace>
+    </rule>
+
+    <rule name="basic_car">
+      <comment/>
+      <match>
+        <rgx id="m0" name="cardinal" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

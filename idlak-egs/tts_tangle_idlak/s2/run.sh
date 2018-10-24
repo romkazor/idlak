@@ -14,6 +14,7 @@ endstage=7
 nj=4 # max 9
 lng="ru"
 acc="ru"
+runnorm=0
 # Speaker ID
 spks="abr" # Must be a speaker from the Idlak Resources
 network_type=dnn # dnn or lstm
@@ -25,7 +26,7 @@ nodev=50 # the number of samples used for calculating loss
 . parse_options.sh || exit 1;
 
 # Input directories
-tpdb=$KALDI_ROOT/idlak-data/$lng/$acc
+tpdb=$KALDI_ROOT/idlak-data/
 testdatadir=$KALDI_ROOT/idlak-data/$lng/testdata
 
 # Working directories
@@ -275,10 +276,16 @@ if [ $stage -le 2 ]; then
     # We are using the idlak front-end for processing the text
     for step in train dev full; do
         # Normalise text and generate phoneme information
-        idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
+        # idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
+        if [ $runnorm = 1 ]; then
+            $KALDI_ROOT/idlak-misc/pyidlaktxp/pyidlaktxp.py --verbose 3 --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
+        else
+            idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
+        fi
         # Generate full labels
         #idlakcex --pretty --cex-arch=default --tpdb=$tpdb data/$step/text_norm.xml data/$step/text_full.xml
     done
+
     # Generate language models for alignment
     mkdir -p $dict
     # Create dictionary and text files
@@ -670,6 +677,9 @@ case $lng in
         ;;
     ru)
         sampletxt='Кирпич ни с того ни с сего никому и никогда на голову не свалится.'
+        ;;
+    ga)
+        sampletxt='Níl aon tinteán mar do thinteán féin'
         ;;
     *)
         for f in $testdatadir/*.xml ; do
