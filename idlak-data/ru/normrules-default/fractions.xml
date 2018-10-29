@@ -1,0 +1,81 @@
+<nrules>
+
+  <rules>
+
+    <rule name="bookmakings">
+      <comment>
+      Small fractions of format x/1 are for bookmaking.
+	2:1 -&gt; два к одному
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinalr" src="lcase" offset="0"/>
+        <rgx id="m1" name="slash" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal_1" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="к" offset="1"/>
+        <cpy val="одному" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="bookmakings_single">
+      <comment>
+      Small fractions of format x/1 are for bookmaking.
+    </comment>
+      <match>
+        <rgx id="m0" name="bookmaking_colon" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="к одному" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="ratios">
+      <comment>
+      Will work for [1-9]:[1-9].
+      2:5 -&gt; два к пяти
+    </comment>
+      <match>
+        <rgx id="m0" name="nr_colon_nr" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <cpy val="к" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="2" offset="0" case="digitlkp_dative"/>
+      </replace>
+    </rule>
+
+    <rule name="fractions_small">
+      <comment>
+      Read small fractions of format "x/[2-4]" such as 1/3. Fairly easy to spot since punctuations
+      marks have their own token.
+      3/4 -&gt; три четвёртых
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinal_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="slash" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal_2_4" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m2" offset="2" case="ordinal_fraction"/>
+      </replace>
+    </rule>
+
+    <rule name="fractions">
+      <comment>
+      5/8 -&gt; пять на восемь
+    </comment>
+      <match>
+        <rgx id="m0" name="cardinalr" src="lcase" offset="0"/>
+        <rgx id="m1" name="slash" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinalr" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <cpy val="на" offset="1"/>
+        <fnc name="numbers_ru" from="m2" offset="2"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

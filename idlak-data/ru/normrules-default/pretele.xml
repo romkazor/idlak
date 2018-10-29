@@ -1,0 +1,303 @@
+<nrules>
+
+  <rules>
+
+    <rule name="telephone_abbreviations">
+      <comment>
+      Example: тел 0131 1234567
+      If тел is followed by digits, assume it should be expanded to телефон
+    </comment>
+      <match>
+        <rgx id="m0" name="tele_abbreviations" src="lcase" offset="-1"/>
+        <rgx id="m1" name="tele_digits" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <lkp name="tele_abbreviations" from="m0" offset="-1"/>
+      </replace>
+    </rule>
+
+    <rule name="telephon_mobile">
+      <comment>
+      Example: "8 916 717 34 34"
+	AB: "8 916 717 34 34" -&gt; восемь девятьсот шестнадцать семьсот семнадцать тридцать четыре тридцать четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="eight" src="lcase" offset="-2"/>
+        <rgx id="m1" name="cardinal_3" src="lcase" offset="-1"/>
+        <rgx id="m2" name="cardinal_3" src="lcase" offset="0"/>
+        <rgx id="m3" name="cardinal_2" src="lcase" offset="1"/>
+        <rgx id="m4" name="cardinal_2" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="-2">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="-1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m4" offset="2">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_international1">
+      <comment>
+      Example: "+7 495 717 34 34"
+	AB: "8 916 717 34 34" -&gt; плюс семь  четыреста девяносто пять семьсот семнадцать тридцать четыре тридцать четыре
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-2"/>
+        <rgx id="m1" name="int_code" src="lcase" offset="-1"/>
+        <rgx id="m2" name="area_code" src="lcase" offset="0"/>
+        <rgx id="m3" name="cardinal_3" src="lcase" offset="1"/>
+        <rgx id="m4" name="cardinal_2" src="lcase" offset="2"/>
+        <rgx id="m5" name="cardinal_2" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="aschars" from="m0" offset="-2"/>
+        <fnc name="asdigits" from="m1" offset="-1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m4" offset="2">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m5" offset="3">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_international2">
+      <comment>
+      Example: "+44 131 551 3335"
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-2"/>
+        <rgx id="m1" name="int_code" src="lcase" offset="-1"/>
+        <rgx id="m2" name="cardinal_3_5" src="lcase" offset="0"/>
+        <rgx id="m3" name="cardinal_3_5" src="lcase" offset="1"/>
+        <rgx id="m4" name="cardinal_4" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-2"/>
+        <fnc name="asdigits" from="m1" offset="-1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m4" offset="2">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_international3">
+      <comment>
+      Example: "+44 131 5513335"
+    </comment>
+      <match>
+        <rgx id="m0" name="plusminus" src="lcase" offset="-2"/>
+        <rgx id="m1" name="int_code" src="lcase" offset="-1"/>
+        <rgx id="m2" name="cardinal_3_5" src="lcase" offset="0"/>
+        <rgx id="m3" name="cardinal_4plus" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" offset="-2"/>
+        <fnc name="asdigits" from="m1" offset="-1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="1">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_4groups">
+      <comment>
+      Example: "495 917 34 16"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal_3" src="lcase" offset="0"/>
+        <rgx id="m2" name="cardinal_2" src="lcase" offset="1"/>
+        <rgx id="m3" name="cardinal_2" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" offset="-1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="2">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_4groups_brackets">
+      <comment>
+      Example: "(495) 936 17 34"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code_brackets" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal_3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal_2" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal_2" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" grp="0" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="2">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m3" offset="3">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_3groups_brackets">
+      <comment>
+      Example: "(495) 936 1734"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code_brackets" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal_3" src="lcase" offset="1"/>
+        <rgx id="m2" name="cardinal_4" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" grp="0" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="1">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m2" offset="2">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_3_3hgroups">
+      <comment>
+      Example: "(499) 916-13-65"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code_brackets" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="1"/>
+        <rgx id="m2" name="is_hyphen" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal" src="lcase" offset="3"/>
+        <rgx id="m4" name="is_hyphen" src="lcase" offset="4"/>
+        <rgx id="m5" name="cardinal" src="lcase" offset="5"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="1">
+          <break type="2"/>
+        </fnc>
+        <cpy val="" offset="2"/>
+        <fnc name="asdigits" from="m3" offset="3">
+          <break type="2"/>
+        </fnc>
+        <cpy val="" offset="4"/>
+        <fnc name="asdigits" from="m5" offset="5">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_2_groups_hyphen">
+      <comment>
+      Example: "(35222) 55-512"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code_brackets" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal_2" src="lcase" offset="1"/>
+        <rgx id="m2" name="is_hyphen" src="lcase" offset="2"/>
+        <rgx id="m3" name="cardinal_3" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="1">
+          <break type="2"/>
+        </fnc>
+        <cpy val="" offset="2"/>
+        <fnc name="asdigits" from="m3" offset="3">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_2_groups">
+      <comment>
+      Example: "(0822) 558436"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code_brackets" src="mcase" offset="0"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" offset="0">
+          <break type="2"/>
+        </fnc>
+        <fnc name="asdigits" from="m1" offset="1">
+          <break type="2"/>
+        </fnc>
+      </replace>
+    </rule>
+
+    <rule name="telephon_3_3groups">
+      <comment>
+      Example: "812 234 5533"
+    </comment>
+      <match>
+        <rgx id="m0" name="area_code" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal_3" src="lcase" offset="0"/>
+        <rgx id="m2" name="cardinal_4" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="asdigits" from="m0" offset="-1"/>
+        <cpy offset="0">
+          <break type="3"/>
+        </cpy>
+        <fnc name="asdigits" from="m1" offset="0"/>
+        <cpy offset="1">
+          <break type="3"/>
+        </cpy>
+        <fnc name="asdigits" from="m2" offset="1"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

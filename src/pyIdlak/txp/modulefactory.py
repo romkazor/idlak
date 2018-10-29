@@ -74,3 +74,4 @@ for _i in range(pyIdlak_txp.Empty, pyIdlak_txp.NumMods+1):
 # Add Python modules here
 
 from .normaliser.normaliser import Normalise
+from .postlex.postlex import PostLex

@@ -1,0 +1,612 @@
+<nrules>
+
+  <rules>
+
+    <rule name="km_per_hour">
+      <comment>
+      Example: км/ч -&gt; километров в час
+    </comment>
+      <match>
+        <rgx id="m0" name="of_kilometers" src="lcase" offset="0"/>
+        <rgx id="m1" name="slash" src="lcase" offset="1"/>
+        <rgx id="m2" name="hour" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="километров в" offset="0"/>
+        <cpy val="" offset="1"/>
+        <cpy val="час" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="m_per_second">
+      <comment>
+      Example: м/с -&gt; метров в секунду
+	DOES NOT WORK YET
+    </comment>
+      <match>
+        <rgx id="m0" name="of_meters" src="lcase" offset="-1"/>
+        <rgx id="m1" name="slash" src="lcase" offset="0"/>
+        <rgx id="m2" name="minute" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <cpy val="метров в" offset="-1"/>
+        <cpy val="минуту" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_scale_pl_gen">
+      <comment>
+      Example: больше 5 млн тонн -&gt; больше пяти миллионов тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m2" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m3" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="measure_pl" from="m2" offset="1"/>
+        <lkp name="measure_pl" from="m3" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_scale_pl">
+      <comment>
+      Example: 5 млн тонн -&gt; пять миллионов тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_pl" from="m1" offset="1"/>
+        <lkp name="measure_pl" from="m2" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_scale_1">
+      <comment>
+      Example: 1 млн т -&gt; миллион тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="int_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <cpy val="" offset="0"/>
+        <lkp name="measure_1" from="m1" offset="1"/>
+        <lkp name="measure_pl" from="m2" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_scale_ends_1">
+      <comment>
+      Example: 101 млн т -&gt; сто один миллион тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="up_to_3digits_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_1" from="m1" offset="1"/>
+        <lkp name="measure_pl" from="m2" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_scale_2_4">
+      <comment>
+      Example: 2 млн т -&gt; два миллиона тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_2_4" from="m1" offset="1"/>
+        <lkp name="measure_pl" from="m2" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_prepositive">
+      <comment>
+      Example: в 300 километрах
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_nomin" src="lcase" offset="-1"/>
+        <rgx id="m1" name="cardinal" src="lcase" offset="0"/>
+        <rgx id="m2" name="prepos_ending" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_prepositive"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_pl_one_token">
+      <comment>
+      Example: 100км -&gt; сто километров
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl_measure" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="measure_pl" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_1_one_token">
+      <comment>
+      Example: 1км -&gt; один километр
+    </comment>
+      <match>
+        <rgx id="m0" name="int_ends_1_measure" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="measure_1" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_2_4">
+      <comment>
+      Example: 24км -&gt; двадцать четыре километра
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4_measure" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="0" offset="0"/>
+        <lkp name="measure_2_4" from="m0" grp="1" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_pl_genitive_range">
+      <comment>
+      Example: до 20-25% -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m2" name="hyphen" src="lcase" offset="1"/>
+        <rgx id="m3" name="int_pl" src="lcase" offset="2"/>
+        <rgx id="m4" name="measure_masc" src="lcase" offset="3"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+        <cpy val="" offset="1"/>
+        <fnc name="numbers_ru" from="m3" offset="2" case="digitlkp_genitive"/>
+        <lkp name="measure_pl" from="m4" offset="3"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_pl_dat">
+      <comment>
+      Example: судя по 17000 литров -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_dative" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_dative"/>
+        <lkp name="measure_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_pl_genitive">
+      <comment>
+      Example: около 100 км -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="measure_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_pl">
+      <comment>
+      Example: 100 км -&gt; сто километров
+    </comment>
+      <match>
+        <rgx id="m0" name="int_pl" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_1_genitive">
+      <comment>
+      Example: около 1 км -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_ends_1" src="lcase" offset="0"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="measure_2_4" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_1">
+      <comment>
+      Example: 1 км -&gt; один километр
+    </comment>
+      <match>
+        <rgx id="m0" name="int_ends_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_1" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_2_4_genitive">
+      <comment>
+      Example: около 24 км -&gt;
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m1" offset="0" case="digitlkp_genitive"/>
+        <lkp name="measure_pl" from="m2" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="int_measure_2_4">
+      <comment>
+      Example: 24 км -&gt; двадцать четыре километра
+    </comment>
+      <match>
+        <rgx id="m0" name="int_2_4" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" offset="0"/>
+        <lkp name="measure_2_4" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_measure_scale_one_token">
+      <comment>
+      Example: 6,3млн тонн
+      Covers singular and both plurals
+      6,3млн т -&gt; шесть запятая три миллионов тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="float_scale" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+        <lkp name="measure_pl" from="m0" grp="4" offset="0"/>
+        <lkp name="measure_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_measure_scale">
+      <comment>
+      Example: 6,3 млн тонн
+      Covers singular and both plurals
+      6,3 млн т -&gt; шесть запятая три миллионов тонн
+    </comment>
+      <match>
+        <rgx id="m0" name="float" src="lcase" offset="0"/>
+        <rgx id="m1" name="scale_abbrev" src="lcase" offset="1"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="2"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+        <lkp name="measure_pl" from="m1" offset="1"/>
+        <lkp name="measure_pl" from="m2" offset="2"/>
+      </replace>
+    </rule>
+
+    <rule name="float_measure_one_token">
+      <comment>
+      Example: 101,3м
+      Covers singular and both plurals
+    </comment>
+      <match>
+        <rgx id="m0" name="float_measure_masc" src="lcase" offset="0"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+        <lkp name="measure_pl" from="m0" grp="4" offset="0"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_thousandths_1">
+      <comment>
+      Read float as wholes and hundredths
+      1,001 % -&gt; одна целая и одна тысячная процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_thousandths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячная" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_thousandths">
+      <comment>
+      Read float as wholes and hundredths
+      1,123 % -&gt; одна целая и сто двадцать три тысячных процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_thousandths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячных" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_point_thousandths_1">
+      <comment>
+      Read float as wholes and hundredths
+      2,001 % -&gt; две целых и одна тысячная процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_point_thousandths_1" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячная" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_point_thousandths">
+      <comment>
+      Read float as wholes and hundredths
+      2,345 % -&gt; две целых и триста сорок пять тысячных процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_point_thousandths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="тысячных" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_hundredths_1">
+      <comment>
+      Read float as wholes and hundredths
+      1,21 % -&gt; одна целая и двадцать одна сотая процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_hundredths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотая" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_hundredths_gt1">
+      <comment>
+      Read float as wholes and hundredths
+      1,22 % -&gt; одна целая и двадцать две сотых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_gt1_hundredths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотых" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_hundredths_1">
+      <comment>
+      Read float as wholes and hundredths
+      12,21 % -&gt; двенадцать целых и двадцать одна сотая процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_1_hundredths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотая" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_hundredths_gt1">
+      <comment>
+      Read float as wholes and hundredths
+      12,12 % -&gt; двенадцать целых и двенадцать сотых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_gt1_hundredths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="сотых" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_gt1_gen">
+      <comment>
+      Read float as wholes and tenths
+      больше 2,2 % -&gt; больше двух целых и двух десятых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="prep_gen" src="lcase" offset="-1"/>
+        <rgx id="m1" name="float_gt1_point_gt1_tenths" src="lcase" offset="0"/>
+        <rgx id="m2" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m1" grp="1" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="1" offset="0" case="digitlkp_genitive_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m1" grp="3" offset="0" case="digitlkp_genitive_fem"/>
+        <cpy val="десятых" offset="0"/>
+        <lkp name="measure_2_4" from="m2" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_gt1">
+      <comment>
+      Read float as wholes and tenths
+      2,2 % -&gt; две целых и две десятых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_gt1_tenths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятых" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="5" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_gt1_point_tenths_1">
+      <comment>
+      Read float as wholes and tenths
+      2,1 % -&gt; две целых и одна десятая процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_gt1_point_1_tenths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целых и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятая" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_tenths_gt1">
+      <comment>
+      Read float as wholes and tenths
+      1,2 % -&gt; одна целая и две десятых процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_gt1_tenths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятых" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_1_point_tenths_1">
+      <comment>
+      Read float as wholes and tenths
+      1,1 % -&gt; одна целая и одна десятая процента
+    </comment>
+      <match>
+        <rgx id="m0" name="float_1_point_1_tenths" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="lcase" offset="1"/>
+      </match>
+      <replace>
+        <lkp name="plusminus" from="m0" grp="0" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0" case="digitlkp_fem"/>
+        <cpy val="целая и" offset="0"/>
+        <fnc name="numbers_ru" from="m0" grp="3" offset="0" case="digitlkp_fem"/>
+        <cpy val="десятая" offset="0"/>
+        <lkp name="measure_2_4" from="m1" grp="0" offset="1"/>
+      </replace>
+    </rule>
+
+    <rule name="float_measure">
+      <comment>
+      Example: 101,3 м
+      Covers singular and both plurals
+    </comment>
+      <match>
+        <rgx id="m0" name="float" src="lcase" offset="0"/>
+        <rgx id="m1" name="measure_masc" src="mcase" offset="1"/>
+      </match>
+      <replace>
+        <fnc name="numbers_ru" from="m0" grp="1" offset="0"/>
+        <lkp name="symbols" from="m0" grp="2" offset="0"/>
+        <fnc name="asdigits" from="m0" grp="3" offset="0"/>
+        <lkp name="measure_pl" from="m1" offset="1"/>
+      </replace>
+    </rule>
+  </rules>
+</nrules>

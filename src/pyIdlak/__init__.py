@@ -16,6 +16,6 @@
 
 from . import txp
 from . import vocoder
+from . import gen
 
-__all__ = ['txp', 'vocoder']
-
+__all__ = ['txp', 'vocoder', 'gen']

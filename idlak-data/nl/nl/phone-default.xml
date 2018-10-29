@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phonesetup>
+  <phone name="p">
+		<description word_example="pak" pron_example="p_ah_k" ipa="p"/>
+	</phone>
+	<phone name="b">
+		<description word_example="bak" pron_example="b_ah_k" ipa="b"/>
+	</phone>
+	<phone name="t">
+		<description word_example="tak" pron_example="t_ah_k" ipa="t"/>
+	</phone>
+	<phone name="d">
+		<description word_example="dak" pron_example="d_ah_k" ipa="d"/>
+	</phone>
+	<phone name="k">
+		<description word_example="kap" pron_example="k_ah_p" ipa="k"/>
+	</phone>
+	<phone name="f">
+		<description word_example="fel" pron_example="f_eh_l" ipa="f"/>
+	</phone>
+	<phone name="v">
+		<description word_example="vel" pron_example="v_eh_l" ipa="v"/>
+	</phone>
+	<phone name="s">
+		<description word_example="sein" pron_example="s_ei_n" ipa="s"/>
+	</phone>
+	<phone name="z">
+		<description word_example="zijn" pron_example="z_ei_n" ipa="z"/>
+	</phone>
+	<phone name="x">
+		<description word_example="toch" pron_example="t_oh_x" ipa="x"/>
+	</phone>
+	<phone name="h">
+		<description word_example="hand" pron_example="h_ah_n_t" ipa="h"/>
+	</phone>
+	<phone name="sh">
+		<description word_example="show" pron_example="sh_ow" ipa="ʃ"/>
+	</phone>
+	<phone name="m">
+		<description word_example="met" pron_example="m_eh_t" ipa="m"/>
+	</phone>
+	<phone name="n">
+		<description word_example="net" pron_example="n_eh_t" ipa="n"/>
+	</phone>
+	<phone name="ng">
+		<description word_example="bang" pron_example="b_ah_ng" ipa="ŋ"/>
+	</phone>
+	<phone name="l">
+		<description word_example="land" pron_example="l_ah_n_t" ipa="l"/>
+	</phone>
+	<phone name="ll">
+		<description word_example="hal" pron_example="h_ah_ll" ipa="ɫ"/>
+	</phone>
+	<phone name="r">
+		<description word_example="rand" pron_example="r_ah_n_t" ipa="r"/>
+	</phone>
+	<phone name="rr">
+		<description word_example="tor" pron_example="t_oh_rr" ipa="ɹ"/>
+	</phone>
+	<phone name="w">
+		<description word_example="wit" pron_example="w_ih_t" ipa="ʋ"/>
+	</phone>
+	<phone name="j">
+		<description word_example="ja" pron_example="j_aa" ipa="j"/>
+	</phone>
+	<phone name="ih">
+		<description word_example="pit" pron_example="p_ih_t" ipa="ɪ"/>
+	</phone>
+	<phone name="eh">
+		<description word_example="pet" pron_example="p_eh_t" ipa="ɛ"/>
+	</phone>
+	<phone name="ah">
+		<description word_example="pat" pron_example="p_ah_t" ipa="ɑ"/>
+	</phone>
+	<phone name="oh">
+		<description word_example="pot" pron_example="p_oh_t" ipa="ɔ"/>
+	</phone>
+	<phone name="uh">
+		<description word_example="put" pron_example="p_uh_t" ipa="œ"/>
+	</phone>
+	<phone name="ax">
+		<description word_example="gemak" pron_example="x_ax_m_ah_k" ipa="ə"/>
+	</phone>
+	<phone name="iy">
+		<description word_example="vier" pron_example="v_iy_rr" ipa="i"/>
+	</phone>
+	<phone name="uu">
+		<description word_example="vuur" pron_example="v_uu_rr" ipa="y"/>
+	</phone>
+	<phone name="oe">
+		<description word_example="hoed" pron_example="h_oe_t" ipa="u"/>
+	</phone>
+	<phone name="aa">
+		<description word_example="naam" pron_example="n_aa_m" ipa="a"/>
+	</phone>
+	<phone name="ee">
+		<description word_example="beet" pron_example="b_ee_t" ipa="e"/>
+	</phone>
+	<phone name="eu">
+		<description word_example="neus" pron_example="n_eu_s" ipa="ø"/>
+	</phone>
+	<phone name="ow">
+		<description word_example="boot" pron_example="b_ow_t" ipa="o"/>
+	</phone>
+	<phone name="ei">
+		<description word_example="fijn" pron_example="f_ei_n" ipa="ɛi"/>
+	</phone>
+	<phone name="ui">
+		<description word_example="huis" pron_example="h_ui_s" ipa="ʌy"/>
+	</phone>
+	<phone name="au">
+		<description word_example="goud" pron_example="x_au_t" ipa="ɑu"/>
+	</phone>
+	<phone name="g">
+		<description word_example="goal" pron_example="g_ow_ll" ipa="ɡ"/>
+	</phone>
+	<phone name="gh">
+		<description word_example="goed" pron_example="gh_oe_t" ipa="ɣ"/>
+	</phone>
+	<phone name="zh">
+		<description word_example="ravage" pron_example="r_ax_v_aa_zh_ax" ipa="ʒ"/>
+	</phone>
+	<!--  Foreign phonemes:-->
+	<phone name="e@">
+    <!-- taken from romanian -->
+		<description word_example="deasă" pron_example="d_e@_a_s_@" ipa="32F" />
+	</phone>
+	<phone name="a@">
+    <!-- taken from romanian -->
+		<description word_example="fân" pron_example="f_a@_n" ipa="ɨ"/>
+	</phone>
+	<phone name="@@">
+    <!-- taken from scottish gaelic -->
+		<description word_example="goid" pron_example="g_@@1_dj" ipa="ɤ"/>
+	</phone>
+	<phone name="an">
+    <!-- taken from portuguese -->
+		<description word_example="banco" pron_example="b_an_k_u" ipa="ə"/>
+	</phone>
+	<phone name="on">
+    <!-- taken from portuguese -->
+		<description word_example="ponte" pron_example="p_on_t_@" ipa="ə"/>
+	</phone>
+	<phone name="in">
+    <!-- taken from portuguese -->
+		<description word_example="sim" pron_example="s_in" ipa="ə" />
+	</phone>
+	<phone name="un">
+    <!-- taken from portuguese -->
+		<description word_example="atum" pron_example="@_t_un" ipa="ə"/>
+	</phone>
+	<phone name="oo">
+    <!-- taken from danish -->
+		<description word_example="skole" pron_example="s_g_oo_l_@" ipa="oː"/>
+	</phone>
+	<phone name="th">
+    <!-- taken from english -->
+		<description word_example="thin" pron_example="th_ih_n" ipa="θ"/>
+	</phone>
+	<!--  archiphones must be listed last-->
+	<phone name="T">
+		<description word_example="echt" pron_example="eh1_x_T" ipa="t"/>
+	</phone>
+	<phone name="D">
+		<description word_example="wordt" pron_example="w_oh1_r_D" ipa="t"/>
+	</phone>
+	<phone name="_">
+		<description word_example="" pron_example="" ipa=""/>
+	</phone>
+</phonesetup>

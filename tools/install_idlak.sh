@@ -121,27 +121,27 @@ if [ $ok_sptk -ne 0 ]; then
   exit 1
 fi
 
-echo "****(5) Installing swig"
-(
-    rm -f swig-3.0.12.tar.gz 2>/dev/null
-    wget -T 10 -t 3 http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz
-    if [ ! -e swig-3.0.12.tar.gz ]; then
-        echo "****download of swig-3.0.12.tar.gz failed."
-        exit 1
-    else
-        tar -xovzf swig-3.0.12.tar.gz || exit 1
-        cd swig-3.0.12
-        LDFLAGS="-Wl,-rpath=`pwd`/../pcre-8.20/lib/" ./configure --prefix=`pwd` --with-pcre-prefix=`pwd`/../pcre-8.20 || exit 1
-        make || exit 1
-        make install || exit 1
-        cd ..
-    fi
-)
-ok_swig=$?
-if [ $ok_swig -ne 0 ]; then
-  echo "****swig install failed."
-  exit 1
-fi
+# echo "****(5) Installing swig"
+# (
+#     rm -f swig-3.0.12.tar.gz 2>/dev/null
+#     wget -T 10 -t 3 http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz
+#     if [ ! -e swig-3.0.12.tar.gz ]; then
+#         echo "****download of swig-3.0.12.tar.gz failed."
+#         exit 1
+#     else
+#         tar -xovzf swig-3.0.12.tar.gz || exit 1
+#         cd swig-3.0.12
+#         LDFLAGS="-Wl,-rpath=`pwd`/../pcre-8.20/lib/" ./configure --prefix=`pwd` --with-pcre-prefix=`pwd`/../pcre-8.20 || exit 1
+#         make || exit 1
+#         make install || exit 1
+#         cd ..
+#     fi
+# )
+# ok_swig=$?
+# if [ $ok_swig -ne 0 ]; then
+#   echo "****swig install failed."
+#   exit 1
+# fi
 
 
 # echo "****(5) Installing opengrm"
