@@ -23,6 +23,12 @@
 
 #include "pyIdlak/pylib/pyIdlak_types.h"
 
-std::string PyGen_dummy();
+/* Not all the forward options have not been placed into a struct
+   within Kaldi */
+typedef struct PyNnetForwardOpts PyNnetForwardOpts;
+PyNnetForwardOpts * PyGenNnetNewForwardOpts();
+void PyGenNnetRegisterForwardOpts(PySimpleOptions * pyopts, PyNnetForwardOpts * nnet_fwd_opts);
+void PyGenNnetDeleteForwardOpts(PyNnetForwardOpts * nnet_fwd_opts);
+int PyGenNnetForwardPass(PySimpleOptions * pyopts, PyNnetForwardOpts * nnet_fwd_opts);
 
 #endif // KALDI_PYIDLAK_GEN_PYTHON_GEN_API_H_

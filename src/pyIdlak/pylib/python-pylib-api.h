@@ -27,12 +27,14 @@
 // Add to this as needed
 enum IDLAK_OPT_TYPES {
   NONE = 0,
-  AperiodicEnergyOptions = 1
+  AperiodicEnergyOptions = 1,
+  nnet1_PdfPriorOptions = 2
 };
 
 
-PySimpleOptions * PySimpleOptions_new(enum IDLAK_OPT_TYPES opttype);
+PySimpleOptions * PySimpleOptions_new(enum IDLAK_OPT_TYPES opttype = NONE);
 void PySimpleOptions_delete(PySimpleOptions *  pyopts);
+void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opttype);
 
 std::vector<std::string> PySimpleOptions_option_names(PySimpleOptions * pyopts);
 const char * PySimpleOptions_option_pytype(PySimpleOptions * pyopts, const char * key);

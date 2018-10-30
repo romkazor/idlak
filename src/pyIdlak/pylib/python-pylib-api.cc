@@ -21,6 +21,7 @@
 #include "util/simple-options.h"
 
 #include "idlakfeat/feature-aperiodic.h"
+#include "nnet/nnet-pdf-prior.h"
 
 #include "python-pylib-api.h"
 #include "pyIdlak_internal.h"
@@ -29,20 +30,40 @@
 PySimpleOptions * PySimpleOptions_new(enum IDLAK_OPT_TYPES opttype) {
   PySimpleOptions * pyopts = new PySimpleOptions;
   pyopts->po_ = new kaldi::SimpleOptions;
-  pyopts->opttype_ = opttype;
+  PySimpleOptions_register(pyopts, opttype);
+  return pyopts;
+}
 
+
+void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opttype) {
+  if (!pyopts) {
+    return;
+  }
   switch (opttype) {
     case AperiodicEnergyOptions: {
-      auto aprdopts = new kaldi::AperiodicEnergyOptions;
-      aprdopts->Register(pyopts->po_);
-      pyopts->opts_ = static_cast<void*>(aprdopts);
+      if (!pyopts->aprd_) {
+        pyopts->aprd_ = new kaldi::AperiodicEnergyOptions;
+        pyopts->aprd_->Register(pyopts->po_);
+      }
+      break;
+    }
+    case nnet1_PdfPriorOptions: {
+      if (!pyopts->nnet_prior_) {
+        pyopts->nnet_prior_ = new kaldi::nnet1::PdfPriorOptions;
+        pyopts->nnet_prior_->Register(pyopts->po_);
+      }
       break;
     }
     case NONE:
       break;
-  };
+  }
+}
 
-  return pyopts;
+
+void PySimpleOptions_delete(PySimpleOptions * pyopts) {
+  if (pyopts->aprd_) delete pyopts->aprd_;
+  if (pyopts->nnet_prior_) delete pyopts->nnet_prior_;
+  delete pyopts;
 }
 
 
@@ -145,20 +166,7 @@ bool PySimpleOptions_set_str(PySimpleOptions * pyopts, const std::string &key, c
 }
 
 
-void PySimpleOptions_delete(PySimpleOptions * pyopts) {
 
-    switch (pyopts->opttype_) {
-        case AperiodicEnergyOptions: {
-            delete static_cast<kaldi::AperiodicEnergyOptions*>(pyopts->opts_);
-            break;
-        }
-        case NONE:
-            break;
-    };
-
-    delete pyopts->po_;
-    delete pyopts;
-}
 
 
 PyIdlakBuffer * PyIdlakBuffer_newfromstr(const char * data) {

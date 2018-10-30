@@ -27,12 +27,15 @@
 #include <cstdio>
 
 #include "util/simple-options.h"
+#include "idlakfeat/feature-aperiodic.h"
+#include "nnet/nnet-pdf-prior.h"
+
 #include "python-pylib-api.h"
 
 struct PySimpleOptions {
   kaldi::SimpleOptions * po_;
-  enum IDLAK_OPT_TYPES opttype_;
-  void * opts_;
+  kaldi::AperiodicEnergyOptions * aprd_ = nullptr;
+  kaldi::nnet1::PdfPriorOptions * nnet_prior_ = nullptr;
 };
 
 struct PyIdlakBuffer {
