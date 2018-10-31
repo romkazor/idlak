@@ -48,9 +48,16 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
       break;
     }
     case nnet1_PdfPriorOptions: {
-      if (!pyopts->nnet_prior_) {
-        pyopts->nnet_prior_ = new kaldi::nnet1::PdfPriorOptions;
-        pyopts->nnet_prior_->Register(pyopts->po_);
+      if (!pyopts->pdf_prior_) {
+        pyopts->pdf_prior_ = new kaldi::nnet1::PdfPriorOptions;
+        pyopts->pdf_prior_->Register(pyopts->po_);
+      }
+      break;
+    }
+    case NnetForwardOptions: {
+      if (!pyopts->nnet_fwd_) {
+        pyopts->nnet_fwd_ = new PyNnetForwardOptions;
+        pyopts->nnet_fwd_->Register(pyopts->po_);
       }
       break;
     }
@@ -62,7 +69,8 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
 
 void PySimpleOptions_delete(PySimpleOptions * pyopts) {
   if (pyopts->aprd_) delete pyopts->aprd_;
-  if (pyopts->nnet_prior_) delete pyopts->nnet_prior_;
+  if (pyopts->pdf_prior_) delete pyopts->pdf_prior_;
+  if (pyopts->nnet_fwd_) delete pyopts->nnet_fwd_;
   delete pyopts;
 }
 

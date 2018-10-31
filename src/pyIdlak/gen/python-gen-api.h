@@ -25,10 +25,8 @@
 
 /* Not all the forward options have not been placed into a struct
    within Kaldi */
-typedef struct PyNnetForwardOpts PyNnetForwardOpts;
-PyNnetForwardOpts * PyGenNnetNewForwardOpts();
-void PyGenNnetRegisterForwardOpts(PySimpleOptions * pyopts, PyNnetForwardOpts * nnet_fwd_opts);
-void PyGenNnetDeleteForwardOpts(PyNnetForwardOpts * nnet_fwd_opts);
-int PyGenNnetForwardPass(PySimpleOptions * pyopts, PyNnetForwardOpts * nnet_fwd_opts);
+int PyGenNnetForwardPass(PySimpleOptions * pyopts,
+                         const kaldi::Matrix<kaldi::BaseFloat> &input,
+                         kaldi::Matrix<kaldi::BaseFloat> *output);
 
 #endif // KALDI_PYIDLAK_GEN_PYTHON_GEN_API_H_

@@ -1,4 +1,4 @@
-// pyIdlak/pylib/pyIdlak_pylib.i
+// pyIdlak/pylib/pyIdlak_typemaps.i
 
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude
 //                                         Matthew Aylett)
@@ -18,17 +18,36 @@
 //
 
 
-// Note that this is intended to be internal to pyIdlak and not exposed.
+// Note that this is intended to ensure all compiled moduoles use the same typemaps
 
-%module pyIdlak_pylib
+%include <std_string.i>
+%include <std_vector.i>
+%include <argcargv.i>
+%include <std_complex.i>
+%include <typemaps.i>
 
-%include "pyIdlak_typemaps.i"
+namespace std {
+   %template(IntVector) vector<int>;
+   %template(DoubleVector) vector<double>;
+   %template(ComplexDoubleVector) vector<std::complex<double>>;
+   %template(StringVector) vector<string>;
+   %template(ConstCharVector) vector<const char*>;
+};
+
+%apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
 
 %{
-#include "python-pylib-api.h"
+#include "matrix/matrix-lib.h"
+typedef kaldi::Matrix<kaldi::BaseFloat> KaldiMatrixWrap_BaseFloat;
 %}
 
-%include "python-pylib-api.h"
+
+
+
+
+
+
+
 
 
 

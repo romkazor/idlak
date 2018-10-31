@@ -32,10 +32,40 @@
 
 #include "python-pylib-api.h"
 
+/* Additional Option Types */
+struct PyNnetForwardOptions {
+  std::string feature_transform = "";
+  bool reverse_transform = false;
+  bool no_softmax = false;
+  bool apply_log = false;
+  std::string use_gpu = "no";
+  std::string model_filename;
+
+  void Register(kaldi::OptionsItf *opts) {
+    opts->Register("feature-transform", &(feature_transform),
+                   "Feature transform in front of main network (in nnet format)");
+    opts->Register("reverse-transform", &(reverse_transform),
+                   "Feature transform applied in reverse on output");
+    opts->Register("no-softmax", &(no_softmax),
+                   "Removes the last component with Softmax, if found. The pre-softmax "
+                   "activations are the output of the network. Decoding them leads to "
+                   "the same lattices as if we had used 'log-posteriors'.");
+    opts->Register("apply-log", &(apply_log),
+                   "Transform NN output by log()");
+    opts->Register("use-gpu", &(use_gpu),
+                   "yes|no|optional, only has effect if compiled with CUDA");
+    opts->Register("model-filename", &(model_filename),
+                   "Model filename");
+  }
+};
+typedef struct PyNnetForwardOptions PyNnetForwardOptions;
+
+
 struct PySimpleOptions {
   kaldi::SimpleOptions * po_;
   kaldi::AperiodicEnergyOptions * aprd_ = nullptr;
-  kaldi::nnet1::PdfPriorOptions * nnet_prior_ = nullptr;
+  kaldi::nnet1::PdfPriorOptions * pdf_prior_ = nullptr;
+  PyNnetForwardOptions * nnet_fwd_ = nullptr;
 };
 
 struct PyIdlakBuffer {

@@ -50,7 +50,7 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
         noise specific to different energy bands
 
         see. compute-aperiodic-feats.cc for details on the theory
-        
+
         f0s:        list of f0 values
         bndaps:     list of list of bandaps
         srate:      sample rate in Hz
@@ -66,9 +66,9 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
     sshift = int(srate * fshift) # frame shift in samples
     noframes = len(f0s)
     nosamples = noframes * sshift
-    
+
     random.seed(seed)
-    
+
     excitation = [0.] * nosamples
     bands = get_band_info(len(bndaps[0]), srate, fshift)
     period_pre = 0
@@ -193,7 +193,7 @@ def _excitation_mixing(fpulse, fnoise, fbndaps, srate, bands):
     exc_fft = [p+n for (p,n) in zip(pulse_fft, noise_fft)]
     fexc_complex = pyIdlak_vocoder.PyVocoder_IFFT(exc_fft)
     return [f.real / fftlen for f in fexc_complex]
-    
+
 
 def _overlap_and_add(excitation, frame_excitation, startidx):
     """ Overlap and add the frame's excitation """
