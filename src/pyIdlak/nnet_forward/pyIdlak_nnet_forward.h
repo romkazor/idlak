@@ -1,4 +1,4 @@
-// pyIdlak/nnet-forward/pyIdlak-nnet-forward.h
+// pyIdlak/nnet_forward/pyIdlak_nnet_forward.h
 
 // Copyright 2018 CereProc Ltd.  (Authors: Skaiste Butkute)
 
@@ -15,6 +15,10 @@
 // See the Apache 2 License for the specific language governing permissions and
 // limitations under the License.
 //
+
+#ifndef KALDI_PYIDLAK_NNET_FORWARD_PYTHON_NNET_FORWARD_API_H_
+#define KALDI_PYIDLAK_NNET_FORWARD_PYTHON_NNET_FORWARD_API_H_
+
 
 #include <limits>
 
@@ -42,3 +46,5 @@ struct PyNnetForwardOpts {
     std::string feature_rspecifier;
     std::string feature_wspecifier;
 };
+
+#endif // KALDI_PYIDLAK_NNET_FORWARD_PYTHON_NNET_FORWARD_API_H_

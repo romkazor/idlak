@@ -23,10 +23,7 @@
 
 #include "pyIdlak/pylib/pyIdlak_types.h"
 
-/* Not all the forward options have not been placed into a struct
-   within Kaldi */
-int PyGenNnetForwardPass(PySimpleOptions * pyopts,
-                         const kaldi::Matrix<kaldi::BaseFloat> &input,
-                         kaldi::Matrix<kaldi::BaseFloat> *output);
+kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input);
 
 #endif // KALDI_PYIDLAK_GEN_PYTHON_GEN_API_H_

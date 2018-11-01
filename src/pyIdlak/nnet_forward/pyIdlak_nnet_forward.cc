@@ -1,4 +1,4 @@
-// pyIdlak/nnet-forward/pyIdlak-nnet-forward.cc
+// pyIdlak/nnet-forward/pyIdlak_nnet_forward.cc
 
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude
 //                                         Matthew Aylett
@@ -18,7 +18,7 @@
 // limitations under the License.
 //
 
-#include "pyIdlak-nnet-forward.h"
+#include "pyIdlak_nnet_forward.h"
 
 
 int ForwardPass(PyNnetForwardOpts * opts) {

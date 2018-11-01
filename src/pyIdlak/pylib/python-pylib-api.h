@@ -52,4 +52,11 @@ PyIdlakBuffer * PyIdlakBuffer_newfromstr(const char * data);
 void PyIdlakBuffer_delete(PyIdlakBuffer * pybuf);
 const char * PyIdlakBuffer_get(PyIdlakBuffer * pybuf);
 
+// PyIdlakSequentialBaseFloatMatrixReader * PyIdlakSequentialBaseFloatMatrixReader_new(const std::string &rspecifier);
+// void PyIdlakSequentialBaseFloatMatrixReader_delete(PyIdlakSequentialBaseFloatMatrixReader * reader);
+//
+// PyIdlakBaseFloatMatrixWriter * PyIdlakBaseFloatMatrixWriter_new(const std::string &wspecifier);
+// void PyIdlakBaseFloatMatrixWriter_delete(PyIdlakBaseFloatMatrixWriter * writer);
+//
+
 #endif // KALDI_PYIDLAK_PYLIB_PYTHON_PYLIB_API_H_

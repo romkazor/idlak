@@ -41,13 +41,7 @@ namespace std {
 typedef kaldi::Matrix<kaldi::BaseFloat> KaldiMatrixWrap_BaseFloat;
 %}
 
-
-
-
-
-
-
-
-
-
-
+%{
+#include "pyIdlak/pylib/pyIdlak_io.h"
+%}
+%include "pyIdlak_io.h"

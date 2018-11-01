@@ -40,7 +40,7 @@ namespace std {
 %apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
 
 %{
-#include "pyIdlak-nnet-forward.h"
+#include "pyIdlak_nnet_forward.h"
 %}
 
-%include "pyIdlak-nnet-forward.h"
+%include "pyIdlak_nnet_forward.h"

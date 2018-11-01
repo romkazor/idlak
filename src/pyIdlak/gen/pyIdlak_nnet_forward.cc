@@ -1,11 +1,11 @@
 // pyIdlak/nnet-forward/pyIdlak-nnet-forward.cc
-
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude
 //                                         Matthew Aylett
 //                                         Skaiste Butkute)
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
+
 // You may obtain a copy of the License at
 //
 //  http://www.apache.org/licenses/LICENSE-2.0
@@ -20,10 +20,10 @@
 
 #include <cfloat>
 #include <string>
+#include <stdexcept>
 
 #include "base/kaldi-common.h"
 #include "util/common-utils.h"
-#include "matrix/matrix-lib.h"
 #include "cudamatrix/cu-matrix.h"
 #include "cudamatrix/cu-vector.h"
 #include "nnet/nnet-nnet.h"
@@ -31,15 +31,12 @@
 #include "nnet/nnet-pdf-prior.h"
 
 #include "pyIdlak/pylib/pyIdlak_internal.h"
+#include "matrix/matrix-lib.h"
 #include "python-gen-api.h"
 
 
-int PyGenNnetForwardPass(PySimpleOptions * pyopts,
-                         const kaldi::Matrix<kaldi::BaseFloat> &input,
-                         kaldi::Matrix<kaldi::BaseFloat> *output) {
-
-  using namespace kaldi;
-  using namespace kaldi::nnet1;
+kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input) {
   try {
     using namespace kaldi;
     using namespace kaldi::nnet1;
@@ -49,10 +46,21 @@ int PyGenNnetForwardPass(PySimpleOptions * pyopts,
     auto nnet_fwd_opts = pyopts->nnet_fwd_;
 
     // check if required parameters are provided
+    bool option_err = false;
+    if (!prior_opts) {
+      KALDI_ERR << "PySimpleOptions does not have PdfPriorOptions registered";
+      option_err = true;
+    }
+    if (!nnet_fwd_opts) {
+      KALDI_ERR << "PySimpleOptions does not have NnetForwardOptions registered";
+      option_err = true;
+    }
     if (nnet_fwd_opts->model_filename.empty()) {
       KALDI_ERR << "Argument model_filename is missing or is empty";
-      return -1;
+      option_err = true;
     }
+    if (option_err)
+      throw std::invalid_argument("PyGenNnetForwardPass called with invalid options.");
 
     // Select the GPU
 #if HAVE_CUDA == 1
@@ -84,6 +92,7 @@ int PyGenNnetForwardPass(PySimpleOptions * pyopts,
     if (nnet_fwd_opts->apply_log && nnet_fwd_opts->no_softmax) {
       KALDI_ERR << "Cannot use both --apply-log=true --no-softmax=true, "
         << "use only one of the two!";
+      throw std::invalid_argument("PyGenNnetForwardPass called with invalid options.");
     }
 
     // we will subtract log-priors later,
@@ -148,11 +157,13 @@ int PyGenNnetForwardPass(PySimpleOptions * pyopts,
     }
 
     // download from GPU,
-    (*output) = Matrix<BaseFloat>(nnet_out);
+    auto output = new Matrix<BaseFloat>(nnet_out);
 
     // write,
     if (!KALDI_ISFINITE(output->Sum())) {  // check there's no nan/inf,
       KALDI_ERR << "NaN or inf found in final output nn-output";
+      delete output;
+      return nullptr;
     }
 
     // progress log,
@@ -165,9 +176,9 @@ int PyGenNnetForwardPass(PySimpleOptions * pyopts,
       CuDevice::Instantiate().PrintProfile();
     }
 #endif
-    return 0;
+    return output;
   } catch(const std::exception &e) {
     std::cerr << e.what();
-    return -1;
+    return nullptr;
   }
 }

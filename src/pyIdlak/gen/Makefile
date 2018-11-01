@@ -3,7 +3,7 @@ include ../../kaldi.mk
 
 ifeq ($(PYIDLAK), true)
 
-OBJFILES = pyIdlak-nnet-forward.o pyIdlak_gen_wrap.o
+OBJFILES = pyIdlak_nnet_forward.o pyIdlak_gen_wrap.o
 
 LIBNAME = _pyIdlak_gen
 

@@ -30,6 +30,7 @@
 #include "idlakfeat/feature-aperiodic.h"
 #include "nnet/nnet-pdf-prior.h"
 
+#include "pyIdlak_types.h"
 #include "python-pylib-api.h"
 
 /* Additional Option Types */
@@ -68,9 +69,20 @@ struct PySimpleOptions {
   PyNnetForwardOptions * nnet_fwd_ = nullptr;
 };
 
+
 struct PyIdlakBuffer {
   char * data_;
   int len_;
 };
+
+// struct PyIdlakSequentialBaseFloatMatrixReader {
+//   kaldi::SequentialBaseFloatMatrixReader * matrix_reader;
+// };
+//
+//
+// struct PyIdlakBaseFloatMatrixWriter {
+//   kaldi::BaseFloatMatrixWriter * matrix_writer;
+// };
+
 
 #endif // KALDI_PYIDLAK_PYLIB_PYIDLAK_INTERNAL_H_
