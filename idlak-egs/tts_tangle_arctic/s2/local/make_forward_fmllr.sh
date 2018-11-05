@@ -16,6 +16,8 @@ wavdir=$out/wav/
 mkdir -p $cmpdir
 mkdir -p $wavdir
 
+[ -f ./path.sh ] && . ./path.sh;
+
 infeats_tst="ark:copy-feats scp:$tst/feats.scp ark:- |"
 
 # input options: only feature transform, delta, and global cmvn supported

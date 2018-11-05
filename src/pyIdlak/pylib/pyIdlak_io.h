@@ -43,14 +43,14 @@ public:
     if (!reader_->Done())
       return reader_->Value();
     else
-      throw std::out_of_range("Itrator has finished");
+      throw std::out_of_range("Iterator has finished");
   }
 
   std::string key() {
     if (!reader_->Done())
       return reader_->Key();
     else
-      throw std::out_of_range("Itrator has finished");
+      throw std::out_of_range("Iterator has finished");
   }
 
   bool done() {

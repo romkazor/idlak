@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys, os, io, xml.sax, re, time
+from lxml import etree
 from xml.dom.minidom import parse, parseString, getDOMImplementation
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_NAME = os.path.splitext(os.path.split(__file__)[1])[0]
 DESCRIPTION = 'Creates kaldi compatible lang directory'
 FRAMESHIFT=0.005
+IDLAK_SRCDIR = os.path.join(os.path.join(SCRIPT_DIR, *[os.path.pardir]*4), 'src')
 
 # Add to path
-sys.path = sys.path + [SCRIPT_DIR]# + '/../modules']
+sys.path.insert(0, SCRIPT_DIR)
+sys.path.insert(0, IDLAK_SRCDIR)
+import pyIdlak
 
 logopts = {'logging':{
     'nolog':"False",
@@ -125,102 +129,23 @@ def binary_array(v, l):
             s += " 0"
     return s.strip()
 
-def forward_context(logger, input_fname, input_freqtable_fname, cexoutput_filename, rname = "alice"):
 
+# Convert CEX XML to DNN Features
+def forward_context(input_fname, input_freqtable_fname, cexoutput_filename, rname = "alice"):
     # Load frequency table
-    freqtables = eval(open(input_freqtable_fname).read())
-    #print freqtables
+    freqtables = pyIdlak.gen.load_cexfreqtable(input_freqtable_fname)
+    xmlparser = etree.XMLParser(encoding = 'utf8')
+    inputfile = open(input_fname, 'r')
+    xml = etree.parse(inputfile, parser = xmlparser)
+    cex_parser = pyIdlak.gen.CEXParser(xml)
+    cex_parser.default_name = rname
+    cex_features = cex_parser.parse(xml)
+    cex_parser.set_conversions(freqtables, False)
+    dnn_features = cex_parser.convert_to_dnnfeatures(cex_features)
+    inputfile.close()
+    pyIdlak.gen.feat_to_ark(cexoutput_filename, dnn_features)
 
-    # Build mapping table
-    lookuptables = {}
-    lookuptables_len = {}
-    for key in freqtables.keys():
-        #print key
-        vals = list(freqtables[key].keys())
-        vals.sort()
-        for v in vals:
-            if not re.match('[0-9]+', v):
-                # found a non integer value create a lookup table
-                lookuptables[key] = {}
-                mapping = 1
-                for v in vals:
-                    if v == '0':
-                        lookuptables[key][v] = 0
-                    else:
-                        lookuptables[key][v] = mapping
-                        mapping += 1
-                lookuptables_len[key] = len(vals)
-                if '0' in lookuptables[key]:
-                    lookuptables_len[key] -= 1
-                break
 
-    # Read input file
-    dom = parse(input_fname)
-    # get header information
-    header = dom.getElementsByTagName('txpheader')[0]
-    cexheader = header.getElementsByTagName('cex')[0]
-    # get by file ids
-    fileids = dom.getElementsByTagName('fileid')
-    if len(fileids) == 0:
-        fileids = dom.getElementsByTagName('spt')
-        for id, f in enumerate(fileids):
-            idstr = rname + ('000' + str(id+1))[-3:]
-            f.setAttribute('id', idstr)
-    output_contexts = []
-    for f in fileids:
-        phons = f.getElementsByTagName('phon')
-        output_contexts.append([f.getAttribute('id'), []])
-        last_phon_name = ''
-        for p in phons:
-            phon_name = p.getAttribute('val')
-            # Currently ignore utt internal split pauses
-            if phon_name == 'pau' and last_phon_name == 'pau':
-                last_phon_name = phon_name
-                continue
-            cex_string = p.firstChild.nodeValue
-            cexs = cex_string.split()[1:]
-            # get context phone name (may be different to xml phon val)
-            pat = re.match('\^(.*?)\~(.*?)\-(.*?)\+(.*?)\=(.*)', cex_string.split()[0])
-            if not pat:
-                logger.log('critical', 'bad phone context string %s %s' %
-                           (f, cex_string.split()[0]))
-            phonename = pat.group(3)
-            # currently add phone contexts as first 5 features
-            # this to avoid a mismatch between manual phone
-            # questions and the kaldi context information
-            cexs = [pat.group(1), pat.group(2), pat.group(3), pat.group(4), pat.group(5)] + cexs
-            cexs.insert(0, phonename)
-            output_contexts[-1][-1].append(cexs)
-            last_phon_name = phon_name
-
-    print(lookuptables, lookuptables_len)
-
-    # Perform mapping of input file using freqtable
-    if cexoutput_filename == None or cexoutput_filename == '-':
-        cexoutput_file = sys.stdout
-    else:
-        cexoutput_file = open(cexoutput_filename, 'w')
-
-    #output_filename = os.path.join(outdir, 'output', 'cex.ark')
-    fp = open(cexoutput_filename, 'w')
-    for f in output_contexts:
-        key = f[0]
-        #print key, f
-        fp.write(key + ' ')
-        for p in f[1]:
-            for i, v in enumerate(p):
-                # replace symbols with integers^H binary arrays
-                table = 'cex' + ('000' + str(i))[-3:]
-                if table in lookuptables:
-                    #v = str(lookuptables[table][v])
-                    if v not in lookuptables[table]:
-                        logger.log('critical', ' no such key %s in row %s' % (v, table))
-                        v = lookuptables[table].keys()[0]
-                    v = binary_array(lookuptables[table][v], lookuptables_len[table])
-                fp.write(v + ' ')
-            fp.write('; ')
-        fp.write('\n')
-    fp.close()
 
 idlak_pat=re.compile('\^(.*?)\~(.*?)\-(.*?)\+(.*?)\=(.*)')
 hts_pat=re.compile('(.*?)\^(.*?)\-(.*?)\+(.*?)\=(.*)')
@@ -513,7 +438,7 @@ def load_labs(labfile, statefile = None):
 def load_words(wordfile):
     out = {}
     cur_times = {}
-    for l in open(wordfile, errors='replace').readlines():
+    for l in open(wordfile).readlines():
         ll = l.strip().split()
         key = ll[0]
         if key not in out:
@@ -546,7 +471,7 @@ def write_xml_textalign(breaktype, breakdef, labfile, wordfile, output, statefil
     all_labs = load_labs(labfile, statefile)
     all_words = load_words(wordfile)
     f = io.open(output, 'w',encoding='utf8')
-    f.write('<document>\n')
+    f.write(unicode('<document>\n'))
     for id in sorted(all_labs.keys()):
         lab = all_labs[id]
         #print lab
@@ -597,9 +522,9 @@ def write_xml_textalign(breaktype, breakdef, labfile, wordfile, output, statefil
                     break_element = document.createElement("break")
                     fileid_element.appendChild(break_element)
                     break_element.setAttribute('type', btype)
-        f.write(str(fileid_element.toxml()) + '\n')
+        f.write(unicode(str(fileid_element.toxml()) + '\n'))
 
-    f.write('</document>')
+    f.write(unicode('</document>'))
     f.close()
 
 def main():
@@ -623,12 +548,11 @@ def main():
             ret = make_output_kaldidnn_cex(logger, args[0], None, args[1], opts.root_name)
             if args[1] != '-' and args[1] != '':
                 fname = args[1] + '.freq'
-                fp = open(fname, 'w')
-                fp.write(str(ret[2]))
-                fp.close()
+                pyIdlak.gen.save_cexfreqtable(fname, ret[2])
+
         # Forward with existing freqtable
         elif len(args) == 3:
-            forward_context(logger, args[0], args[1], args[2], opts.root_name)
+            forward_context(args[0], args[1], args[2], opts.root_name)
     else:
         parser.error('Mandatory arguments missing or excessive number of arguments')
 
