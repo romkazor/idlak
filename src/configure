@@ -110,6 +110,7 @@ compiler/linker.
   CXXFLAGS    Additional C++ compiler flags, e.g. -I<include-dir>
   LDFLAGS     Additional linker flags, e.g. -L<lib-dir>
   LDLIBS      Additional libraries to pass to the linker, e.g. -l<lib>
+  SWIGFLAGS   Additional flags to be passed to swig
 
 EOF
 }
@@ -849,6 +850,7 @@ fi
 ENV_CXXFLAGS=$CXXFLAGS
 ENV_LDFLAGS=$LDFLAGS
 ENV_LDLIBS=$LDLIBS
+ENV_SWIGFLAGS=$SWIGFLAGS
 
 # Default configuration
 double_precision=false
@@ -1195,6 +1197,7 @@ if [ $pyidlak == true ]; then
     for d in pyIdlak/*/*.i ; do
         echo "REQUIRED FOR MAKE DO NOT DELETE!" > ${d%.*}_wrap.cc
     done
+    echo SWIGFLAGS = -c++ -python -py3 >> kaldi.mk
 fi
 
 echo IDLAK = true >> kaldi.mk
@@ -1497,6 +1500,7 @@ echo >> kaldi.mk
 if [ -n "$ENV_CXXFLAGS" ]; then echo "CXXFLAGS += $ENV_CXXFLAGS" >> kaldi.mk; fi
 if [ -n "$ENV_LDFLAGS" ]; then echo "LDFLAGS += $ENV_LDFLAGS" >> kaldi.mk; fi
 if [ -n "$ENV_LDLIBS" ]; then echo "LDLIBS += $ENV_LDLIBS" >> kaldi.mk; fi
+if [ -n "$ENV_SWIGFLAGS" ]; then echo "SWIGFLAGS += $ENV_SWIGFLAGS" >> kaldi.mk; fi
 
 # We check for slow exp implementation just before we exit. This check uses
 # and possibly modifies the kaldi.mk file that we just generated.
