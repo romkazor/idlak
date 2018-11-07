@@ -19,6 +19,6 @@ from . import txp
 from . import vocoder
 from . import gen
 
-from .voice import Voice
+from .voice import TangleVoice
 
 __all__ = ['gen', 'txp', 'vocoder']

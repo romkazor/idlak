@@ -62,24 +62,21 @@ struct PyNnetForwardOptions {
 typedef struct PyNnetForwardOptions PyNnetForwardOptions;
 
 struct PyApplyCMVNOptions {
-  std::string utt2spk_rspecifier = "";
   bool norm_vars = false;
   bool norm_means = false;
   bool reverse = false;
   std::string skip_dims_str = "";
 
   void Register(kaldi::OptionsItf *opts) {
-    opt->Register("utt2spk", &utt2spk_rspecifier,
-                  "rspecifier for utterance to speaker map");
-    opt->Register("norm-vars", &norm_vars, "If true, normalize variances.");
-    opt->Register("norm-means", &norm_means, "You can set this to false to turn off mean "
-                  "normalization.  Note, the same can be achieved by using 'fake' CMVN stats; "
-                  "see the --fake option to compute_cmvn_stats.sh");
-    opt->Register("skip-dims", &skip_dims_str, "Dimensions for which to skip "
-                  "normalization: colon-separated list of integers, e.g. 13:14:15)");
-    opt->Register("reverse", &reverse, "If true, apply CMVN in a reverse sense, "
-                  "so as to transform zero-mean, unit-variance input into data "
-                  "with the given mean and variance.");
+    opts->Register("norm-vars", &norm_vars, "If true, normalize variances.");
+    opts->Register("norm-means", &norm_means, "You can set this to false to turn off mean "
+                   "normalization.  Note, the same can be achieved by using 'fake' CMVN stats; "
+                   "see the --fake option to compute_cmvn_stats.sh");
+    opts->Register("skip-dims", &skip_dims_str, "Dimensions for which to skip "
+                   "normalization: colon-separated list of integers, e.g. 13:14:15)");
+    opts->Register("reverse", &reverse, "If true, apply CMVN in a reverse sense, "
+                   "so as to transform zero-mean, unit-variance input into data "
+                   "with the given mean and variance.");
   }
 };
 typedef struct PyNnetForwardOptions PyNnetForwardOptions;

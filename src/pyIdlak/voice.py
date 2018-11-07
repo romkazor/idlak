@@ -16,14 +16,18 @@
 
 import os
 import sys
+import logging
 
 from . import txp
 from . import vocoder
 from . import gen
+from . import pylib
 
-class Voice:
+class TangleVoice:
     """ Wrapper for pyIdlak to be used for TTS """
-    def __init__(self, voice_dir = None):
+    def __init__(self, voice_dir = None, loglvl = logging.WARN):
+        logging.basicConfig(level = loglvl)
+        self.log = logging.getLogger('tangle')
         self._voicedir = None
         self._lng = ''
         self._acc = ''
@@ -159,6 +163,26 @@ class Voice:
         if not os.path.isfile(cexfreqtablefn):
             raise IOError("Cannot find cex frequency table: '{0}'".format(cexfreqtablefn))
         self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
+        self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
+
+    def _load_dnn(self, dnndir):
+        """ Loads a DNN model from a directory """
+        # using these functions a lot in this function
+        from os.path import join as pjoin
+        from os.path import isdir, isfile
+
+        nnet_model = pjoin(dnndir, 'final.nnet')
+        kwargs = {}
+        indelta_optsfn = pjoin(dnndir, 'indelta_opts')
+        if isfile(indelta_optsfn):
+            kwargs['indelta_opts'] = open(indelta_optsfn).read()
+
+        incmvn_optsfn = pjoin(dnndir, 'incmvn_opts')
+        incmvn_globfn = pjoin(dnndir, 'incmvn_glob.ark')
+        if isfile(incmvn_optsfn) and isfile(incmvn_globfn):
+            kwargs['incmvn_opts'] = open(incmvn_optsfn).read()
+
+        return gen.NNet(nnet_model, **kwargs)
 
 
     def process_text(self, text, normalise=True, cex=True):
@@ -189,13 +213,17 @@ class Voice:
         if not type(doc) == txp.XMLDoc:
             raise ValueError("doc must be a txp XMLDoc")
         features = gen.cex_to_feat(doc, self._cexfreqtable)
-
-
         return features
 
 
+    def generate_duration(self, dnnfeatures):
+        """ Takes the dnnfeatures and generates phone durations """
+        for spurtid, spurtfeatures in dnnfeatures.items():
+            self.log.debug('generating duration for {0}'.format(spurtid))
+            durmatrix = self._durmodel.forward(spurtfeatures)
 
-    # model duration
+
+
     # model pitch
     # model accoustic features
     # vocodes

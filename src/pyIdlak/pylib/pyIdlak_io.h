@@ -26,8 +26,6 @@
 
 // TODO: Convert to Python3 generator class
 // TODO: Refactor as template class then use swig templates
-
-
 class PyIdlakSequentialBaseFloatMatrixReader {
 private:
   kaldi::SequentialBaseFloatMatrixReader *reader_;
@@ -40,17 +38,15 @@ public:
   }
 
   kaldi::Matrix<kaldi::BaseFloat> &value() {
-    if (!reader_->Done())
-      return reader_->Value();
-    else
+    if (reader_->Done())
       throw std::out_of_range("Iterator has finished");
+    return reader_->Value();
   }
 
   std::string key() {
-    if (!reader_->Done())
-      return reader_->Key();
-    else
+    if (reader_->Done())
       throw std::out_of_range("Iterator has finished");
+    return reader_->Key();
   }
 
   bool done() {
@@ -63,13 +59,43 @@ public:
 };
 
 
+// TODO: Refactor as template class then use swig templates
+class PyIdlakRandomAccessDoubleMatrixReaderMapped {
+private:
+  kaldi::RandomAccessDoubleMatrixReaderMapped *reader_;
+
+public:
+  PyIdlakRandomAccessDoubleMatrixReaderMapped(
+      const std::string &maxtrix_rspecifier, const std::string &utt2spk_rspecifier) {
+    reader_ = new kaldi::RandomAccessDoubleMatrixReaderMapped (
+      maxtrix_rspecifier, utt2spk_rspecifier
+    );
+  }
+  ~PyIdlakRandomAccessDoubleMatrixReaderMapped() {
+    delete reader_;
+  }
+
+  bool haskey(const std::string &key) {
+    return reader_->HasKey(key);
+  }
+
+  kaldi::Matrix<double> value(const std::string &key) {
+    if (!reader_->HasKey(key))
+      throw std::out_of_range("key not in reader");
+    return reader_->Value(key);
+  }
+};
+
+
 class PyIdlakBaseFloatMatrixWriter {
 private:
   kaldi::BaseFloatMatrixWriter *writer_;
+
 public:
   PyIdlakBaseFloatMatrixWriter(const std::string &wspecifier) {
     writer_ = new kaldi::BaseFloatMatrixWriter(wspecifier);
   }
+
   ~PyIdlakBaseFloatMatrixWriter() {
     delete writer_;
   }

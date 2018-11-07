@@ -1,4 +1,4 @@
-// pyIdlak/nnet-forward/pyIdlak-nnet-forward.cc
+// pyIdlak/gen/pyIdlak_apply_cvmn.cc
 // Copyright 2018 CereProc Ltd.  (Authors: David Braude
 //                                         Matthew Aylett
 //                                         Skaiste Butkute)
@@ -39,14 +39,14 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
   bool norm_means = apply_cmvn_opts->norm_means;
   bool reverse = apply_cmvn_opts->reverse;
 
-  auto output = new Matrix<BaseFloat>(input);
+  auto output = new kaldi::Matrix<BaseFloat>(input);
 
   if (!norm_means && !norm_vars) {
     // No-opt just return a copy
     return output;
   }
 
-  Matrix<double> tmp_cmvn_stats(cmvn_stats);
+  kaldi::Matrix<double> tmp_cmvn_stats(cmvn_stats);
   std::vector<int32> skip_dims;
   if (!kaldi::SplitStringToIntegers(apply_cmvn_opts->skip_dims_str, ":", false, &skip_dims)) {
     KALDI_ERR << "Bad --skip-dims option (should be colon-separated list of "
@@ -57,10 +57,10 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
     FakeStatsForSomeDims(skip_dims, &tmp_cmvn_stats);
 
   if (reverse) {
-      ApplyCmvnReverse(tmp_cmvn_stats, norm_vars, output, norm_means);
+    ApplyCmvnReverse(tmp_cmvn_stats, norm_vars, output, norm_means);
   } else {
-      ApplyCmvn(tmp_cmvn_stats, norm_vars, output, norm_means);
+    ApplyCmvn(tmp_cmvn_stats, norm_vars, output, norm_means);
   }
 
-  return feat;
+  return output;
 }

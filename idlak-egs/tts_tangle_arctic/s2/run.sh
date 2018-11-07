@@ -213,33 +213,33 @@ if [ $stage -le 3 ]; then
     expa=exp-align
     train=data/full
     test=data/eval_mfcc
-    #
-    # rm -rf $train/split$nj
-    # split_data.sh --per-utt $train $nj
-    # [ -d $train/split$nj ] || mv $train/split${nj}utt $train/split$nj
-    # steps/train_mono.sh --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
-    #     $train $lang $expa/mono || exit 1;
-    # steps/align_si.sh --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
-    #     $train $lang $expa/mono $expa/mono_ali || exit 1;
-    # steps/train_deltas.sh --boost-silence 1.25 --cmd "$train_cmd" \
-    #     2000 10000 $train $lang $expa/mono_ali $expa/tri1 || exit 1;
-    # steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
-    #     $train data/lang $expa/tri1 $expa/tri1_ali || exit 1;
-    # steps/train_deltas.sh --cmd "$train_cmd" \
-    #     5000 50000 $train $lang $expa/tri1_ali $expa/tri2 || exit 1;
 
-    # # Create quinphone alignments
-    # steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
-    #     $train $lang $expa/tri2 $expa/tri2_ali_full || exit 1;
-    #
-    # steps/train_deltas.sh --cmd "$train_cmd" \
-    #     --context-opts "--context-width=5 --central-position=2" \
-    #     5000 50000 $train $lang $expa/tri2_ali_full $expa/quin || exit 1;
-    #
-    # # Create final alignments
-    # #split_data.sh --per-utt $train 9
-    # steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
-    #     $train $lang $expa/quin $expa/quin_ali_full || exit 1;
+    rm -rf $train/split$nj
+    split_data.sh --per-utt $train $nj
+    [ -d $train/split$nj ] || mv $train/split${nj}utt $train/split$nj
+    steps/train_mono.sh --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
+        $train $lang $expa/mono || exit 1;
+    steps/align_si.sh --boost-silence 1.25 --nj $nj --cmd "$train_cmd" \
+        $train $lang $expa/mono $expa/mono_ali || exit 1;
+    steps/train_deltas.sh --boost-silence 1.25 --cmd "$train_cmd" \
+        2000 10000 $train $lang $expa/mono_ali $expa/tri1 || exit 1;
+    steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
+        $train data/lang $expa/tri1 $expa/tri1_ali || exit 1;
+    steps/train_deltas.sh --cmd "$train_cmd" \
+        5000 50000 $train $lang $expa/tri1_ali $expa/tri2 || exit 1;
+
+    # Create quinphone alignments
+    steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
+        $train $lang $expa/tri2 $expa/tri2_ali_full || exit 1;
+
+    steps/train_deltas.sh --cmd "$train_cmd" \
+        --context-opts "--context-width=5 --central-position=2" \
+        5000 50000 $train $lang $expa/tri2_ali_full $expa/quin || exit 1;
+
+    # Create final alignments
+    #split_data.sh --per-utt $train 9
+    steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
+        $train $lang $expa/quin $expa/quin_ali_full || exit 1;
 
 
 ################################
@@ -255,30 +255,30 @@ for step in full; do
     for n in $(seq 1 $nj); do
         alifiles="$alifiles $ali/ali.$n.gz"
     done
-    #
-    # # Extract phone alignment
-    # ali-to-phones --per-frame $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:- \
-	  #    | utils/int2sym.pl -f 2- $lang/phones.txt > $ali/phones.txt
-    # # Extract state alignment
-    # ali-to-hmmstate $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:$ali/states.tra
-    # # Extract word alignment
-    # linear-to-nbest ark:"gunzip -c $alifiles|" \
-    # 	ark:"utils/sym2int.pl --map-oov 1669 -f 2- $lang/words.txt < data/$step/text |" '' '' ark:- \
-    # 	| lattice-align-words $lang/phones/word_boundary.int $ali/final.mdl ark:- ark:- \
-    # 	| nbest-to-ctm --frame-shift=$FRAMESHIFT --precision=3 ark:- - \
-    # 	| utils/int2sym.pl -f 5 $lang/words.txt > $ali/wrdalign.dat
+
+    # Extract phone alignment
+    ali-to-phones --per-frame $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:- \
+        | utils/int2sym.pl -f 2- $lang/phones.txt > $ali/phones.txt
+    # Extract state alignment
+    ali-to-hmmstate $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:$ali/states.tra
+    # Extract word alignment
+    linear-to-nbest ark:"gunzip -c $alifiles|" \
+        ark:"utils/sym2int.pl --map-oov 1669 -f 2- $lang/words.txt < data/$step/text |" '' '' ark:- \
+        | lattice-align-words $lang/phones/word_boundary.int $ali/final.mdl ark:- ark:- \
+        | nbest-to-ctm --frame-shift=$FRAMESHIFT --precision=3 ark:- - \
+        | utils/int2sym.pl -f 5 $lang/words.txt > $ali/wrdalign.dat
 
     # Regenerate text output from alignment
-    # python3 local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat data/$step/text_align.xml $ali/states.tra
+    python3 local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat data/$step/text_align.xml $ali/states.tra
 
     # Generate corresponding quinphone full labels
-    # idlaktxp --pretty --tpdb=$tpdb data/$step/text_align.xml data/$step/text_anorm.xml
-    # idlakcex --pretty --cex-arch=default --tpdb=$tpdb data/$step/text_anorm.xml data/$step/text_afull.xml
+    idlaktxp --pretty --tpdb=$tpdb data/$step/text_align.xml data/$step/text_anorm.xml
+    idlakcex --pretty --cex-arch=default --tpdb=$tpdb data/$step/text_anorm.xml data/$step/text_afull.xml
     python3 local/idlak_make_lang.py --mode 2 data/$step/text_afull.xml data/$step/cex.ark  > data/$step/cex_output_dump
 
     # Merge alignment with output from idlak cex front-end => gives you a nice vector
     # NB: for triphone alignment:
-    # make-fullctx-ali-dnn  --phone-context=3 --mid-context=1 --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $ali/ali.{1..$nj}.gz|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
+    #     make-fullctx-ali-dnn  --phone-context=3 --mid-context=1 --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $ali/ali.{1..$nj}.gz|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
     make-fullctx-ali-dnn --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
 
     # UGLY convert alignment to features

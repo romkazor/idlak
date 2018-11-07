@@ -24,7 +24,7 @@
 
 #include "pyIdlak_types.h"
 
-// Add to this as needed
+// Add to this as needed (remember to copy into __init__.py)
 enum IDLAK_OPT_TYPES {
   NONE = 0,
   AperiodicEnergyOptions = 1,

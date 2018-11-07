@@ -20,6 +20,12 @@
 # SWIG wrapped API
 from . import pyIdlak_pylib as c_api
 
-from .pyIdlak_pylib import (NONE, AperiodicEnergyOptions)
+from .pyIdlak_pylib import (
+        NONE,
+        AperiodicEnergyOptions,
+        nnet1_PdfPriorOptions,
+        NnetForwardOptions,
+        ApplyCMVNOptions
+    )
 
 from .pyoptions import PyOptions
