@@ -39,6 +39,7 @@ namespace std {
 %{
 #include "matrix/matrix-lib.h"
 typedef kaldi::Matrix<kaldi::BaseFloat> KaldiMatrixWrap_BaseFloat;
+typedef kaldi::Matrix<double> KaldiMatrixWrap_double;
 %}
 
 %{

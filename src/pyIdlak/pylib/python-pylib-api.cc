@@ -61,6 +61,13 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
       }
       break;
     }
+    case ApplyCMVNOptions: {
+      if (!pyopts->apply_cmvn_) {
+        pyopts->apply_cmvn_ = new PyApplyCMVNOptions;
+        pyopts->apply_cmvn_->Register(pyopts->po_);
+      }
+      break;
+    }
     case NONE:
       break;
   }
@@ -71,6 +78,7 @@ void PySimpleOptions_delete(PySimpleOptions * pyopts) {
   if (pyopts->aprd_) delete pyopts->aprd_;
   if (pyopts->pdf_prior_) delete pyopts->pdf_prior_;
   if (pyopts->nnet_fwd_) delete pyopts->nnet_fwd_;
+  if (pyopts->apply_cmvn_) delete pyopts->apply_cmvn_;
   delete pyopts;
 }
 

@@ -26,4 +26,8 @@
 kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
     const kaldi::Matrix<kaldi::BaseFloat> &input);
 
+kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input,
+    const kaldi::Matrix<double> &cmvn_stats);
+
 #endif // KALDI_PYIDLAK_GEN_PYTHON_GEN_API_H_
