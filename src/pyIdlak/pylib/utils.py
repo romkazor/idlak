@@ -31,7 +31,7 @@ def get_rspecifier_keys(rspecifier):
         reader.next()
     return keys
 
-def get_name_matrix(rspecifier, key):
+def get_matrix_by_key(rspecifier, key):
     """ Opens an rspecifier with a PyIdlakRandomAccessDoubleMatrixReader
         and retrieves the matrix with the given key """
     reader = pyIdlak_pylib.PyIdlakRandomAccessDoubleMatrixReader(rspecifier)

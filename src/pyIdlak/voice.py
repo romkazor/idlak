@@ -199,7 +199,7 @@ class TangleVoice:
         if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
             kwargs['out_cmvn_speaker_opts'] = open(out_cmvn_speaker_optsfn).read()
             rspecifier = 'scp:' +  out_cmvn_speaker_fn
-            kwargs['out_cmvn_speaker_mat'] = pylib.get_name_matrix(rspecifier, self.spk)
+            kwargs['out_cmvn_speaker_mat'] = pylib.get_matrix_by_key(rspecifier, self.spk)
 
         return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
 
