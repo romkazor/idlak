@@ -62,6 +62,32 @@ public:
 
 
 // TODO: Refactor as template class then use swig templates
+class PyIdlakRandomAccessDoubleMatrixReader {
+private:
+  kaldi::RandomAccessDoubleMatrixReader *reader_;
+
+public:
+  PyIdlakRandomAccessDoubleMatrixReader(const std::string &rspecifier) {
+    reader_ = new kaldi::RandomAccessDoubleMatrixReader (rspecifier);
+  }
+
+  ~PyIdlakRandomAccessDoubleMatrixReader() {
+    delete reader_;
+  }
+
+  bool haskey(const std::string &key) {
+    return reader_->HasKey(key);
+  }
+
+  kaldi::Matrix<double> value(const std::string &key) {
+    if (!reader_->HasKey(key))
+      throw std::out_of_range("key not in reader");
+    return reader_->Value(key);
+  }
+};
+
+
+// TODO: Refactor as template class then use swig templates
 class PyIdlakRandomAccessDoubleMatrixReaderMapped {
 private:
   kaldi::RandomAccessDoubleMatrixReaderMapped *reader_;
@@ -87,6 +113,8 @@ public:
     return reader_->Value(key);
   }
 };
+
+
 
 
 class PyIdlakBaseFloatMatrixWriter {

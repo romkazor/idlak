@@ -177,16 +177,16 @@ class TangleVoice:
         from os.path import join as pjoin
         from os.path import isdir, isfile
 
-        nnet_model = pjoin(dnndir, 'final.nnet')
+        nnet_model_fn = pjoin(dnndir, 'final.nnet')
         feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
 
         kwargs = {}
 
-        incmvn_glob_optsfn = pjoin(dnndir, 'incmvn_opts')
-        incmvn_glob_fn = pjoin(dnndir, 'incmvn_glob.ark')
-        if isfile(incmvn_glob_optsfn) and isfile(incmvn_glob_fn):
-            kwargs['incmvn_global'] = pylib.PyReadKaldiDoubleMatrix(incmvn_glob_fn)
-            kwargs['incmvn_global_opts'] = open(incmvn_glob_optsfn).read()
+        in_cmvn_global_optsfn = pjoin(dnndir, 'incmvn_opts')
+        in_cmvn_global_fn = pjoin(dnndir, 'incmvn_glob.ark')
+        if isfile(in_cmvn_global_optsfn) and isfile(in_cmvn_global_fn):
+            kwargs['in_cmvn_global_opts'] = open(in_cmvn_global_optsfn).read()
+            kwargs['in_cmvn_global_mat'] = pylib.PyReadKaldiDoubleMatrix(in_cmvn_global_fn)
 
         intransformfn = pjoin(dnndir, 'input_final.feature_transform')
         if isfile(intransformfn):
@@ -194,11 +194,14 @@ class TangleVoice:
 
         # Applying (reversed) fmllr transformation per-speaker
 
-        outcmvn_glob_optsfn = pjoin(dnndir, 'cmvn_opts')
+        out_cmvn_speaker_optsfn = pjoin(dnndir, 'cmvn_opts')
+        out_cmvn_speaker_fn = pjoin(dnndir, 'cmvn.scp')
+        if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
+            kwargs['out_cmvn_speaker_opts'] = open(out_cmvn_speaker_optsfn).read()
+            rspecifier = 'scp:' +  out_cmvn_speaker_fn
+            kwargs['out_cmvn_speaker_mat'] = pylib.get_name_matrix(rspecifier, self.spk)
 
-
-
-        return gen.NNet(nnet_model, feat_transform_fn, **kwargs)
+        return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
 
 
     def process_text(self, text, normalise=True, cex=True):

@@ -22,8 +22,8 @@ dnnfeatures = voice.convert_to_dnn_features(final_cex)
 durations = voice.generate_duration(dnnfeatures)
 for spurtid, durmat in durations.items():
     print (spurtid, ':')
-    for r in durmat:
-        print (' '.join(map(lambda v: "{0:10.5f}".format(v), r)))
+    # for r in durmat:
+    #     print (' '.join(map(lambda v: "{0:10.5f}".format(v), r)))
 
 
 

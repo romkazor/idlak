@@ -18,22 +18,21 @@
 # Note that this is intended to be internal to pyIdlak and not exposed.
 
 # SWIG wrapped API
-from . import pyIdlak_pylib as c_api
+from . import pyIdlak_pylib
 
-from .pyIdlak_pylib import (
-        NONE,
-        AperiodicEnergyOptions,
-        PdfPriorOptions,
-        NnetForwardOptions,
-        ApplyCMVNOptions,
-        PyReadKaldiDoubleMatrix,
-        PyKaldiMatrixBaseFloat_frmlist,
-        PyKaldiMatrixBaseFloat_tolist,
-    )
 
-from .pyoptions import PyOptions
+def get_rspecifier_keys(rspecifier):
+    """ Opens an rspecifier with a PyIdlakSequentialBaseFloatMatrixReader
+        and retrieves all the keys in it """
+    reader = pyIdlak_pylib.PyIdlakSequentialBaseFloatMatrixReader(rspecifier)
+    keys = []
+    while not reader.done():
+        keys.append(reader.key())
+        reader.next()
+    return keys
 
-from .utils import (
-        get_rspecifier_keys,
-        get_name_matrix,
-    )
+def get_name_matrix(rspecifier, key):
+    """ Opens an rspecifier with a PyIdlakRandomAccessDoubleMatrixReader
+        and retrieves the matrix with the given key """
+    reader = pyIdlak_pylib.PyIdlakRandomAccessDoubleMatrixReader(rspecifier)
+    return reader.value(key)
