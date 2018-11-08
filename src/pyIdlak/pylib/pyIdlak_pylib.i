@@ -29,6 +29,3 @@
 %}
 
 %include "python-pylib-api.h"
-
-
-

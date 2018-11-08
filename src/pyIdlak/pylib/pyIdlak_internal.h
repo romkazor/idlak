@@ -62,15 +62,12 @@ struct PyNnetForwardOptions {
 typedef struct PyNnetForwardOptions PyNnetForwardOptions;
 
 struct PyApplyCMVNOptions {
-  std::string utt2spk_rspecifier = "";
   bool norm_vars = false;
   bool norm_means = false;
   bool reverse = false;
   std::string skip_dims_str = "";
 
   void Register(kaldi::OptionsItf *opts) {
-    opts->Register("utt2spk", &utt2spk_rspecifier,
-                  "rspecifier for utterance to speaker map");
     opts->Register("norm-vars", &norm_vars, "If true, normalize variances.");
     opts->Register("norm-means", &norm_means, "You can set this to false to turn off mean "
                   "normalization.  Note, the same can be achieved by using 'fake' CMVN stats; "

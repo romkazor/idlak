@@ -17,6 +17,7 @@
 import os
 import sys
 import logging
+import collections
 
 from . import txp
 from . import vocoder
@@ -180,19 +181,22 @@ class TangleVoice:
         feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
 
         kwargs = {}
-        indelta_optsfn = pjoin(dnndir, 'indelta_opts')
-        if isfile(indelta_optsfn):
-            kwargs['indelta_opts'] = open(indelta_optsfn).read()
 
-        incmvn_optsfn = pjoin(dnndir, 'incmvn_opts')
-        incmvn_globfn = pjoin(dnndir, 'incmvn_glob.ark')
-        if isfile(incmvn_optsfn) and isfile(incmvn_globfn):
-            kwargs['incmvn_global'] = pylib.PyReadKaldiDoubleMatrix(incmvn_globfn)
-            kwargs['incmvn_global_opts'] = open(incmvn_optsfn).read()
+        incmvn_glob_optsfn = pjoin(dnndir, 'incmvn_opts')
+        incmvn_glob_fn = pjoin(dnndir, 'incmvn_glob.ark')
+        if isfile(incmvn_glob_optsfn) and isfile(incmvn_glob_fn):
+            kwargs['incmvn_global'] = pylib.PyReadKaldiDoubleMatrix(incmvn_glob_fn)
+            kwargs['incmvn_global_opts'] = open(incmvn_glob_optsfn).read()
 
         intransformfn = pjoin(dnndir, 'input_final.feature_transform')
         if isfile(intransformfn):
             kwargs['input_transform'] = intransformfn
+
+        # Applying (reversed) fmllr transformation per-speaker
+
+        outcmvn_glob_optsfn = pjoin(dnndir, 'cmvn_opts')
+
+
 
         return gen.NNet(nnet_model, feat_transform_fn, **kwargs)
 
@@ -233,12 +237,14 @@ class TangleVoice:
     def generate_duration(self, dnnfeatures):
         """ Takes the dnnfeatures and generates phone durations """
         self.log.debug("Generating state durations")
+        durations = collections.OrderedDict()
         for spurtid in dnnfeatures:
             self.log.debug('generating duration for {0}'.format(spurtid))
             spurtfeatures = dnnfeatures[spurtid]
             statedfeatures = self._add_state_feature(spurtfeatures)
             durmatrix = self._durmodel.forward(statedfeatures)
-
+            durations[spurtid] = durmatrix
+        return durations
 
     def _add_state_feature(self, spurtfeatures):
         statedfeatures = []

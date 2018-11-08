@@ -42,11 +42,11 @@ class NNet:
         self._feat_transform_fn = feat_transform_fn
 
         # Network options
-        self._forward_opts = pylib.PyOptions(
+        self._fwd_opts = pylib.PyOptions(
             pylib.PdfPriorOptions, pylib.NnetForwardOptions)
-        self._forward_opts.set('model-filename', nnet_model_fn)
-        self._forward_opts.set('reverse-transform', True)
-        self._forward_opts.set('feature-transform', self._feat_transform_fn)
+        self._fwd_opts.set('model-filename', nnet_model_fn)
+        self._fwd_opts.set('reverse-transform', True)
+        self._fwd_opts.set('feature-transform', self._feat_transform_fn)
 
         self.log.debug('Loading options')
         # Pre-processing options
@@ -85,7 +85,7 @@ class NNet:
 
     def forward(self, features_in):
         """ Runs a forward pass through the features """
-        kaldimat = pylib.PyKaldiMatrixBaseFloat_frmlist(features_in)
+        mat = pylib.PyKaldiMatrixBaseFloat_frmlist(features_in)
 
         if self._indelta:
             self.log.debug('Applying deltas on labels')
@@ -93,30 +93,23 @@ class NNet:
 
         if self._incmvn_global:
             self.log.debug('Applying global cmvn on labels')
-            kaldimat_new = pyIdlak_gen.PyApplyCMVN(
-                self._incmvn_global_opts.kaldiopts, kaldimat, self._incmvn_global)
-            del kaldimat # saves memory
-            kaldimat = kaldimat_new
+            mat = pyIdlak_gen.PyApplyCMVN(self._incmvn_global_opts.kaldiopts,
+                 mat, self._incmvn_global)
 
         if self._intransform:
             self.log.debug('Applying feature transform on labels')
-            kaldimat_new = pyIdlak_gen.PyGenNnetForwardPass(
-                self._intransform_opts.kaldiopts, kaldimat)
-            del kaldimat
-            kaldimat = kaldimat_new
+            mat = pyIdlak_gen.PyGenNnetForwardPass(
+                self._intransform_opts.kaldiopts, mat)
 
         self.log.debug('Forward DNN pass')
-        kaldimat_new = pyIdlak_gen.PyGenNnetForwardPass(
-            self._forward_opts.kaldiopts, kaldimat)
-        del kaldimat
-        kaldimat = kaldimat_new
+        mat = pyIdlak_gen.PyGenNnetForwardPass(self._fwd_opts.kaldiopts, mat)
 
         # "Applying (reversed) fmllr transformation per-speaker"
         # "Applying (reversed) per-speaker cmvn on output features"
         # "Applying (reversed) global cmvn on output feature"
         # Single option ?
 
-
+        return pylib.PyKaldiMatrixBaseFloat_tolist(mat)
 
     def _load_cmvn(self, pyopts, cmvn_opts):
         """ Load CMVN options """

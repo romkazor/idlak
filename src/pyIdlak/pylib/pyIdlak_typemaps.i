@@ -40,6 +40,8 @@ namespace std {
 #include "matrix/matrix-lib.h"
 typedef kaldi::Matrix<kaldi::BaseFloat> KaldiMatrixWrap_BaseFloat;
 typedef kaldi::Matrix<double> KaldiMatrixWrap_double;
+
+typedef KaldiMatrixWrap_BaseFloat KaldiMatrixBaseFloat_list;
 %}
 
 %{
@@ -99,7 +101,24 @@ typedef kaldi::Matrix<double> KaldiMatrixWrap_double;
     free($1);
 %}
 
+%typemap(out) (KaldiMatrixBaseFloat_list *)
+{
+  auto M = reinterpret_cast<kaldi::Matrix<kaldi::BaseFloat> *>($1);
+  $result = PyList_New(M->NumRows());
+  for (int i = 0; i < M->NumRows(); i++) {
+    PyList_SetItem($result, i, PyList_New(M->NumCols()));
+    PyObject *row = PyList_GET_ITEM($result, i);
+    for (int j = 0; j < M->NumCols(); j++) {
+      PyList_SetItem(row, j, PyFloat_FromDouble(M->Index(i,j)));
+    }
+  }
+}
+
 %inline %{
+KaldiMatrixBaseFloat_list * PyKaldiMatrixBaseFloat_tolist(kaldi::Matrix<kaldi::BaseFloat> * M) {
+  return reinterpret_cast<KaldiMatrixBaseFloat_list *>(M);
+}
+
 kaldi::Matrix<kaldi::BaseFloat> * PyKaldiMatrixBaseFloat_frmlist(const double * mat, int m, int n) {
     int i, j;
     kaldi::Matrix<kaldi::BaseFloat> * kaldimat = new kaldi::Matrix<kaldi::BaseFloat>(m, n);

@@ -28,6 +28,7 @@ from .pyIdlak_pylib import (
         ApplyCMVNOptions,
         PyReadKaldiDoubleMatrix,
         PyKaldiMatrixBaseFloat_frmlist,
+        PyKaldiMatrixBaseFloat_tolist,
     )
 
 from .pyoptions import PyOptions
