@@ -87,9 +87,3 @@ postproc="$postproc | tee $duroutdir/feats.ark | awk -v dir=$cmpdir $awkcmd"
 nnet=$durdnndir/final.nnet
 
 nnet-forward --reverse-transform=true --feature-transform=$feat_transf $nnet "${infeats_tst}" "${postproc}"
-
-
-
-
-#
-#

@@ -23,9 +23,11 @@
 #include <string>
 #include <stdexcept>
 #include "util/common-utils.h"
+#include "pyIdlak_types.h"
 
+// TODO: Refactor as templates then use swig templates
 // TODO: Convert to Python3 generator class
-// TODO: Refactor as template class then use swig templates
+
 class PyIdlakSequentialBaseFloatMatrixReader {
 private:
   kaldi::SequentialBaseFloatMatrixReader *reader_;
@@ -104,6 +106,8 @@ public:
     writer_->Write(key, value);
   }
 };
+
+kaldi::Matrix<double> PyReadKaldiDoubleMatrix(const std::string &rxfilename);
 
 
 

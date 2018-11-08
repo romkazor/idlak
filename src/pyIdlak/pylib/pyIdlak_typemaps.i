@@ -46,3 +46,68 @@ typedef kaldi::Matrix<double> KaldiMatrixWrap_double;
 #include "pyIdlak/pylib/pyIdlak_io.h"
 %}
 %include "pyIdlak_io.h"
+
+
+
+
+/* base float matrix from list of list */
+%typemap(in) (const double * mat, int m, int n) %{
+    PyObject *row;
+    int m, n;
+
+    if (!PyList_Check($input)) {
+        PyErr_SetString(PyExc_ValueError, "Expecting a list of lists of numbers");
+        return NULL;
+    }
+    row = PyList_GET_ITEM($input, 0);
+    if (!PyList_Check(row)) {
+        PyErr_SetString(PyExc_ValueError, "Expecting a list of lists of numbers");
+        return NULL;
+    }
+
+    m = (int)PyList_Size($input);
+    n = (int)PyList_Size(row);
+    $1 = (double *) malloc(m * n * sizeof(double));
+    $2 = m;
+    $3 = n;
+
+    for(Py_ssize_t i = 0; i < m; i++) {
+        row = PyList_GET_ITEM($input, i);
+        if (!PyList_Check(row)) {
+            free($1);
+            PyErr_SetString(PyExc_ValueError, "Expecting a list of lists of numbers");
+            return NULL;
+        }
+        if ((int) PyList_Size(row) != n) {
+            free($1);
+            PyErr_SetString(PyExc_ValueError, "Row dimensions inconsistant");
+            return NULL;
+        }
+        for(Py_ssize_t j = 0; j < n; j++) {
+            PyObject *v = PyList_GET_ITEM(row, j);
+            if (!PyNumber_Check(v)) {
+                free($1);
+                PyErr_SetString(PyExc_ValueError, "List items must be numbers");
+                return NULL;
+            }
+            $1[i*n + j] = PyFloat_AsDouble(v);
+        }
+    }
+%}
+
+%typemap(freearg) (const double * mat, int m, n) %{
+    free($1);
+%}
+
+%inline %{
+kaldi::Matrix<kaldi::BaseFloat> * PyKaldiMatrixBaseFloat_frmlist(const double * mat, int m, int n) {
+    int i, j;
+    kaldi::Matrix<kaldi::BaseFloat> * kaldimat = new kaldi::Matrix<kaldi::BaseFloat>(m, n);
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            kaldimat->operator()(i,j) = mat[i*n + j];
+        }
+    }
+    return kaldimat;
+}
+%}

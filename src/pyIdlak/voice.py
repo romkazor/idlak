@@ -165,6 +165,7 @@ class TangleVoice:
         self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
         self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
 
+
     def _load_dnn(self, dnndir):
         """ Loads a DNN model from a directory """
         # using these functions a lot in this function
@@ -180,6 +181,7 @@ class TangleVoice:
         incmvn_optsfn = pjoin(dnndir, 'incmvn_opts')
         incmvn_globfn = pjoin(dnndir, 'incmvn_glob.ark')
         if isfile(incmvn_optsfn) and isfile(incmvn_globfn):
+            kwargs['incmvn_glob'] = pylib.PyReadKaldiDoubleMatrix(incmvn_globfn)
             kwargs['incmvn_opts'] = open(incmvn_optsfn).read()
 
         return gen.NNet(nnet_model, **kwargs)
@@ -218,8 +220,10 @@ class TangleVoice:
 
     def generate_duration(self, dnnfeatures):
         """ Takes the dnnfeatures and generates phone durations """
-        for spurtid, spurtfeatures in dnnfeatures.items():
+
+        for spurtid in dnnfeatures:
             self.log.debug('generating duration for {0}'.format(spurtid))
+            spurtfeatures = dnnfeatures[spurtid]
             durmatrix = self._durmodel.forward(spurtfeatures)
 
 

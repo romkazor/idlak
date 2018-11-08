@@ -205,9 +205,9 @@ lang=data/lang
 
 if [ $stage -le 3 ]; then
     echo "##### Step 3: forced alignment #####"
-    # rm -rf $dict/lexiconp.txt $lang
-    # utils/prepare_lang.sh --num-nonsil-states 5 --share-silence-phones true $dict "<OOV>" data/local/lang_tmp $lang
-    # utils/validate_lang.pl $lang
+    rm -rf $dict/lexiconp.txt $lang
+    utils/prepare_lang.sh --num-nonsil-states 5 --share-silence-phones true $dict "<OOV>" data/local/lang_tmp $lang
+    utils/validate_lang.pl $lang
 
     # Now running the normal kaldi recipe for forced alignment
     expa=exp-align
@@ -227,6 +227,8 @@ if [ $stage -le 3 ]; then
         $train data/lang $expa/tri1 $expa/tri1_ali || exit 1;
     steps/train_deltas.sh --cmd "$train_cmd" \
         5000 50000 $train $lang $expa/tri1_ali $expa/tri2 || exit 1;
+
+
 
     # Create quinphone alignments
     steps/align_si.sh  --nj $nj --cmd "$train_cmd" \

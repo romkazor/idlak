@@ -25,7 +25,9 @@ from .pyIdlak_pylib import (
         AperiodicEnergyOptions,
         nnet1_PdfPriorOptions,
         NnetForwardOptions,
-        ApplyCMVNOptions
+        ApplyCMVNOptions,
+        PyReadKaldiDoubleMatrix,
+        PyKaldiMatrixBaseFloat_frmlist,
     )
 
 from .pyoptions import PyOptions

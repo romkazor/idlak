@@ -64,7 +64,7 @@ class CEXParser:
 
         self._parse_err = False
         self._untitled_counter = 1
-        cex_features = {}
+        cex_features = collections.OrderedDict()
         if xml.find('fileid') is not None:
             self.log.info('iterating over file ids')
             spurt_iterator = xml.iter('fileid')
@@ -85,16 +85,15 @@ class CEXParser:
 
     def calculate_freqtable(self, cex_features):
         """ Takes the output from parsing and creates a frequency table """
-        cexfreqtable = {}
+        cexfreqtable = collections.OrderedDict()
         for cexid in self._cexids:
-            cexfreqtable[cexid] = {}
+            cexfreqtable[cexid] = collections.defaultdict(int)
         for fileid, file_cexfeatures in cex_features.items():
             for phone_cex in file_cexfeatures:
                 for val, cexid in zip(phone_cex, self._cexids):
                     if val in cexfreqtable[cexid]:
                         cexfreqtable[cexid][val] += 1
-                    else:
-                        cexfreqtable[cexid][val] = 1
+
         # fill in missing values for integers
         for cexid in self._cexids:
             if self._get_cexfunc(cexid).isinteger:
@@ -108,7 +107,7 @@ class CEXParser:
 
     def set_conversions(self, cexfreqtable, norm_ints = True):
         """ Converts a frequency table to a lookup table """
-        self._conversions = {}
+        self._conversions = collections.OrderedDict()
 
         for cexid, val_freqs in cexfreqtable.items():
             cexfunc = self._get_cexfunc(cexid)
@@ -143,7 +142,7 @@ class CEXParser:
 
     def convert_to_dnnfeatures(self, cex_features):
         """ Takes the extracted CEX features and coverts them to numeric values """
-        dnnfeatures = {}
+        dnnfeatures = collections.OrderedDict()
         for spurt, spurt_cex_features in cex_features.items():
             dnnfeatures[spurt] = self._cex_to_features(spurt_cex_features)
         return dnnfeatures
@@ -313,8 +312,7 @@ def cex_to_feat(doc, cexfreqtable):
 
     cex_parser.set_conversions(cexfreqtable, False)
     dnn_features = cex_parser.convert_to_dnnfeatures(cex_features)
-
-    return(dnn_features)
+    return dnn_features
 
 
 def feat_to_ark(fname, dnn_features):

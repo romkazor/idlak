@@ -18,10 +18,11 @@ import re
 import logging
 
 from .. import pylib
+from . import pyIdlak_gen
 
 class NNet:
     def __init__(self, nnet_model,
-                    incmvn_glob_ark = False,
+                    incmvn_glob = False,
                     indelta_opts = False,
                     incmvn_opts = False,
                     loglvl = logging.WARN):
@@ -31,23 +32,33 @@ class NNet:
         self.log.debug('Initialising NNet')
 
         # Options for different parts
-        self._incmvn = pylib.PyOptions(pylib.ApplyCMVNOptions)
+        self._incmvn_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
 
         self.log.debug('Loading options')
         if indelta_opts:
             self._load_indelta_opts(indelta_opts)
-        if incmvn_glob_ark and incmvn_opts:
-            self._incmvn_glob_ark = incmvn_glob_ark
+        if incmvn_glob and incmvn_opts:
+            self._incmvn_glob = incmvn_glob
             self._load_incmvn(incmvn_opts)
         elif (incmvn_glob_ark or incmvn_opts):
             raise ValueError('incmvn_glob_ark and incmvn_opts '
                              'must both be specified or left out')
+        else:
+            self._incmvn_glob = False
 
 
     def forward(self, features_in):
         """ Runs a forward pass through the features """
+        kaldimat = pylib.PyKaldiMatrixBaseFloat_frmlist(features_in)
 
-        pass
+        self.log.debug('Applying global cmvn on labels')
+        if self._incmvn_glob:
+            kaldimat_new = pyIdlak_gen.PyApplyCMVN(
+                self._incmvn_opts.kaldiopts, kaldimat, self._incmvn_glob)
+            del kaldimat # saves memory
+            kaldimat = kaldimat_new
+
+        
 
 
     def _load_indelta_opts(self, indelta_opts):
@@ -60,10 +71,10 @@ class NNet:
         self.log.debug('Loading options for global CMVN')
         norm_mean = self._get_optval('norm-means', incmvn_opts)
         if not norm_mean is None:
-            self._incmvn.set('norm-means', self._str_to_bool(norm_mean))
+            self._incmvn_opts.set('norm-means', self._str_to_bool(norm_mean))
         norm_vars = self._get_optval('norm-vars', incmvn_opts)
         if not norm_vars is None:
-            self._incmvn.set('norm-vars', self._str_to_bool(norm_vars))
+            self._incmvn_opts.set('norm-vars', self._str_to_bool(norm_vars))
 
 
     def _str_to_bool(self, val):
@@ -73,7 +84,7 @@ class NNet:
 
     def _get_optval(self, optname, optstring):
         """ Grab an option from a file """
-        pat = '(--)?' + optname + '\s*=\s*(?P<val>\S+)'
+        pat = '--' + optname + '\s*=\s*(?P<val>\S+)'
         m = re.search(pat, optstring)
         if m is None:
             return None
@@ -81,4 +92,3 @@ class NNet:
         if val.startswith('--'): # catches flags
             return 'true'
         return val
-

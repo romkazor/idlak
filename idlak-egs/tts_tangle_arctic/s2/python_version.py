@@ -32,17 +32,9 @@ durations = voice.generate_duration(dnnfeatures)
 # vocode
 # save
 
-# apply-cmvn --norm-means=true --norm-vars=true ./slt_pmdl/dur/incmvn_glob.ark scp:/home/dave/tmp/idlak_tmp/lbldur/feats.scp ark:-
+# apply-cmvn --norm-means=true --norm-vars=true ./slt_pmdl/dur/incmvn_glob.ark scp:$HOME/tmp/idlak_tmp/lbldur/feats.scp ark:- | nnet-forward ./slt_pmdl/dur/input_final.feature_transform ark:- ark:-
 
 
 """
-nnet-forward --reverse-transform=true --feature-transform=./slt_pmdl/dur/reverse_final.feature_transform ./slt_pmdl/dur/final.nnet
-    'ark:copy-feats scp:/home/dave/tmp/idlak_tmp/lbldur/feats.scp ark:-
-        | apply-cmvn --norm-means=true --norm-vars=true ./slt_pmdl/dur/incmvn_glob.ark ark:- ark:-
-        | nnet-forward ./slt_pmdl/dur/input_final.feature_transform ark:- ark:- |'
-    'ark,t:
-        | cat
-        | apply-cmvn --reverse --norm-means=false --norm-vars=true --utt2spk=ark:/home/dave/tmp/idlak_tmp/lbldur/utt2spk scp:/home/dave/tmp/idlak_tmp/lbldur/cmvn.scp ark:- ark,t:-
-        | tee /home/dave/tmp/idlak_tmp/durout/feats.ark
-        | awk -v dir=/home/dave/tmp/idlak_tmp/durout/cmp/ '\''($2 == "["){if (out) close(out); out=dir $1 ".cmp";}($2 != "["){if ($NF == "]") $NF=""; print $0 > out}'\'''
+nnet-forward --reverse-transform=true --feature-transform=./slt_pmdl/dur/reverse_final.feature_transform ./slt_pmdl/dur/final.nnet 'apply-cmvn --norm-means=true --norm-vars=true ./slt_pmdl/dur/incmvn_glob.ark scp:$HOME/tmp/idlak_tmp/lbldur/feats.scp ark:- | nnet-forward ./slt_pmdl/dur/input_final.feature_transform ark:- ark:- |' 'ark,t: | cat | apply-cmvn --reverse --norm-means=false --norm-vars=true --utt2spk=ark:$HOME/tmp/idlak_tmp/lbldur/utt2spk scp:$HOME/tmp/idlak_tmp/lbldur/cmvn.scp ark:- ark,t:- | tee $HOME/tmp/idlak_tmp/durout/feats.ark | awk -v dir=$HOME/tmp/idlak_tmp/durout/cmp/ '\''($2 == "["){if (out) close(out); out=dir $1 ".cmp";}($2 != "["){if ($NF == "]") $NF=""; print $0 > out}'\'' '
 """
