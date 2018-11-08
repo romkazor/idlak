@@ -35,6 +35,9 @@
 #include "python-gen-api.h"
 
 
+// Maybe would be better to pass the Neural net as a parameter, but there may
+// changes made to the NNet in the forward call.
+
 kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
     const kaldi::Matrix<kaldi::BaseFloat> &input) {
   try {

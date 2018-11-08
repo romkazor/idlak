@@ -35,6 +35,11 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
     const kaldi::Matrix<double> &cmvn_stats) {
 
   auto apply_cmvn_opts = pyopts->apply_cmvn_;
+  if (!apply_cmvn_opts) {
+    KALDI_ERR << "PySimpleOptions does not have ApplyCMVNOptions registered";
+    throw std::invalid_argument("PyApplyCMVN called with invalid options.");
+  }
+
   bool norm_vars = apply_cmvn_opts->norm_vars;
   bool norm_means = apply_cmvn_opts->norm_means;
   bool reverse = apply_cmvn_opts->reverse;

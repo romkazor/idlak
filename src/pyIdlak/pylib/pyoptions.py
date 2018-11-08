@@ -22,9 +22,19 @@ from . import pyIdlak_pylib as c_api
 
 class PyOptions:
 
-    def __init__(self, opttype = c_api.NONE):
+    def __init__(self, *opttypes):
         """ Create a Kaldi options object """
-        self._pyopts = c_api.PySimpleOptions_new(opttype)
+        self._pyopts = c_api.PySimpleOptions_new()
+        for ot in opttypes:
+            if ot not in [  c_api.NONE,
+                            c_api.AperiodicEnergyOptions,
+                            c_api.PdfPriorOptions,
+                            c_api.NnetForwardOptions,
+                            c_api.ApplyCMVNOptions,
+                            c_api.PyReadKaldiDoubleMatrix,
+                         ]:
+                raise ValueError('Unknown option type')
+            c_api.PySimpleOptions_register(self._pyopts, ot)
         self._types = {}
         names = c_api.PySimpleOptions_option_names(self._pyopts)
         for n in names:

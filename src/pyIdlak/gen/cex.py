@@ -50,7 +50,6 @@ class CEXParser:
         self.log.info("CEX parser initialised")
 
 
-
     def parse(self, xml, check_pron_strings = False):
         """ Parse the CEX document using the parser and returns then
             features by fileid / utterances
@@ -91,8 +90,7 @@ class CEXParser:
         for fileid, file_cexfeatures in cex_features.items():
             for phone_cex in file_cexfeatures:
                 for val, cexid in zip(phone_cex, self._cexids):
-                    if val in cexfreqtable[cexid]:
-                        cexfreqtable[cexid][val] += 1
+                    cexfreqtable[cexid][val] += 1
 
         # fill in missing values for integers
         for cexid in self._cexids:
@@ -107,8 +105,8 @@ class CEXParser:
 
     def set_conversions(self, cexfreqtable, norm_ints = True):
         """ Converts a frequency table to a lookup table """
-        self._conversions = collections.OrderedDict()
-
+        self._conversions = {}
+        num_features = 0
         for cexid, val_freqs in cexfreqtable.items():
             cexfunc = self._get_cexfunc(cexid)
 
@@ -122,6 +120,7 @@ class CEXParser:
                 else:
                     func = False
                     args = None
+                num_features += 1
             else:
                 cex_values.sort()
                 mapping = {}
@@ -136,8 +135,10 @@ class CEXParser:
                         arrlen -= 1
                 func = self._to_binary_array
                 args = [arrlen]
+                num_features += arrlen
 
             self._conversions[cexid] = CexConversion(cexid, mapping, func, args)
+        self.log.debug("Number of dnnfeatures: {0:d}".format(num_features))
 
 
     def convert_to_dnnfeatures(self, cex_features):
@@ -187,6 +188,7 @@ class CEXParser:
             self._cexids.append('cex000')
         self._cexids.extend([c.id for c in self._cexfunctions])
 
+
     def _parse_spurt(self, spurt, check_pron_strings):
         """ Parse an indiviual spurt / fileid """
         phone_name_pre = ''
@@ -229,12 +231,12 @@ class CEXParser:
         return cexs
 
 
-    def _cex_to_features(self, cex_features):
+    def _cex_to_features(self, spurt_cex_features):
         if not self._conversions:
             raise ValueError('Cannot convert to DNN features if coversion has not been set')
 
         spurt_features = []
-        for phone_cex in cex_features:
+        for phone_cex in spurt_cex_features:
             phone_features = []
             for cex, cexid in zip(phone_cex, self._cexids):
                 conversion = self._conversions[cexid]
@@ -271,6 +273,7 @@ class CEXParser:
     def _norm_int(self, val, offset, scaling):
         """ Converts integer to float using offset and scaling """
         return [(val - offset) / float(scaling)]
+
 
     def _get_cexfunc(self, cexid):
         """ Get the associated CEX function for the ID """

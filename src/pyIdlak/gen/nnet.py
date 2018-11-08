@@ -14,6 +14,7 @@
 # See the Apache 2 License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import re
 import logging
 
@@ -21,60 +22,110 @@ from .. import pylib
 from . import pyIdlak_gen
 
 class NNet:
-    def __init__(self, nnet_model,
-                    incmvn_glob = False,
+    def __init__(self, nnet_model_fn, feat_transform_fn,
+                    incmvn_global = False, incmvn_global_opts = False,
                     indelta_opts = False,
-                    incmvn_opts = False,
+                    input_transform = False,
+                    outcmvn_speaker_opts = False,
+                    outcmvn_global_opts = False,
                     loglvl = logging.WARN):
         """ Load a NNet model """
         logging.basicConfig(level = loglvl)
         self.log = logging.getLogger('pynnet')
         self.log.debug('Initialising NNet')
 
-        # Options for different parts
-        self._incmvn_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
+        if not os.path.isfile(nnet_model_fn):
+            raise IOError("cannot find model file: " + nnet_model_fn)
+        if not os.path.isfile(feat_transform_fn):
+            raise IOError("cannot find transform file: " + feat_transform_fn)
+        self._nnet_model_fn = nnet_model_fn
+        self._feat_transform_fn = feat_transform_fn
+
+        # Network options
+        self._forward_opts = pylib.PyOptions(
+            pylib.PdfPriorOptions, pylib.NnetForwardOptions)
+        self._forward_opts.set('model-filename', nnet_model_fn)
+        self._forward_opts.set('reverse-transform', True)
+        self._forward_opts.set('feature-transform', self._feat_transform_fn)
 
         self.log.debug('Loading options')
+        # Pre-processing options
         if indelta_opts:
             self._load_indelta_opts(indelta_opts)
-        if incmvn_glob and incmvn_opts:
-            self._incmvn_glob = incmvn_glob
-            self._load_incmvn(incmvn_opts)
-        elif (incmvn_glob_ark or incmvn_opts):
-            raise ValueError('incmvn_glob_ark and incmvn_opts '
+        else:
+            self._indelta = False
+
+        if incmvn_global and incmvn_global_opts:
+            self._incmvn_global = incmvn_global
+            self._incmvn_global_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
+            self._load_cmvn(self._incmvn_global_opts, incmvn_global_opts)
+        elif (incmvn_global or incmvn_global_opts):
+            raise ValueError('incmvn_global and incmvn_opts '
                              'must both be specified or left out')
         else:
-            self._incmvn_glob = False
+            self._incmvn_global = False
+
+        if input_transform:
+            if not os.path.isfile(input_transform):
+                raise IOError("Cannot find input transform file: " + input_transform)
+            self._intransform = input_transform # A file name
+            self._intransform_opts = pylib.PyOptions(
+                pylib.PdfPriorOptions, pylib.NnetForwardOptions)
+            self._intransform_opts.set("model-filename", input_transform)
+        else:
+            self._intransform = False
+
+        # Post-prosessing options
+        self._out_cmvn_speaker_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
+        self._out_cmvn_speaker_opts.set('reverse', True)
+        self._out_cmvn_global_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
+        self._out_cmvn_global_opts.set('reverse', True)
+
 
 
     def forward(self, features_in):
         """ Runs a forward pass through the features """
         kaldimat = pylib.PyKaldiMatrixBaseFloat_frmlist(features_in)
 
-        self.log.debug('Applying global cmvn on labels')
-        if self._incmvn_glob:
+        if self._indelta:
+            self.log.debug('Applying deltas on labels')
+            self.log.error('Not yet done')
+
+        if self._incmvn_global:
+            self.log.debug('Applying global cmvn on labels')
             kaldimat_new = pyIdlak_gen.PyApplyCMVN(
-                self._incmvn_opts.kaldiopts, kaldimat, self._incmvn_glob)
+                self._incmvn_global_opts.kaldiopts, kaldimat, self._incmvn_global)
             del kaldimat # saves memory
             kaldimat = kaldimat_new
 
-        
+        if self._intransform:
+            self.log.debug('Applying feature transform on labels')
+            kaldimat_new = pyIdlak_gen.PyGenNnetForwardPass(
+                self._intransform_opts.kaldiopts, kaldimat)
+            del kaldimat
+            kaldimat = kaldimat_new
+
+        self.log.debug('Forward DNN pass')
+        kaldimat_new = pyIdlak_gen.PyGenNnetForwardPass(
+            self._forward_opts.kaldiopts, kaldimat)
+        del kaldimat
+        kaldimat = kaldimat_new
+
+        # "Applying (reversed) fmllr transformation per-speaker"
+        # "Applying (reversed) per-speaker cmvn on output features"
+        # "Applying (reversed) global cmvn on output feature"
+        # Single option ?
 
 
-    def _load_indelta_opts(self, indelta_opts):
-        self.log.debug('Loading input delta options')
-        raise NotImplementedError("loading indelta_opts")
 
-
-    def _load_incmvn(self, incmvn_opts):
-        """ Load global CMVN options """
-        self.log.debug('Loading options for global CMVN')
-        norm_mean = self._get_optval('norm-means', incmvn_opts)
+    def _load_cmvn(self, pyopts, cmvn_opts):
+        """ Load CMVN options """
+        norm_mean = self._get_optval('norm-means', cmvn_opts)
         if not norm_mean is None:
-            self._incmvn_opts.set('norm-means', self._str_to_bool(norm_mean))
-        norm_vars = self._get_optval('norm-vars', incmvn_opts)
+            pyopts.set('norm-means', self._str_to_bool(norm_mean))
+        norm_vars = self._get_optval('norm-vars', cmvn_opts)
         if not norm_vars is None:
-            self._incmvn_opts.set('norm-vars', self._str_to_bool(norm_vars))
+            pyopts.set('norm-vars', self._str_to_bool(norm_vars))
 
 
     def _str_to_bool(self, val):

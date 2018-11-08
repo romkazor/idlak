@@ -24,6 +24,9 @@ from . import gen
 from . import pylib
 
 class TangleVoice:
+
+    NumStates = 5 # number of duration states
+
     """ Wrapper for pyIdlak to be used for TTS """
     def __init__(self, voice_dir = None, loglvl = logging.WARN):
         logging.basicConfig(level = loglvl)
@@ -75,6 +78,7 @@ class TangleVoice:
     def load_voice(self, voice_dir):
         """ Loads a voice from a directory """
         self._voicedir = os.path.abspath(str(voice_dir))
+        self.log.info("Loading voice from {0}".format(self._voicedir))
         if not os.path.isdir(self._voicedir):
             raise IOError("Cannot find voice directory")
 
@@ -173,6 +177,8 @@ class TangleVoice:
         from os.path import isdir, isfile
 
         nnet_model = pjoin(dnndir, 'final.nnet')
+        feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
+
         kwargs = {}
         indelta_optsfn = pjoin(dnndir, 'indelta_opts')
         if isfile(indelta_optsfn):
@@ -181,10 +187,14 @@ class TangleVoice:
         incmvn_optsfn = pjoin(dnndir, 'incmvn_opts')
         incmvn_globfn = pjoin(dnndir, 'incmvn_glob.ark')
         if isfile(incmvn_optsfn) and isfile(incmvn_globfn):
-            kwargs['incmvn_glob'] = pylib.PyReadKaldiDoubleMatrix(incmvn_globfn)
-            kwargs['incmvn_opts'] = open(incmvn_optsfn).read()
+            kwargs['incmvn_global'] = pylib.PyReadKaldiDoubleMatrix(incmvn_globfn)
+            kwargs['incmvn_global_opts'] = open(incmvn_optsfn).read()
 
-        return gen.NNet(nnet_model, **kwargs)
+        intransformfn = pjoin(dnndir, 'input_final.feature_transform')
+        if isfile(intransformfn):
+            kwargs['input_transform'] = intransformfn
+
+        return gen.NNet(nnet_model, feat_transform_fn, **kwargs)
 
 
     def process_text(self, text, normalise=True, cex=True):
@@ -195,6 +205,7 @@ class TangleVoice:
 
             Returns a txp XML document object
         """
+        self.log.debug("Processing input text")
         doc = txp.XMLDoc('<doc>' + str(text) + '</doc>')
         self.Tokeniser.process(doc)
         self.PosTag.process(doc)
@@ -212,6 +223,7 @@ class TangleVoice:
 
     def convert_to_dnn_features(self, doc):
         """ Converts a txp XML to dnn features """
+        self.log.debug("Converting processed text to DNN input features")
         if not type(doc) == txp.XMLDoc:
             raise ValueError("doc must be a txp XMLDoc")
         features = gen.cex_to_feat(doc, self._cexfreqtable)
@@ -220,14 +232,21 @@ class TangleVoice:
 
     def generate_duration(self, dnnfeatures):
         """ Takes the dnnfeatures and generates phone durations """
-
+        self.log.debug("Generating state durations")
         for spurtid in dnnfeatures:
             self.log.debug('generating duration for {0}'.format(spurtid))
             spurtfeatures = dnnfeatures[spurtid]
-            durmatrix = self._durmodel.forward(spurtfeatures)
+            statedfeatures = self._add_state_feature(spurtfeatures)
+            durmatrix = self._durmodel.forward(statedfeatures)
 
 
+    def _add_state_feature(self, spurtfeatures):
+        statedfeatures = []
+        for row in spurtfeatures:
+            statedfeatures.extend([row + [s] for s in range(self.NumStates)])
+        return statedfeatures
 
     # model pitch
     # model accoustic features
+
     # vocodes

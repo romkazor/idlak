@@ -47,7 +47,7 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
       }
       break;
     }
-    case nnet1_PdfPriorOptions: {
+    case PdfPriorOptions: {
       if (!pyopts->pdf_prior_) {
         pyopts->pdf_prior_ = new kaldi::nnet1::PdfPriorOptions;
         pyopts->pdf_prior_->Register(pyopts->po_);
