@@ -76,7 +76,7 @@ echo "Applying feature transform on labels"
 infeats_tst="$infeats_tst nnet-forward $durdnndir/input_final.feature_transform ark:- ark:- |"
 
 feat_transf=$durdnndir/reverse_final.feature_transform
-postproc="ark,t:| cat "
+postproc="ark:| cat "
 
 echo "Applying (reversed) per-speaker cmvn on output features"
 cmvn_opts=`cat < $durdnndir/cmvn_opts`
@@ -84,6 +84,9 @@ postproc="$postproc | apply-cmvn --reverse $cmvn_opts --utt2spk=ark:$lbldurdir/u
 
 awkcmd="'"'($2 == "["){if (out) close(out); out=dir $1 ".cmp";}($2 != "["){if ($NF == "]") $NF=""; print $0 > out}'"'"
 postproc="$postproc | tee $duroutdir/feats.ark | awk -v dir=$cmpdir $awkcmd"
+
 nnet=$durdnndir/final.nnet
 
-nnet-forward --reverse-transform=true --feature-transform=$feat_transf $nnet "${infeats_tst}" "${postproc}"
+# echo "${infeats_tst}"
+
+nnet-forward --reverse-transform=true --feature-transform=$feat_transf $nnet "${infeats_tst}" "${postproc}" > /dev/null

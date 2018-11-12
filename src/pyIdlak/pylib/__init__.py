@@ -29,11 +29,13 @@ from .pyIdlak_pylib import (
         PyReadKaldiDoubleMatrix,
         PyKaldiMatrixBaseFloat_frmlist,
         PyKaldiMatrixBaseFloat_tolist,
+        PyKaldiMatrixDouble_frmlist,
+        PyKaldiMatrixDouble_tolist
     )
 
 from .pyoptions import PyOptions
 
 from .utils import (
         get_rspecifier_keys,
-        get_name_matrix,
+        get_matrix_by_key,
     )

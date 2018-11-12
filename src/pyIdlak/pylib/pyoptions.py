@@ -18,6 +18,7 @@
 # Note that this is intended to be internal to pyIdlak and not exposed.
 
 import pydoc
+import json
 from . import pyIdlak_pylib as c_api
 
 class PyOptions:
@@ -90,3 +91,9 @@ class PyOptions:
 
     def __del__(self):
         c_api.PySimpleOptions_delete(self._pyopts)
+
+    def __str__(self):
+        opts = {}
+        for o in self.options:
+            opts[o] = self.get(o)
+        return json.dumps(opts, sort_keys=True, indent=4)

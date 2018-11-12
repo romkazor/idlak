@@ -115,8 +115,7 @@ class NNet:
         self.log.debug('Forward DNN pass')
         mat = pyIdlak_gen.PyGenNnetForwardPass(self._fwd_opts.kaldiopts, mat)
 
-        # "Applying (reversed) fmllr transformation per-speaker"
-
+        ## "Applying (reversed) fmllr transformation per-speaker"
         if self._out_cmvn_speaker_mat:
             self.log.debug('Applying (reversed) per-speaker cmvn on output features')
             mat = pyIdlak_gen.PyApplyCMVN(self._out_cmvn_speaker_opts.kaldiopts,
@@ -126,8 +125,6 @@ class NNet:
             self.log.debug('Applying (reversed) global cmvn on output feature')
             mat = pyIdlak_gen.PyApplyCMVN(self._out_cmvn_global_opts.kaldiopts,
                  mat, self._out_cmvn_global_mat)
-
-        # Single option ?
 
         return pylib.PyKaldiMatrixBaseFloat_tolist(mat)
 

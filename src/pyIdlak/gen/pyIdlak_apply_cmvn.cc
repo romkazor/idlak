@@ -61,10 +61,12 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
   if (!skip_dims.empty())
     FakeStatsForSomeDims(skip_dims, &tmp_cmvn_stats);
 
-  if (reverse) {
-    ApplyCmvnReverse(tmp_cmvn_stats, norm_vars, output, norm_means);
-  } else {
-    ApplyCmvn(tmp_cmvn_stats, norm_vars, output, norm_means);
+  if (norm_means) {
+    if (reverse) {
+      ApplyCmvnReverse(tmp_cmvn_stats, norm_vars, output, norm_means);
+    } else {
+      ApplyCmvn(tmp_cmvn_stats, norm_vars, output, norm_means);
+    }
   }
 
   return output;

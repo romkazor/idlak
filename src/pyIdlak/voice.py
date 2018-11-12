@@ -18,6 +18,7 @@ import os
 import sys
 import logging
 import collections
+import math
 
 from . import txp
 from . import vocoder
@@ -40,40 +41,6 @@ class TangleVoice:
 
         if not voice_dir is None:
             self.load_voice(voice_dir)
-
-    @property
-    def lng(self):
-        return self._lng
-    @property
-    def acc(self):
-        return self._acc
-    @property
-    def spk(self):
-        return self._spk
-    @property
-    def region(self):
-        return self._region
-    @property
-    def srate(self):
-        return self._srate
-    @property
-    def delta_order(self):
-        return self._delta_order
-    @property
-    def mcep_order(self):
-        return self._mcep_order
-    @property
-    def bndap_order(self):
-        return self._bndap_order
-    @property
-    def fftlen(self):
-        return self._fftlen
-    @property
-    def voice_thresh(self):
-        return self._voice_thresh
-    @property
-    def alpha(self):
-        return self._alpha
 
 
     def load_voice(self, voice_dir):
@@ -138,70 +105,18 @@ class TangleVoice:
 
         self._load_txp()
         self._load_gen()
+        self._load_vocoder()
 
 
-    def _load_txp(self):
-        """ Load the text processing components """
-        txpargs = [
-            '--tpdb', os.path.join(self._voicedir, 'lang'),
-            '--general-lang', self.lng,
-            '--general-acc', self.acc,
-        ]
-        if self._region:
-            txpargs.extend(['--general-region', self._region])
-        self._args = txp.TxpArgumentParser(usage='')
-        self._args.parse_args(*txpargs)
-        self.Tokeniser = txp.modules.Tokenise(self._args)
-        self.PosTag  = txp.modules.PosTag(self._args)
-        self.Normalise = txp.modules.Normalise(self._args)
-        self.Pauses = txp.modules.Pauses(self._args)
-        self.Phrasing = txp.modules.Phrasing(self._args)
-        self.Pronounce = txp.modules.Pronounce(self._args)
-        self.PostLex = txp.modules.PostLex(self._args)
-        self.Syllabify = txp.modules.Syllabify(self._args)
-        self.ContextExtraction = txp.modules.ContextExtraction(self._args)
-
-
-    def _load_gen(self):
-        """ Loads the generative modelling parts of the voice """
-        cexfreqtablefn = os.path.join(self._voicedir, 'lang',  'cex.ark.freq')
-        if not os.path.isfile(cexfreqtablefn):
-            raise IOError("Cannot find cex frequency table: '{0}'".format(cexfreqtablefn))
-        self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
-        self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
-
-
-    def _load_dnn(self, dnndir):
-        """ Loads a DNN model from a directory """
-        # using these functions a lot in this function
-        from os.path import join as pjoin
-        from os.path import isdir, isfile
-
-        nnet_model_fn = pjoin(dnndir, 'final.nnet')
-        feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
-
-        kwargs = {}
-
-        in_cmvn_global_optsfn = pjoin(dnndir, 'incmvn_opts')
-        in_cmvn_global_fn = pjoin(dnndir, 'incmvn_glob.ark')
-        if isfile(in_cmvn_global_optsfn) and isfile(in_cmvn_global_fn):
-            kwargs['in_cmvn_global_opts'] = open(in_cmvn_global_optsfn).read()
-            kwargs['in_cmvn_global_mat'] = pylib.PyReadKaldiDoubleMatrix(in_cmvn_global_fn)
-
-        intransformfn = pjoin(dnndir, 'input_final.feature_transform')
-        if isfile(intransformfn):
-            kwargs['input_transform'] = intransformfn
-
-        # Applying (reversed) fmllr transformation per-speaker
-
-        out_cmvn_speaker_optsfn = pjoin(dnndir, 'cmvn_opts')
-        out_cmvn_speaker_fn = pjoin(dnndir, 'cmvn.scp')
-        if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
-            kwargs['out_cmvn_speaker_opts'] = open(out_cmvn_speaker_optsfn).read()
-            rspecifier = 'scp:' +  out_cmvn_speaker_fn
-            kwargs['out_cmvn_speaker_mat'] = pylib.get_matrix_by_key(rspecifier, self.spk)
-
-        return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
+    def speak(self, text):
+        """ Simple interface for speaking text, returns the waveform """
+        cex = self.process_text(text)
+        dnnfeatures = self.convert_to_dnn_features(cex)
+        durations = self.generate_state_durations(dnnfeatures)
+        # model pitch
+        # apply MLPG
+        # vocode
+        # return wav
 
 
     def process_text(self, text, normalise=True, cex=True):
@@ -237,8 +152,14 @@ class TangleVoice:
         return features
 
 
-    def generate_duration(self, dnnfeatures):
-        """ Takes the dnnfeatures and generates phone durations """
+    def generate_state_durations(self, dnnfeatures):
+        """ Takes the dnnfeatures and generates state durations in frames
+
+            The state durations are predicted in frames then go through some
+            post-processing. The return is an n x m matrix in the form of a
+            list of lists of doubles where n is number of phones and m is the
+            number of states
+        """
         self.log.debug("Generating state durations")
         durations = collections.OrderedDict()
         for spurtid in dnnfeatures:
@@ -246,16 +167,174 @@ class TangleVoice:
             spurtfeatures = dnnfeatures[spurtid]
             statedfeatures = self._add_state_feature(spurtfeatures)
             durmatrix = self._durmodel.forward(statedfeatures)
-            durations[spurtid] = durmatrix
+            durations[spurtid] = self._post_duration_processing(durmatrix)
+
         return durations
 
+
+    @property
+    def lng(self):
+        return self._lng
+    @property
+    def acc(self):
+        return self._acc
+    @property
+    def spk(self):
+        return self._spk
+    @property
+    def region(self):
+        return self._region
+    @property
+    def srate(self):
+        return self._srate
+    @property
+    def delta_order(self):
+        return self._delta_order
+    @property
+    def mcep_order(self):
+        return self._mcep_order
+    @property
+    def bndap_order(self):
+        return self._bndap_order
+    @property
+    def fftlen(self):
+        return self._fftlen
+    @property
+    def voice_thresh(self):
+        return self._voice_thresh
+    @property
+    def alpha(self):
+        return self._alpha
+
+
+    def _load_txp(self):
+        """ Load the text processing components """
+        txpargs = [
+            '--tpdb', os.path.join(self._voicedir, 'lang'),
+            '--general-lang', self.lng,
+            '--general-acc', self.acc,
+        ]
+        if self._region:
+            txpargs.extend(['--general-region', self._region])
+        self._args = txp.TxpArgumentParser(usage='')
+        self._args.parse_args(*txpargs)
+        self.Tokeniser = txp.modules.Tokenise(self._args)
+        self.PosTag  = txp.modules.PosTag(self._args)
+        self.Normalise = txp.modules.Normalise(self._args)
+        self.Pauses = txp.modules.Pauses(self._args)
+        self.Phrasing = txp.modules.Phrasing(self._args)
+        self.Pronounce = txp.modules.Pronounce(self._args)
+        self.PostLex = txp.modules.PostLex(self._args)
+        self.Syllabify = txp.modules.Syllabify(self._args)
+        self.ContextExtraction = txp.modules.ContextExtraction(self._args)
+
+
+    def _load_gen(self):
+        """ Loads the generative modelling parts of the voice """
+        cexfreqtablefn = os.path.join(self._voicedir, 'lang',  'cex.ark.freq')
+        if not os.path.isfile(cexfreqtablefn):
+            raise IOError("Cannot find cex frequency table: '{0}'".format(cexfreqtablefn))
+        self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
+        self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
+        # Load pitch model
+        # Load synth model
+
+
+    def _load_vocoder(self):
+        """ Loads the vocoding info part of the voice """
+
+
+    def _load_dnn(self, dnndir):
+        """ Loads a DNN model from a directory """
+        from os.path import join as pjoin
+        from os.path import isdir, isfile
+
+        nnet_model_fn = pjoin(dnndir, 'final.nnet')
+        feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
+
+        kwargs = {}
+
+        in_cmvn_global_optsfn = pjoin(dnndir, 'incmvn_opts')
+        in_cmvn_global_fn = pjoin(dnndir, 'incmvn_glob.ark')
+        if isfile(in_cmvn_global_optsfn) and isfile(in_cmvn_global_fn):
+            kwargs['in_cmvn_global_opts'] = open(in_cmvn_global_optsfn).read()
+            kwargs['in_cmvn_global_mat'] = pylib.PyReadKaldiDoubleMatrix(in_cmvn_global_fn)
+
+        intransformfn = pjoin(dnndir, 'input_final.feature_transform')
+        if isfile(intransformfn):
+            kwargs['input_transform'] = intransformfn
+
+        # Applying (reversed) fmllr transformation per-speaker
+
+        out_cmvn_speaker_optsfn = pjoin(dnndir, 'cmvn_opts')
+        out_cmvn_speaker_fn = pjoin(dnndir, 'cmvn.scp')
+        if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
+            kwargs['out_cmvn_speaker_opts'] = open(out_cmvn_speaker_optsfn).read()
+            rspecifier = 'scp:' +  out_cmvn_speaker_fn
+            kwargs['out_cmvn_speaker_mat'] = pylib.get_matrix_by_key(rspecifier, self.spk)
+
+
+        # Global CMVN options
+
+        return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
+
+
     def _add_state_feature(self, spurtfeatures):
+        """ Takes the features from context,
+            and generates features with state info """
         statedfeatures = []
         for row in spurtfeatures:
             statedfeatures.extend([row + [s] for s in range(self.NumStates)])
         return statedfeatures
 
-    # model pitch
-    # model accoustic features
 
-    # vocodes
+    def _post_duration_processing(self, durmatrix):
+        """ Final processing of state durations
+
+            The first column of the predicted values is the state duration in
+            miliseconds, and the second is the total phone duration.
+
+            The post processing will average the prediction of the phones,
+            avarage that with the total state duration. We then rescale the
+            phones to match this avarage duration, and convert to frames.
+            Finally the first and last states are modified so that they have at
+            least one frame.
+        """
+        Sidx = 0 # state duration column = 0
+        Pidx = 1 # phone duration column = 1
+        N = self.NumStates
+        state_durations = []
+        predict_indices = range(0, len(durmatrix), N)
+        for phone_idx, predict_idx in enumerate(predict_indices):
+            pred_idx_range = range(predict_idx, predict_idx + N)
+            phn_state_durs = [max(durmatrix[p][Sidx],0) for p in pred_idx_range]
+
+            mean_phn = sum([durmatrix[p][Pidx] for p in pred_idx_range]) / N
+            mean_phn = max(mean_phn, 0)
+            t_state_dur = sum(phn_state_durs)
+
+            # if all the state durations are zero then just set the first
+            # and last to 1 and avoid a div by zero
+            if t_state_dur > 0. and mean_phn > 0.:
+                tgt_phone_dur = math.ceil((mean_phn + t_state_dur) / 2)
+                ratio = tgt_phone_dur / t_state_dur
+                for sidx in range(N):
+                    phn_state_durs[sidx] *= ratio
+                    phn_state_durs[sidx] = math.ceil(phn_state_durs[sidx])
+            else:
+                msg = 'In phone: {0}'.format(phone_idx)
+                if t_state_dur == 0.:
+                    msg += 'All state have 0. duration'
+                if mean_phn == 0.:
+                    msg += 'Mean phone duration is 0.'
+                self.log.warn(msg)
+
+            # Ensuring that the first and last state have at least 1 occupancy
+            # as they model the transitions
+            phn_state_durs[0] = max(phn_state_durs[0], 1)
+            phn_state_durs[N - 1] = max(phn_state_durs[N - 1], 1)
+
+            state_durations.append(phn_state_durs)
+
+        return state_durations
+
