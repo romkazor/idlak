@@ -26,6 +26,7 @@ from .pyIdlak_pylib import (
         PdfPriorOptions,
         NnetForwardOptions,
         ApplyCMVNOptions,
+        DeltaFeaturesOptions,
         PyReadKaldiDoubleMatrix,
         PyKaldiMatrixBaseFloat_frmlist,
         PyKaldiMatrixBaseFloat_tolist,

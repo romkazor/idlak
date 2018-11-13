@@ -68,6 +68,13 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
       }
       break;
     }
+    case DeltaFeaturesOptions: {
+      if (!pyopts->apply_cmvn_) {
+        pyopts->add_deltas_ = new kaldi::DeltaFeaturesOptions;
+        pyopts->add_deltas_->Register(pyopts->po_);
+      }
+      break;
+    }
     case NONE:
       break;
   }
@@ -79,6 +86,7 @@ void PySimpleOptions_delete(PySimpleOptions * pyopts) {
   if (pyopts->pdf_prior_) delete pyopts->pdf_prior_;
   if (pyopts->nnet_fwd_) delete pyopts->nnet_fwd_;
   if (pyopts->apply_cmvn_) delete pyopts->apply_cmvn_;
+  if (pyopts->add_deltas_) delete pyopts->add_deltas_;
   delete pyopts;
 }
 

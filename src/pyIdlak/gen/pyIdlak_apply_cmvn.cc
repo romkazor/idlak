@@ -34,6 +34,8 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
     const kaldi::Matrix<kaldi::BaseFloat> &input,
     const kaldi::Matrix<double> &cmvn_stats) {
 
+  if (!pyopts)
+    throw std::invalid_argument("PyApplyCMVN called without options.");
   auto apply_cmvn_opts = pyopts->apply_cmvn_;
   if (!apply_cmvn_opts) {
     KALDI_ERR << "PySimpleOptions does not have ApplyCMVNOptions registered";
@@ -52,14 +54,18 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
   }
 
   kaldi::Matrix<double> tmp_cmvn_stats(cmvn_stats);
-  std::vector<int32> skip_dims;
-  if (!kaldi::SplitStringToIntegers(apply_cmvn_opts->skip_dims_str, ":", false, &skip_dims)) {
-    KALDI_ERR << "Bad --skip-dims option (should be colon-separated list of "
-              << "integers)";
-    throw std::invalid_argument("PyApplyCMVN called with invalid options.");
+
+  if (!apply_cmvn_opts->skip_dims_str.empty()) {
+    std::vector<int32> skip_dims;
+    const char delim[] = ":"; // fixes an occasional segfault
+    if (!kaldi::SplitStringToIntegers(apply_cmvn_opts->skip_dims_str, delim, false, &skip_dims)) {
+      KALDI_ERR << "Bad --skip-dims option (should be colon-separated list of "
+                << "integers)";
+      throw std::invalid_argument("PyApplyCMVN called with invalid options.");
+    }
+    if (!skip_dims.empty())
+      FakeStatsForSomeDims(skip_dims, &tmp_cmvn_stats);
   }
-  if (!skip_dims.empty())
-    FakeStatsForSomeDims(skip_dims, &tmp_cmvn_stats);
 
   if (norm_means) {
     if (reverse) {

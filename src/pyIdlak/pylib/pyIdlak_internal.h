@@ -27,6 +27,7 @@
 #include <cstdio>
 
 #include "util/simple-options.h"
+#include "feat/feature-functions.h"
 #include "idlakfeat/feature-aperiodic.h"
 #include "nnet/nnet-pdf-prior.h"
 
@@ -82,11 +83,13 @@ struct PyApplyCMVNOptions {
 typedef struct PyApplyCMVNOptions PyApplyCMVNOptions;
 
 
-
+// Make sure this stays in line with python-pylib-api.h and __init__.py
+// and python-pylib-api.cc
 struct PySimpleOptions {
   kaldi::SimpleOptions * po_;
   kaldi::AperiodicEnergyOptions * aprd_ = nullptr;
   kaldi::nnet1::PdfPriorOptions * pdf_prior_ = nullptr;
+  kaldi::DeltaFeaturesOptions * add_deltas_ = nullptr;
   PyNnetForwardOptions * nnet_fwd_ = nullptr;
   PyApplyCMVNOptions * apply_cmvn_ = nullptr;
 };

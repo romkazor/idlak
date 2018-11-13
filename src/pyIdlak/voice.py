@@ -19,6 +19,7 @@ import sys
 import logging
 import collections
 import math
+from lxml import etree
 
 from . import txp
 from . import vocoder
@@ -29,6 +30,10 @@ class TangleVoice:
 
     NumStates = 5 # number of duration states
 
+    # should not need to be every changed
+    _phone_pos_fuzz = 0.1
+    _state_pos_fuzz = 0.2
+
     """ Wrapper for pyIdlak to be used for TTS """
     def __init__(self, voice_dir = None, loglvl = logging.WARN):
         logging.basicConfig(level = loglvl)
@@ -38,6 +43,8 @@ class TangleVoice:
         self._acc = ''
         self._spk = ''
         self._region = ''
+        self._fshift = 0.005
+
 
         if not voice_dir is None:
             self.load_voice(voice_dir)
@@ -67,17 +74,17 @@ class TangleVoice:
             self._lng = voice_conf['lng']
             del voice_conf['lng']
         except KeyError:
-            print("WARN: voice configuration missing langage (lng)", file = sys.stderr)
+            self.log.warn("voice configuration missing langage (lng)")
         try:
             self._acc = voice_conf['acc']
             del voice_conf['acc']
         except KeyError:
-            print("WARN: voice configuration missing accent (acc)", file = sys.stderr)
+            self.log.warn("voice configuration missing accent (acc)")
         try:
             self._spk = voice_conf['spk']
             del voice_conf['spk']
         except KeyError:
-            print("WARN: voice configuration missing speaker (spk)", file = sys.stderr)
+            self.log.warn("voice configuration missing speaker (spk)")
 
         if 'region' in voice_conf:
             self._region = voice_conf['region']
@@ -91,17 +98,18 @@ class TangleVoice:
                         val = fieldtype(voice_conf[field])
                         setattr(self, '_' + field, val)
                     except ValueError:
-                        print("ERROR: voice configuration cannot convert '{0}' to {1}".format(field, fieldtypename),
-                              file = sys.stderr)
+                        self.log.error(
+                            "voice configuration cannot convert '{0}' to {1}".format(
+                                field, fieldtypename))
                     finally:
                         del voice_conf[field]
         int_fields = ['srate', 'delta_order', 'mcep_order', 'bndap_order', 'fftlen']
         __load_fields(int_fields, int, 'integer')
-        float_fields = ['voice_thresh', 'alpha']
+        float_fields = ['voice_thresh', 'alpha', 'fshift']
         __load_fields(float_fields, float, 'float')
 
         for k in voice_conf:
-            print("WARN: unknown voice configuration field '{0}'".format(k), file = sys.stderr)
+            self.log.warn("unknown voice configuration field '{0}'".format(k))
 
         self._load_txp()
         self._load_gen()
@@ -111,8 +119,9 @@ class TangleVoice:
     def speak(self, text):
         """ Simple interface for speaking text, returns the waveform """
         cex = self.process_text(text)
-        dnnfeatures = self.convert_to_dnn_features(cex)
-        durations = self.generate_state_durations(dnnfeatures)
+        durdnnfeatures = self.cex_to_dnn_features(cex)
+        state_durations = self.generate_state_durations(durdnnfeatures)
+        pitchdnnfeatures = self.combine_durations_and_features()
         # model pitch
         # apply MLPG
         # vocode
@@ -128,7 +137,20 @@ class TangleVoice:
             Returns a txp XML document object
         """
         self.log.debug("Processing input text")
-        doc = txp.XMLDoc('<doc>' + str(text) + '</doc>')
+        text = str(text)
+        xmlparser = etree.XMLParser(encoding = 'utf8')
+        try:
+            etree.fromstring(text, parser = xmlparser)
+        except etree.XMLSyntaxError:
+            self.log.debug("Input is not valid xml, adding parent tags")
+            text = '<parent>' + text + '</parent>'
+            try:
+                etree.fromstring(text, parser = xmlparser)
+            except etree.XMLSyntaxError as e:
+                self.log.critical('Cannot parse input')
+                raise(e)
+
+        doc = txp.XMLDoc(text)
         self.Tokeniser.process(doc)
         self.PosTag.process(doc)
         if normalise:
@@ -143,7 +165,7 @@ class TangleVoice:
         return doc
 
 
-    def convert_to_dnn_features(self, doc):
+    def cex_to_dnn_features(self, doc):
         """ Converts a txp XML to dnn features """
         self.log.debug("Converting processed text to DNN input features")
         if not type(doc) == txp.XMLDoc:
@@ -152,13 +174,16 @@ class TangleVoice:
         return features
 
 
-    def generate_state_durations(self, dnnfeatures):
+    def generate_state_durations(self, dnnfeatures, apply_postproc = True):
         """ Takes the dnnfeatures and generates state durations in frames
 
             The state durations are predicted in frames then go through some
             post-processing. The return is an n x m matrix in the form of a
             list of lists of doubles where n is number of phones and m is the
             number of states
+
+            The post processing can be disabled to just produce the results of
+            the duration DNN prediction.
         """
         self.log.debug("Generating state durations")
         durations = collections.OrderedDict()
@@ -167,11 +192,58 @@ class TangleVoice:
             spurtfeatures = dnnfeatures[spurtid]
             statedfeatures = self._add_state_feature(spurtfeatures)
             durmatrix = self._durmodel.forward(statedfeatures)
-            durations[spurtid] = self._post_duration_processing(durmatrix)
+            if apply_postproc:
+                durations[spurtid] = self._post_duration_processing(durmatrix)
+            else:
+                durations[spurtid] = durmatrix
 
         return durations
 
 
+    def combine_durations_and_features(self, durations, dnnfeatures):
+        """ Combines the state durations and full context features
+            and to form inputs for the pitch modelling
+
+            Durations are in frames
+            A fuzzy factor is introduced to positions
+        """
+        self.log.debug("Combining predicted state durations with DNN features")
+        combinedfeatures = collections.OrderedDict()
+        for spurtid, spurtdurs in durations.items():
+            combinedfeatures[spurtid] = []
+            for phoneidx, statedurs in enumerate(spurtdurs):
+                phnfeatures = dnnfeatures[spurtid][phoneidx]
+                phndur = sum(statedurs)
+                for stateidx, statedur in enumerate(statedurs):
+                    for statepos in range(statedur):
+                        phnpos = sum(statedurs[:stateidx]) + statepos
+                        fuzzy_statepos = self._fuzzy_position(
+                            self._state_pos_fuzz, statepos, statedur)
+                        fuzzy_phnpos = self._fuzzy_position(
+                            self._phone_pos_fuzz, phnpos, phndur)
+                        spos = [stateidx, statedur, fuzzy_statepos]
+                        ppos = [phndur, fuzzy_phnpos]
+                        combinedfeatures[spurtid].append(list(phnfeatures + spos + ppos))
+                        phnpos += 1
+        return combinedfeatures
+
+
+    def durations_to_mlf(self, fname, durations):
+        """ Saves an HTK compatable MLF file from the durations """
+        _HTKtime = 100e-9  # 100ns
+        with open(fname, 'w') as fout:
+            fout.write('#!MLF!#\n')
+            for fid, fdurations in durations.items():
+                fout.write('"{0}.lab"\n'.format(fid))
+                tstart = 0
+                for pidx, statedurs in enumerate(fdurations):
+                    for sidx, sdur in enumerate(statedurs):
+                        if sdur:
+                            tend = tstart + (sdur * self.fshift) / _HTKtime
+                            fout.write('{0:.0f} {1:.0f} {2} {3}\n'.format(
+                                tstart, tend, pidx+1, sidx))
+                            tstart = tend
+                fout.write('.\n')
     @property
     def lng(self):
         return self._lng
@@ -205,7 +277,9 @@ class TangleVoice:
     @property
     def alpha(self):
         return self._alpha
-
+    @property
+    def fshift(self):
+        return self._fshift
 
     def _load_txp(self):
         """ Load the text processing components """
@@ -236,7 +310,7 @@ class TangleVoice:
             raise IOError("Cannot find cex frequency table: '{0}'".format(cexfreqtablefn))
         self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
         self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
-        # Load pitch model
+        self._pitchmodel = self._load_dnn(os.path.join(self._voicedir, 'pitch'))
         # Load synth model
 
 
@@ -322,6 +396,7 @@ class TangleVoice:
                     phn_state_durs[sidx] *= ratio
                     phn_state_durs[sidx] = math.ceil(phn_state_durs[sidx])
             else:
+                tgt_phone_dur = 0
                 msg = 'In phone: {0}'.format(phone_idx)
                 if t_state_dur == 0.:
                     msg += 'All state have 0. duration'
@@ -338,3 +413,7 @@ class TangleVoice:
 
         return state_durations
 
+
+    def _fuzzy_position(self, fuzzy_factor, position, duration):
+        real_position = (position + 0.5) / duration
+        return int(round(real_position / fuzzy_factor))

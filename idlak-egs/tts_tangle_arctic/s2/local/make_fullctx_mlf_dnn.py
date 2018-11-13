@@ -9,7 +9,9 @@ def parse_mlf(monofile):
     # Skip MLF header
     fp.readline()
     for l in fp.readlines():
-        if l[0] == '"':
+        if l.strip() == '.':
+            id = None
+        elif l[0] == '"':
             id = l.strip()[1:-5]
             out[id] = []
         else:
@@ -107,7 +109,7 @@ def main():
     opts, args = parser.parse_args()
     if len(args) == 3:
         make_fullctx_mlf_dnn(args[0], args[1], args[2], extra_feats=opts.extra_feats)
-    else: 
+    else:
         parser.error('Mandatory arguments missing or excessive number of arguments')
 
 if __name__ == '__main__':

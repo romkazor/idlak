@@ -17,41 +17,61 @@ sys.path.insert(0, _srcpath)
 import pyIdlak
 
 
+
 inputtxt = "This is a sample. With two sentences."
 outdir = expanduser('~/tmp/idlak_out')
-tmpdir = expanduser('~/tmp/idlak_tmp')
-voicedir = join('slt_pmdl')
+datadir = expanduser('~/tmp/idlak_tmp')
+pyoutdir = join(datadir, 'pyout')
+voicedir = join(dirname(abspath(__file__)), 'slt_pmdl')
+
+# Clean the output directories
+os.makedirs(outdir, exist_ok = True)
+os.makedirs(datadir, exist_ok = True)
+shutil.rmtree(join(outdir, '*'), ignore_errors = True)
+shutil.rmtree(join(datadir, '*'), ignore_errors = True)
 
 voice = pyIdlak.TangleVoice(voicedir, loglvl = logging.DEBUG)
 final_cex = voice.process_text(inputtxt)
-dnnfeatures = voice.convert_to_dnn_features(final_cex)
-#durations = voice.generate_state_durations(dnnfeatures)
+durdnnfeatures = voice.cex_to_dnn_features(final_cex)
+durpred = voice.generate_state_durations(durdnnfeatures, False)
+durations = voice.generate_state_durations(durdnnfeatures)
+pitchdnnfeatures = voice.combine_durations_and_features(durations, durdnnfeatures)
+
+
+# Save bits and pieces of the results
+os.makedirs(pyoutdir, exist_ok = True)
+for fid, fdurs in durpred.items():
+    with open(join(pyoutdir, fid + '.dur.cmp'), 'w') as fout:
+        for d in fdurs:
+            fout.write(' '.join(map(lambda f: '{:.6f}'.format(f), d)) + '\n')
+voice.durations_to_mlf(join(pyoutdir, 'pyIdlak_lab.mlf'), durations)
+
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'feat.pitch.ark'), pitchdnnfeatures, matrix = True)
+
+
+print ("\n\nBash Version Started\n\n\n")
 
 # Original version
-shutil.rmtree(outdir, ignore_errors = True)
-os.makedirs(outdir, exist_ok = True)
-shutil.rmtree(tmpdir, ignore_errors = True)
-os.makedirs(tmpdir, exist_ok = True)
 
 opts = {
-    'datadir' : tmpdir,
+    'datadir' : datadir,
     'durdnndir' : join(voicedir, 'dur')
 }
 
-with open(join(tmpdir, 'text.xml'),'w') as fout:
-    fout.write('<doc>')
+with open(join(datadir, 'text.xml'),'w') as fout:
+    fout.write('<parent>')
     fout.write(inputtxt)
-    fout.write('</doc>\n')
+    fout.write('</parent>\n')
 
-with open(join(tmpdir, 'text_full.xml'),'w') as fout:
+with open(join(datadir, 'text_full.xml'),'w') as fout:
     fout.write(final_cex.to_string())
 
-pyIdlak.gen.feat_to_ark(join(tmpdir, 'cex.ark'), dnnfeatures)
+pyIdlak.gen.feat_to_ark(join(datadir, 'cex.ark'), durdnnfeatures)
 
 
 # Duration modelling
 opts['exp'] = './slt_pmdl/dur'
-opts['duroutdir'] = join(tmpdir, 'durout')
+opts['duroutdir'] = join(datadir, 'durout')
 opts['incmvn_opts'] = open('{exp}/incmvn_opts'.format(**opts)).read().strip()
 opts['feat_transf'] = "{exp}/reverse_final.feature_transform".format(**opts)
 opts['nnet'] =  "{exp}/final.nnet".format(**opts)
@@ -119,7 +139,7 @@ with open(join(opts['duroutdir'], 'feats.ark')) as ark:
             continue
         if line.endswith(']'):
             empty_curid = True
-            line = line[:-1]
+            line = line[:-1].strip()
         if not curid:
             raise IOError('ark not formated as expected')
         fout.write(line + '\n')
@@ -133,49 +153,50 @@ if fout:
 
 SP.call('./local/makemlf.sh {duroutdir} {datadir}'.format(**opts), shell = True)
 
+SP.call('python local/make_fullctx_mlf_dnn.py {datadir}/synth_lab.mlf {datadir}/cex.ark {datadir}/feat.ark'.format(**opts),
+        shell = True)
 
-"""
-SP.call(cmd + ' > bashres.ark', shell=True)
-bashres = collections.OrderedDict()
-bashark = open('bashres.ark').readlines()
-pat = re.compile(r'^(?P<fid>\S+)\s+\[')
-curid = False
-for line in bashark:
-    empty_curid = False
-    line = line.strip()
-    m = pat.match(line)
-    if m is not None:
-        curid = m.group('fid')
-        bashres[curid] = []
-        print ('loading', curid)
-        line = re.sub(pat, '', line).strip()
-    if not line:
-        continue
-    if line.endswith(']'):
-        empty_curid = True
-        line = line[:-1]
-    if not curid:
-        raise IOError('ark not formated as expected')
-    bashres[curid].append(list(map(float, line.split())))
-    if empty_curid:
-        curid = ''
 
-for curid in bashres:
-    b_mat = np.array(bashres[curid])
-    p_mat = np.array(durations[curid])
-    if b_mat.shape[0] != p_mat.shape[0]:
-        raise ValueError(curid + ' number rows do not match')
-    if b_mat.shape[1] != p_mat.shape[1]:
-        raise ValueError(curid + ' number columns do not match')
-    diff = np.allclose(b_mat, p_mat)
-    if not diff:
-        raise ValueError(curid + ' is not almost equal')
-"""
+print ("\n\nStarted Checking\n\n\n")
+# check the duration prediction
+print("Checking the duration prediction")
+for spurtid in durpred.keys():
+    pydurs = np.loadtxt(join(pyoutdir, fid + '.dur.cmp'))
+    bashdurs = np.loadtxt(join(opts['durcmp'], fid + '.cmp'))
+    if pydurs.shape[0] != bashdurs.shape[0]:
+        raise ValueError("Duration: unequal number of rows")
+    if pydurs.shape[1] != bashdurs.shape[1]:
+        raise ValueError("Duration: unequal number of columns")
+    if not np.allclose(pydurs, bashdurs):
+        raise ValueError("Duration: different predictions")
 
-#for spurtid, durmat in durations.items():
-    #print (spurtid, ':')
-    #for r in durmat[:1]:
-        #print (' '.join(map(lambda v: "{0:10.6f}".format(v), r)))
+
+print("Checking the MLF")
+pymlf = list(map(str.strip, open(join(pyoutdir, 'pyIdlak_lab.mlf')).readlines()))
+bashmlf = list(map(str.strip, open(join(opts['datadir'], 'synth_lab.mlf')).readlines()))
+pymlf = list(filter(len, pymlf))
+bashmlf = list(filter(len, bashmlf))
+if len(pymlf) != len(bashmlf):
+    raise ValueError("MLF: different number of rows")
+for i in range(len(pymlf)):
+    p = pymlf[i]
+    b = bashmlf[i]
+    if p != b:
+        raise ValueError("MLF: different values")
+
+print("Checking the pitch input features")
+pypitchark = list(map(str.strip, open(join(pyoutdir, 'feat.pitch.ark')).readlines()))
+bashpitchark = list(map(str.strip, open(join(opts['datadir'], 'feat.ark')).readlines()))
+pypitchark = list(filter(len, pypitchark))
+bashpitchark = list(filter(len, bashpitchark))
+if len(pypitchark) != len(bashpitchark):
+    raise ValueError("PITCH INPUT: different number of rows")
+for i in range(len(pypitchark)):
+    p = pypitchark[i]
+    b = bashpitchark[i]
+    if p != b:
+        raise ValueError("PITCH INPUT: different values")
+
 
 
 # generate_f0

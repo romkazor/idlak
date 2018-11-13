@@ -30,7 +30,8 @@ enum IDLAK_OPT_TYPES {
   AperiodicEnergyOptions = 1,
   PdfPriorOptions = 2,
   NnetForwardOptions = 3,
-  ApplyCMVNOptions = 4
+  ApplyCMVNOptions = 4,
+  DeltaFeaturesOptions = 5
 };
 
 
