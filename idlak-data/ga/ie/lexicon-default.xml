@@ -191,7 +191,7 @@
 <lex pron="a0 n sh uu1 d" entry="full" default="true">ansiúd</lex>
 <lex pron="@0 n u@1 s" entry="full" default="true">anuas</lex>
 <lex pron="@0 n uh1 r @2" entry="full" default="true">anuraidh</lex>
-<lex pron="@0 nj ee1  s" entry="full" default="true">aníos</lex>
+<lex pron="@0 nj ee1 s" entry="full" default="true">aníos</lex>
 <lex pron="eey1" entry="full" default="true">aodh</lex>
 <lex pron="eey1 d aa0 nj" entry="full" default="true">aodháin</lex>
 <lex pron="eey1 d aa0 n" entry="full" default="true">aodhán</lex>
@@ -4954,7 +4954,7 @@
 <lex pron="s o1 f i@0 nj" entry="full" default="true">sofien</lex>
 <lex pron="s o0 lj eey1 rj" entry="full" default="true">soiléir</lex>
 <lex pron="s o0 lj eey1 rj @0" entry="full" default="true">soiléire</lex>
-<lex pron="s o0  lj eey1 rj @0 x t @0" entry="full" default="true">soiléireachta</lex>
+<lex pron="s o0 lj eey1 rj @0 x t @0" entry="full" default="true">soiléireachta</lex>
 <lex pron="s o0 lj eey1 rj uu0" entry="full" default="true">soiléiriú</lex>
 <lex pron="s o1 rj" entry="full" default="true">soir</lex>
 <lex pron="s o1 l @0 sh" entry="full" default="true">solais</lex>
@@ -5042,7 +5042,7 @@
 <lex pron="s t aa1 d @0 s" entry="full" default="true">stádas</lex>
 <lex pron="s t aa1 nj" entry="full" default="true">stáin</lex>
 <lex pron="s t aa1 sh uu0 nj" entry="full" default="true">stáisiúin</lex>
-<lex pron="s t aa1  sh uu2 n" entry="full" default="true">stáisiún</lex>
+<lex pron="s t aa1 sh uu2 n" entry="full" default="true">stáisiún</lex>
 <lex pron="s t aa1 tj" entry="full" default="true">stáit</lex>
 <lex pron="s t aa1 tj sh uu0" entry="full" default="true">stáitsiú</lex>
 <lex pron="s t aa1 t" entry="full" default="true">stát</lex>
