@@ -141,6 +141,9 @@
 	<phone name="v">
 		<description word_example="dubh" pron_example="d_uh1_v" ipa="β"/>
 	</phone>
+	<phone name="vj">
+		<description word_example="bheo" pron_example="vj_oy1" ipa="βʲ"/>
+	</phone>
 	<phone name="x">
 		<description word_example="ach" pron_example="a1_x" ipa="x"/>
 	</phone>
