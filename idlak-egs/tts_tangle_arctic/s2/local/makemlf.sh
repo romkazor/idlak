@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-duroutdir=$1
+durcmpdir=$1
 datadir=$2
 
-(echo '#!MLF!#'; for cmp in $duroutdir/cmp/*.cmp; do
+(echo '#!MLF!#'; for cmp in $durcmpdir/*.cmp; do
     cat $cmp | awk -v nstate=5 -v id=`basename $cmp .cmp` '
 function ceil(val) {
   return (val == int(val)) ? val : int(val)+1

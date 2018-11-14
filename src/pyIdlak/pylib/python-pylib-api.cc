@@ -72,6 +72,9 @@ void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opt
       if (!pyopts->apply_cmvn_) {
         pyopts->add_deltas_ = new kaldi::DeltaFeaturesOptions;
         pyopts->add_deltas_->Register(pyopts->po_);
+        pyopts->extra_int_["truncate"] = 0;
+        pyopts->po_->Register("truncate", &pyopts->extra_int_["truncate"],
+                         "If nonzero, first truncate features to this dimension.");
       }
       break;
     }

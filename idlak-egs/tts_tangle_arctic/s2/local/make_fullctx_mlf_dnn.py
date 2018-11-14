@@ -1,3 +1,4 @@
+import math
 from xml.etree import ElementTree as ET
 import sys, re
 
@@ -43,8 +44,9 @@ def parse_fullctx(fullctxfile):
     return out
 
 def fuzzy_position(fuzzy_factor, position, duration):
-    real_position = (position + 0.5) / duration
-    return int(round(real_position / fuzzy_factor))
+    real_position = position / duration
+    fuzzy_pos =  math.ceil(real_position / fuzzy_factor)
+    return fuzzy_pos
 
 def make_fullctx_mlf_dnn(mlffile, fullctx, outputfile, framerate_htk = 50000, phone_fuzz_factor = 0.1, state_fuzz_factor = 0.2, extra_feats=""):
     monos = parse_mlf(mlffile)

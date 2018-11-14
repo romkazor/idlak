@@ -52,6 +52,12 @@ class NNet:
 
         self.log.debug('Loading options')
         # Pre-processing options
+        if in_delta_opts:
+            self._in_delta_opts = pylib.PyOptions(pylib.DeltaFeaturesOptions)
+            self._load_delta(self._in_delta_opts, in_delta_opts)
+        else:
+            self._in_delta_opts = False
+
         if in_cmvn_global_mat and in_cmvn_global_opts:
             self._in_cmvn_global_mat = in_cmvn_global_mat
             self._in_cmvn_global_opts = pylib.PyOptions(pylib.ApplyCMVNOptions)
@@ -100,7 +106,9 @@ class NNet:
         """ Runs a forward pass through the features """
         mat = pylib.PyKaldiMatrixBaseFloat_frmlist(features_in)
 
-        # 'Applying deltas on labels'
+        if self._in_delta_opts:
+            self.log.debug('Applying deltas on labels')
+            mat = pyIdlak_gen.PyAddDeltas(self._in_delta_opts.kaldiopts, mat)
 
         if self._in_cmvn_global_mat:
             self.log.debug('Applying global cmvn on labels')
@@ -127,6 +135,20 @@ class NNet:
                  mat, self._out_cmvn_global_mat)
 
         return pylib.PyKaldiMatrixBaseFloat_tolist(mat)
+
+
+    def _load_delta(self, pyopts, delta_opts):
+        """ Load Add Delta options """
+        truncate = self._get_optval('truncate', delta_opts)
+        if not truncate is None:
+            pyopts.set('truncate', int(truncate))
+        order = self._get_optval('delta-order', delta_opts)
+        if not truncate is None:
+            pyopts.set('delta-order', int(order))
+        window = self._get_optval('delta-window', delta_opts)
+        if not truncate is None:
+            pyopts.set('delta-window', int(window))
+
 
     def _load_cmvn(self, pyopts, cmvn_opts):
         """ Load CMVN options """

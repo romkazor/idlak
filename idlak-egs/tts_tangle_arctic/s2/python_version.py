@@ -9,7 +9,7 @@ import shutil
 import subprocess as SP
 import numpy as np
 
-from os.path import expanduser, join, abspath, dirname
+from os.path import expanduser, join, abspath, dirname, isfile, isdir
 
 # Import pyIdlak
 _srcpath = join(abspath(dirname(__file__)), '..', '..', '..', 'src')
@@ -25,10 +25,10 @@ pyoutdir = join(datadir, 'pyout')
 voicedir = join(dirname(abspath(__file__)), 'slt_pmdl')
 
 # Clean the output directories
+shutil.rmtree(join(outdir), ignore_errors = True)
+shutil.rmtree(join(datadir), ignore_errors = True)
 os.makedirs(outdir, exist_ok = True)
 os.makedirs(datadir, exist_ok = True)
-shutil.rmtree(join(outdir, '*'), ignore_errors = True)
-shutil.rmtree(join(datadir, '*'), ignore_errors = True)
 
 voice = pyIdlak.TangleVoice(voicedir, loglvl = logging.DEBUG)
 final_cex = voice.process_text(inputtxt)
@@ -36,6 +36,13 @@ durdnnfeatures = voice.cex_to_dnn_features(final_cex)
 durpred = voice.generate_state_durations(durdnnfeatures, False)
 durations = voice.generate_state_durations(durdnnfeatures)
 pitchdnnfeatures = voice.combine_durations_and_features(durations, durdnnfeatures)
+pitch = voice.generate_pitch(pitchdnnfeatures)
+
+
+
+
+##### Finished
+
 
 
 # Save bits and pieces of the results
@@ -47,122 +54,151 @@ for fid, fdurs in durpred.items():
 voice.durations_to_mlf(join(pyoutdir, 'pyIdlak_lab.mlf'), durations)
 
 pyIdlak.gen.feat_to_ark(join(pyoutdir, 'feat.pitch.ark'), pitchdnnfeatures, matrix = True)
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'pitch.out.ark'), pitch, matrix = True, fmt='{:.5f}')
 
 
 print ("\n\nBash Version Started\n\n\n")
 
-# Original version
+def scp_to_spkutt_files(outdir, _voice, scpfile):
+    with open(scpfile) as fin:
+        with open(join(outdir, 'utt2spk'), 'w') as utt2spk:
+            with open(join(outdir, 'spk2utt'), 'w') as spk2utt:
+                spk2utt.write("{} ".format(voice.spk))
+                for l in fin:
+                    utt = l.split()[0]
+                    utt2spk.write("{} {}\n".format(utt, voice.spk))
+                    spk2utt.write("{} ".format(utt))
+                spk2utt.write("\n")
+
+
+def run_prediction(dnnopts):
+    infeats_tst  = 'ark:copy-feats scp:{0[lbl]}/feats.scp ark:-'.format(dnnopts)
+    if 'incmvn_opts' in dnnopts:
+        infeats_tst += ' | apply-cmvn {0[incmvn_opts]} {0[dnndir]}/incmvn_glob.ark ark:- ark:-'.format(dnnopts)
+    if 'infeat_transf' in dnnopts:
+        infeats_tst += ' | nnet-forward {0[infeat_transf]} ark:- ark:-'.format(dnnopts)
+    infeats_tst += ' |'
+
+    postproc  = "ark:| cat "
+    if 'cmvn_opts' in dnnopts:
+        postproc += " | apply-cmvn --reverse {0[cmvn_opts]} --utt2spk=ark:{0[lbl]}/utt2spk scp:{0[lbl]}/cmvn.scp ark:- ark,t:-".format(dnnopts)
+    postproc += " | copy-feats ark:- ark,t:{0[out]}/feats.ark".format(dnnopts)
+
+    durcmd = "nnet-forward --reverse-transform=true --feature-transform={0[feat_transf]} {0[nnet]} '{infeats_tst}' '{postproc}'".format(
+        dnnopts, infeats_tst=infeats_tst, postproc=postproc)
+    SP.call(durcmd, shell = True)
+
+
+def parse_arkfile(fname):
+    ark = collections.OrderedDict()
+    arkfile = open(fname).read()
+    arkfile = re.sub(';', '\n', arkfile)
+    for m in re.finditer('(?P<id>[a-zA-Z0-9]+)\s*\[(?P<mat>.*?)\]\s*', arkfile, flags = re.S):
+        ark[m.group('id')] = np.array(
+            [list(map(float, s.split())) for s in m.group('mat').split('\n') if len(s.strip())]
+        )
+    return ark
+
+
+# Setting up the outputs
+durdnndir = join(voicedir, 'dur')
+pitchdnndir = join(voicedir, 'pitch')
+acfdnndir = join(voicedir, 'acoustic')
 
 opts = {
     'datadir' : datadir,
-    'durdnndir' : join(voicedir, 'dur')
 }
 
+for name, dnndir in [('dur', durdnndir), ('pitch', pitchdnndir), ('acf', acfdnndir)]:
+    dnnopts = {
+        'lbl' : join(datadir, name, 'lbl'), # input
+        'out' : join(datadir, name, 'out'), # output
+        'cmp' : join(datadir, name, 'cmp'), # processed output
+        'nnet' : join(dnndir, 'final.nnet'), # nnet model
+        'feat_transf' : join(dnndir, 'reverse_final.feature_transform'), # reverse transform
+        'dnndir' : dnndir # where the dnn is located
+    }
+    if isfile(join(dnndir, 'incmvn_opts')):
+        dnnopts['incmvn_opts'] = open(join(dnndir, 'incmvn_opts')).read().strip() # input CMVN
+    if isfile(join(dnndir, 'cmvn_opts')):
+        dnnopts['cmvn_opts'] = open(join(dnndir, 'cmvn_opts')).read().strip() # output CMVN
+    if isfile(join(dnndir, 'input_final.feature_transform')):
+        dnnopts['infeat_transf'] = join(dnndir, 'input_final.feature_transform')
+    opts[name] = dnnopts
+    os.makedirs(dnnopts['lbl'], exist_ok = True)
+    os.makedirs(dnnopts['out'], exist_ok = True)
+    os.makedirs(dnnopts['cmp'], exist_ok = True)
+
+
+# Saving the input text for debugging
 with open(join(datadir, 'text.xml'),'w') as fout:
     fout.write('<parent>')
     fout.write(inputtxt)
     fout.write('</parent>\n')
-
 with open(join(datadir, 'text_full.xml'),'w') as fout:
     fout.write(final_cex.to_string())
-
 pyIdlak.gen.feat_to_ark(join(datadir, 'cex.ark'), durdnnfeatures)
 
 
-# Duration modelling
-opts['exp'] = './slt_pmdl/dur'
-opts['duroutdir'] = join(datadir, 'durout')
-opts['incmvn_opts'] = open('{exp}/incmvn_opts'.format(**opts)).read().strip()
-opts['feat_transf'] = "{exp}/reverse_final.feature_transform".format(**opts)
-opts['nnet'] =  "{exp}/final.nnet".format(**opts)
-opts['cmvn_opts'] = open('{exp}/cmvn_opts'.format(**opts)).read().strip()
-opts['durcmp'] = join(opts['duroutdir'], 'cmp')
-opts['lbldurdir'] = join(opts['datadir'], 'lbldur')
-opts['tst'] = opts['lbldurdir']
+####### Duration modelling
 
-# Generate input feature for duration modelling
-to_feat_cmd = 'cat {datadir}/cex.ark'.format(**opts)
+# Input
+to_feat_cmd = 'cat {[datadir]}/cex.ark'.format(opts)
 to_feat_cmd += ' ' + """
- | awk -v extras="" '{{print $1, "["; $1=""; na = split($0, a, ";"); for (i = 1; i < na; i++) for (state = 0; state < 5; state++) print extras, a[i], state; print "]"}}'
-""".format(**opts).strip()
-to_feat_cmd += " | copy-feats ark:- ark,scp:{datadir}/in_durfeats.ark,{datadir}/in_durfeats.scp".format(**opts)
+ | awk -v extras="" '{print $1, "["; $1=""; na = split($0, a, ";"); for (i = 1; i < na; i++) for (state = 0; state < 5; state++) print extras, a[i], state; print "]"}'
+""".strip()
+to_feat_cmd += " | copy-feats ark:- ark,scp:{datadir}/in_durfeats.ark,{datadir}/in_durfeats.scp".format(datadir = datadir)
 SP.call(to_feat_cmd, shell = True)
 
-os.makedirs(opts['lbldurdir'], exist_ok = True)
-shutil.copyfile("{datadir}/in_durfeats.scp".format(**opts), "{lbldurdir}/feats.scp".format(**opts))
-shutil.copyfile("{durdnndir}/cmvn.scp".format(**opts), "{lbldurdir}/cmvn.scp".format(**opts))
+scpfile = join(opts['dur']['lbl'], 'feats.scp')
+shutil.copy(join(datadir, "in_durfeats.scp"), scpfile)
+shutil.copy(join(durdnndir, "cmvn.scp"), opts['dur']['lbl'])
+scp_to_spkutt_files(opts['dur']['lbl'], voice, scpfile)
 
-with open(join(opts['lbldurdir'], 'feats.scp')) as fin:
-    with open(join(opts['lbldurdir'], 'utt2spk'), 'w') as utt2spk:
-        with open(join(opts['lbldurdir'], 'spk2utt'), 'w') as spk2utt:
-            spk2utt.write("{} ".format(voice.spk))
-            for l in fin:
-                utt = l.split()[0]
-                utt2spk.write("{} {}\n".format(utt, voice.spk))
-                spk2utt.write("{} ".format(utt))
-            spk2utt.write("\n")
+# Predict
+run_prediction(opts['dur'])
+
+# Post process
+durark = parse_arkfile(join(opts['dur']['out'], 'feats.ark'))
+for sptid, durs in durark.items():
+    cmpfile = join(opts['dur']['cmp'], sptid + '.cmp')
+    np.savetxt(cmpfile, durs, fmt = "%.6f")
+SP.call('./local/makemlf.sh {0[dur][cmp]} {0[datadir]}'.format(opts), shell = True)
 
 
-os.makedirs(opts['duroutdir'], exist_ok = True)
-os.makedirs(opts['durcmp'], exist_ok = True)
-infeats_tst  = 'ark:copy-feats scp:{tst}/feats.scp ark:-'.format(**opts)
-infeats_tst += ' | apply-cmvn {incmvn_opts} {exp}/incmvn_glob.ark ark:- ark:-'.format(**opts)
-infeats_tst += ' | nnet-forward {exp}/input_final.feature_transform ark:- ark:-'.format(**opts)
-infeats_tst += ' |'
-opts['infeats_tst'] = infeats_tst
+######## Pitch modelling
 
-postproc  = "ark:| cat "
-postproc += " | apply-cmvn --reverse {cmvn_opts} --utt2spk=ark:{tst}/utt2spk scp:{tst}/cmvn.scp ark:- ark,t:-".format(**opts)
-postproc += " | copy-feats ark:- ark,t:{duroutdir}/feats.ark".format(**opts)
-opts['postproc'] = postproc
-
-durcmd = "nnet-forward --reverse-transform=true --feature-transform={feat_transf} {nnet} '{infeats_tst}' '{postproc}'".format(**opts)
-SP.call(durcmd, shell = True)
-
-# Split up the duration files
-pat = re.compile(r'^(?P<fid>\S+)\s+\[')
-curid = False
-fout = False
-with open(join(opts['duroutdir'], 'feats.ark')) as ark:
-    for line in ark:
-        empty_curid = False
-        line = line.strip()
-        m = pat.match(line)
-        if m is not None:
-            if fout:
-                fout.close()
-                fout = False
-            curid = m.group('fid')
-            fout = open(join(opts['durcmp'], curid + '.cmp'), 'w')
-            line = re.sub(pat, '', line).strip()
-        if not line:
-            continue
-        if line.endswith(']'):
-            empty_curid = True
-            line = line[:-1].strip()
-        if not curid:
-            raise IOError('ark not formated as expected')
-        fout.write(line + '\n')
-        if empty_curid:
-            curid = ''
-            if fout:
-                fout.close()
-                fout = False
-if fout:
-    fout.close()
-
-SP.call('./local/makemlf.sh {duroutdir} {datadir}'.format(**opts), shell = True)
-
-SP.call('python local/make_fullctx_mlf_dnn.py {datadir}/synth_lab.mlf {datadir}/cex.ark {datadir}/feat.ark'.format(**opts),
+# Input
+SP.call('python3 local/make_fullctx_mlf_dnn.py'
+        ' {datadir}/synth_lab.mlf {datadir}/cex.ark {datadir}/pitchfeat.ark'.format(**opts),
         shell = True)
+SP.call('copy-feats ark:{datadir}/pitchfeat.ark ark,scp:{datadir}/in_pitchfeats.ark,{datadir}/in_pitchfeats.scp'.format(**opts), shell = True)
+shutil.copyfile(join(datadir, 'in_pitchfeats.scp'), join(opts['pitch']['lbl'], 'feats.scp'))
+scpfile = join(opts['pitch']['lbl'], 'feats.scp')
+scp_to_spkutt_files(opts['pitch']['lbl'], voice, scpfile)
+
+# Predict
+run_prediction(opts['pitch'])
+
+# Post process
+
+
+######## Acoustic feature modelling
+
+
+
+
 
 
 print ("\n\nStarted Checking\n\n\n")
+
+
+
 # check the duration prediction
 print("Checking the duration prediction")
 for spurtid in durpred.keys():
     pydurs = np.loadtxt(join(pyoutdir, fid + '.dur.cmp'))
-    bashdurs = np.loadtxt(join(opts['durcmp'], fid + '.cmp'))
+    bashdurs = np.loadtxt(join(opts['dur']['cmp'], fid + '.cmp'))
     if pydurs.shape[0] != bashdurs.shape[0]:
         raise ValueError("Duration: unequal number of rows")
     if pydurs.shape[1] != bashdurs.shape[1]:
@@ -173,7 +209,7 @@ for spurtid in durpred.keys():
 
 print("Checking the MLF")
 pymlf = list(map(str.strip, open(join(pyoutdir, 'pyIdlak_lab.mlf')).readlines()))
-bashmlf = list(map(str.strip, open(join(opts['datadir'], 'synth_lab.mlf')).readlines()))
+bashmlf = list(map(str.strip, open(join(datadir, 'synth_lab.mlf')).readlines()))
 pymlf = list(filter(len, pymlf))
 bashmlf = list(filter(len, bashmlf))
 if len(pymlf) != len(bashmlf):
@@ -184,25 +220,39 @@ for i in range(len(pymlf)):
     if p != b:
         raise ValueError("MLF: different values")
 
+
 print("Checking the pitch input features")
-pypitchark = list(map(str.strip, open(join(pyoutdir, 'feat.pitch.ark')).readlines()))
-bashpitchark = list(map(str.strip, open(join(opts['datadir'], 'feat.ark')).readlines()))
-pypitchark = list(filter(len, pypitchark))
-bashpitchark = list(filter(len, bashpitchark))
-if len(pypitchark) != len(bashpitchark):
-    raise ValueError("PITCH INPUT: different number of rows")
-for i in range(len(pypitchark)):
-    p = pypitchark[i]
-    b = bashpitchark[i]
-    if p != b:
-        raise ValueError("PITCH INPUT: different values")
+pyark = parse_arkfile(join(pyoutdir, 'feat.pitch.ark'))
+bashark = parse_arkfile(join(datadir, 'pitchfeat.ark'))
+for spurtid, pymat in pyark.items():
+    bashmat = bashark[spurtid]
+    if pymat.shape[0] != bashmat.shape[0]:
+        raise ValueError("Pitch input: unequal number of rows")
+    if pymat.shape[1] != bashmat.shape[1]:
+        raise ValueError("Pitch input: unequal number of columns ({}) ({})".format(pymat.shape[1], bashmat.shape[1]))
+    if not np.allclose(pymat, bashmat, atol = 1e-4, rtol=0.):
+        raise ValueError("Pitch input: different predictions")
+
+
+print("Checking the pitch prediction")
+pyark = parse_arkfile(join(pyoutdir, 'pitch.out.ark'))
+bashark = parse_arkfile(join(opts['pitch']['out'], 'feats.ark'))
+for spurtid, pymat in pyark.items():
+    bashmat = bashark[spurtid]
+    if pymat.shape[0] != bashmat.shape[0]:
+        raise ValueError("Pitch predict: unequal number of rows")
+    if pymat.shape[1] != bashmat.shape[1]:
+        raise ValueError("Pitch predict: unequal number of columns")
+    if not np.allclose(pymat, bashmat, atol = 1e-4, rtol=0.):
+        raise ValueError("Pitch predict: different predictions")
 
 
 
-# generate_f0
-# generate_spec
-# vocode
-# save
+
+
+### generate_spec
+## vocode
+## save
 
 
 

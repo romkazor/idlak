@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <map>
 
 #include "util/simple-options.h"
 #include "feat/feature-functions.h"
@@ -92,6 +93,9 @@ struct PySimpleOptions {
   kaldi::DeltaFeaturesOptions * add_deltas_ = nullptr;
   PyNnetForwardOptions * nnet_fwd_ = nullptr;
   PyApplyCMVNOptions * apply_cmvn_ = nullptr;
+  std::map<std::string, int> extra_int_;
+  std::map<std::string, double> extra_double_;
+  std::map<std::string, std::string> extra_str_;
 };
 
 

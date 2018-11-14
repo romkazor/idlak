@@ -318,7 +318,7 @@ def cex_to_feat(doc, cexfreqtable):
     return dnn_features
 
 
-def feat_to_ark(fname, dnn_features, matrix = False):
+def feat_to_ark(fname, dnn_features, matrix = False, fmt = '{}'):
     """ Saves DNN features as a vector of vectors ascii ark file """
     spurtids = sorted(dnn_features.keys())
     if fname == '-':
@@ -333,7 +333,7 @@ def feat_to_ark(fname, dnn_features, matrix = False):
 
         for i, sptfeats in enumerate(dnn_features[sptid]):
             fout.write(' ')
-            fout.write(' '.join(map(str, sptfeats)))
+            fout.write(' '.join(map(lambda s: fmt.format(s), sptfeats)))
             if matrix:
                 fout.write('\n')
             else:

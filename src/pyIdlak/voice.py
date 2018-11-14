@@ -121,8 +121,8 @@ class TangleVoice:
         cex = self.process_text(text)
         durdnnfeatures = self.cex_to_dnn_features(cex)
         state_durations = self.generate_state_durations(durdnnfeatures)
-        pitchdnnfeatures = self.combine_durations_and_features()
-        # model pitch
+        pitchdnnfeatures = self.combine_durations_and_features(state_durations, durdnnfeatures)
+        pitch = self.generate_pitch(pitchdnnfeatures)
         # apply MLPG
         # vocode
         # return wav
@@ -187,9 +187,8 @@ class TangleVoice:
         """
         self.log.debug("Generating state durations")
         durations = collections.OrderedDict()
-        for spurtid in dnnfeatures:
+        for spurtid, spurtfeatures in dnnfeatures.items():
             self.log.debug('generating duration for {0}'.format(spurtid))
-            spurtfeatures = dnnfeatures[spurtid]
             statedfeatures = self._add_state_feature(spurtfeatures)
             durmatrix = self._durmodel.forward(statedfeatures)
             if apply_postproc:
@@ -228,6 +227,18 @@ class TangleVoice:
         return combinedfeatures
 
 
+    def generate_pitch(self, pitchdnnfeatures):
+        """ Predict the pitch features """
+        self.log.debug("Generating pitch values")
+        pitch = collections.OrderedDict()
+        for spurtid, spurtfeatures in pitchdnnfeatures.items():
+            self.log.debug('generating pitch for {0}'.format(spurtid))
+            pitchmatrix = self._pitchmodel.forward(spurtfeatures)
+            pitch[spurtid] = pitchmatrix
+
+        return pitch
+
+
     def durations_to_mlf(self, fname, durations):
         """ Saves an HTK compatable MLF file from the durations """
         _HTKtime = 100e-9  # 100ns
@@ -244,6 +255,8 @@ class TangleVoice:
                                 tstart, tend, pidx+1, sidx))
                             tstart = tend
                 fout.write('.\n')
+
+
     @property
     def lng(self):
         return self._lng
@@ -328,18 +341,26 @@ class TangleVoice:
 
         kwargs = {}
 
+        # Input deltas
+        in_delta_optsfn = pjoin(dnndir, 'indelta_opts')
+        if isfile(in_delta_optsfn) and isfile(in_delta_optsfn):
+            kwargs['in_delta_opts'] = open(in_delta_optsfn).read()
+
+        # Global input CMVN
         in_cmvn_global_optsfn = pjoin(dnndir, 'incmvn_opts')
         in_cmvn_global_fn = pjoin(dnndir, 'incmvn_glob.ark')
         if isfile(in_cmvn_global_optsfn) and isfile(in_cmvn_global_fn):
             kwargs['in_cmvn_global_opts'] = open(in_cmvn_global_optsfn).read()
             kwargs['in_cmvn_global_mat'] = pylib.PyReadKaldiDoubleMatrix(in_cmvn_global_fn)
 
+        # Input transform
         intransformfn = pjoin(dnndir, 'input_final.feature_transform')
         if isfile(intransformfn):
             kwargs['input_transform'] = intransformfn
 
         # Applying (reversed) fmllr transformation per-speaker
 
+        # Output by speaker CMVN
         out_cmvn_speaker_optsfn = pjoin(dnndir, 'cmvn_opts')
         out_cmvn_speaker_fn = pjoin(dnndir, 'cmvn.scp')
         if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
@@ -349,6 +370,7 @@ class TangleVoice:
 
 
         # Global CMVN options
+
 
         return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
 
@@ -415,5 +437,7 @@ class TangleVoice:
 
 
     def _fuzzy_position(self, fuzzy_factor, position, duration):
-        real_position = (position + 0.5) / duration
-        return int(round(real_position / fuzzy_factor))
+        real_position = position / duration
+        fuzzy_pos =  math.ceil(real_position / fuzzy_factor)
+        return fuzzy_pos
+
