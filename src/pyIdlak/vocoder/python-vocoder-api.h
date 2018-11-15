@@ -20,7 +20,7 @@
 
 // This wrapper replicates some SPTK binaries as Python functions
 //  The results of which are in flattened arrays. The documentation
-//  has been modified from the original SPTK documentation available 
+//  has been modified from the original SPTK documentation available
 //  at http://sp-tk.sourceforge.net/
 
 #ifndef KALDI_PYIDLAK_VOCODER_PYTHON_VOCODER_API_H_
@@ -85,9 +85,9 @@ The input vector is:
 Note that the changes to the following options:
   "-r" has been removed
   "-d" only works with filenames
-  "-l" has been removed as order is required instead
+  "-m" has been removed as total length is required instead
 */
-std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int order,
+std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_length,
                                 const std::vector<std::string> &window_filenames, int input_type,
                                 int influence_range);
 
@@ -105,7 +105,7 @@ if the threshold is 0.0 then it depends on the pade order and stability conditio
   r=1,P=4 : R=6.2
   r=0,P=5 : R=6.0
   r=1,P=5 : R=7.65
-  
+
 if quiet is true then errors are not reported to stderr
 */
 std::vector<double> PySPTK_mlsacheck(const std::vector<double> &INPUT, int order,

@@ -101,13 +101,13 @@ void update_c(PStream * pst, int d);
 #define finv(x)  (abs(x) <= INVINF2 ? sign(x)*INFTY : (abs(x) >= INFTY2 ? 0 : 1.0/(x)))
 #define min(x, y) ((x)<(y) ? (x) : (y))
 
-std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int order,
+std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_length,
                                 const std::vector<std::string> &window_filenames, int input_type,
                                 int influence_range) {
   std::vector<double> parameters;
-  
+
   PStream pst;
-  pst.order = order;
+  pst.order = vector_length;
   pst.range = influence_range;
   pst.iType = input_type;
   pst.dw.num = window_filenames.size();
@@ -121,11 +121,11 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int order,
 
   int nframe = 0;
   int delay = pst.range + pst.dw.maxw[WRIGHT];
-  
+
   std::vector<double>::const_iterator INPUT_it = INPUT.begin();
   while (vreadf(pst.mean, pst.vSize * 2, INPUT, &INPUT_it) == pst.vSize * 2) {
     if (pst.dw.num == 1) {
-      for (int i = 0; i < pst.order + 1; i++) {
+      for (int i = 0; i < pst.order; i++) {
         parameters.push_back(pst.mean[i]);
       }
     } else {
@@ -137,7 +137,7 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int order,
       mlpg(&pst);
 
       if (nframe >= delay) {
-        for (int i = 0; i < pst.order + 1; i++) {
+        for (int i = 0; i < pst.order; i++) {
           parameters.push_back(pst.par[i]);
         }
       }
@@ -152,7 +152,7 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int order,
     }
     for (int i = 0; i < min(nframe, delay); i++) {
       mlpg(&pst);
-      for (int i = 0; i < pst.order + 1; i++) {
+      for (int i = 0; i < pst.order; i++) {
         parameters.push_back(pst.par[i]);
       }
     }
@@ -178,7 +178,7 @@ void init_pstream(PStream * pst)
    half = pst->range * 2;
    full = pst->range * 4 + 1;
 
-   pst->vSize = (pst->order + 1) * pst->dw.num;
+   pst->vSize = (pst->order) * pst->dw.num;
 
    pst->sm.length = LENGTH;
    while (pst->sm.length < pst->range + pst->dw.maxw[WRIGHT])
@@ -190,14 +190,14 @@ void init_pstream(PStream * pst)
    pst->sm.mseq = ddcalloc(pst->sm.length, pst->vSize, 0, 0);
    pst->sm.ivseq = ddcalloc(pst->sm.length, pst->vSize, 0, 0);
 
-   pst->sm.c = ddcalloc(pst->sm.length, pst->order + 1, 0, 0);
-   pst->sm.P = dddcalloc(full, pst->sm.length, pst->order + 1, half, 0, 0);
+   pst->sm.c = ddcalloc(pst->sm.length, pst->order, 0, 0);
+   pst->sm.P = dddcalloc(full, pst->sm.length, pst->order, half, 0, 0);
 
    pst->sm.pi =
-       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order + 1,
+       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order,
                 pst->range, 0);
    pst->sm.k =
-       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order + 1,
+       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order,
                 pst->range, 0);
 
    for (i = 0; i < pst->sm.length; i++)
@@ -375,7 +375,7 @@ int doupdate(PStream * pst, int d)
 {
    int j;
 
-   if (pst->sm.ivseq[pst->sm.t & pst->sm.mask][(pst->order + 1) * d] == 0.0)
+   if (pst->sm.ivseq[pst->sm.t & pst->sm.mask][(pst->order) * d] == 0.0)
       return (0);
    for (j = pst->dw.width[d][WLEFT]; j <= pst->dw.width[d][WRIGHT]; j++)
       if (pst->sm.P[0][(pst->sm.t + j) & pst->sm.mask][0] == INFTY)
@@ -407,7 +407,7 @@ void calc_k(PStream * pst, int d)
    int j, m, u;
    double *ivar, x;
 
-   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
+   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
    for (m = 0; m <= pst->order; m++) {
       x = 0.0;
       for (j = pst->dw.width[d][WLEFT]; j <= pst->dw.width[d][WRIGHT]; j++)
@@ -445,8 +445,8 @@ void update_c(PStream * pst, int d)
    int j, m, u;
    double *mean, *ivar, x;
 
-   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
-   mean = pst->sm.mseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
+   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
+   mean = pst->sm.mseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
    for (m = 0; m <= pst->order; m++) {
       x = mean[m];
       if (pst->iType == 2)
@@ -459,4 +459,3 @@ void update_c(PStream * pst, int d)
 
    return;
 }
-

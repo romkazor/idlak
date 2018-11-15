@@ -4,7 +4,8 @@ var_pitch=data/train/var_pitch.txt
 durdnndir=exp_dnn/tts_dnn_dur_3_delta_quin5/
 f0dnndir=exp_dnn/tts_dnn_f0_3_delta_quin5/
 acsdnndir=exp_dnn/tts_dnn_train_3_delta_quin5/
-spk=bdl
+windir=win/
+spk=slt
 lng=en
 acc=ga
 srate=16000
@@ -41,8 +42,9 @@ if [ ! $tpdbdir ]; then
 fi
 
 rm -rf $outputdir
-mkdir -p $outputdir/{dur,pitch,acoustic,lang}
+mkdir -p $outputdir/{dur,pitch,acoustic,lang,win}
 
+cp $windir/* $outputdir/win/.
 
 for step in dur pitch acoustic; do
     case $step in

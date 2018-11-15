@@ -30,7 +30,7 @@ class TangleVoice:
 
     NumStates = 5 # number of duration states
 
-    # should not need to be every changed
+    # should not ever need to be changed
     _phone_pos_fuzz = 0.1
     _state_pos_fuzz = 0.2
 
@@ -113,17 +113,21 @@ class TangleVoice:
 
         self._load_txp()
         self._load_gen()
+        self._load_mlpg()
         self._load_vocoder()
 
 
     def speak(self, text):
         """ Simple interface for speaking text, returns the waveform """
         cex = self.process_text(text)
-        durdnnfeatures = self.cex_to_dnn_features(cex)
-        state_durations = self.generate_state_durations(durdnnfeatures)
-        pitchdnnfeatures = self.combine_durations_and_features(state_durations, durdnnfeatures)
+        durfeatures = self.cex_to_dnn_features(cex)
+        state_durations = self.generate_state_durations(durfeatures)
+        pitchfeatures = self.combine_durations_and_features(
+            state_durations, durfeatures)
         pitch = self.generate_pitch(pitchdnnfeatures)
-        # apply MLPG
+        acousticdnnfeatures = self.combine_pitch_and_features(
+            pitch, pitchfeatures)
+        acousticfeatures = self.generate_acoustic_features(acousticdnnfeatures)
         # vocode
         # return wav
 
@@ -188,7 +192,7 @@ class TangleVoice:
         self.log.debug("Generating state durations")
         durations = collections.OrderedDict()
         for spurtid, spurtfeatures in dnnfeatures.items():
-            self.log.debug('generating duration for {0}'.format(spurtid))
+            self.log.debug('generating duration for ' + spurtid)
             statedfeatures = self._add_state_feature(spurtfeatures)
             durmatrix = self._durmodel.forward(statedfeatures)
             if apply_postproc:
@@ -227,16 +231,59 @@ class TangleVoice:
         return combinedfeatures
 
 
-    def generate_pitch(self, pitchdnnfeatures):
-        """ Predict the pitch features """
+    def generate_pitch(self, dnnfeatures, mlpg = True, extract = True):
+        """ Predict the pitch features
+
+            if mlpg is True then mlpg is applied
+            if extract is True then only the first two columns are returned
+                which are the voicing confidence and F0 respectively
+        """
         self.log.debug("Generating pitch values")
         pitch = collections.OrderedDict()
-        for spurtid, spurtfeatures in pitchdnnfeatures.items():
-            self.log.debug('generating pitch for {0}'.format(spurtid))
+        for spurtid, spurtfeatures in dnnfeatures.items():
+            self.log.debug('generating pitch for ' + spurtid)
             pitchmatrix = self._pitchmodel.forward(spurtfeatures)
-            pitch[spurtid] = pitchmatrix
+            if mlpg:
+                self.log.debug('applying MLPG to pitch')
+                pitch[spurtid] = self._apply_pitch_mlpg(pitchmatrix)
+            else:
+                if extract:
+                    for idx, row in enumerate(pitchmatrix):
+                        pitchmatrix[idx] = row[:2]
+                pitch[spurtid] = pitchmatrix
 
         return pitch
+
+
+    def combine_pitch_and_features(self, pitch, dnnfeatures):
+        """ Insert the pitch as the first two columns of the DNN features """
+        self.log.debug("Combining predicted pitch with DNN features")
+        combinedfeatures = collections.OrderedDict()
+        for spurtid in pitch.keys():
+            combinedfeatures[spurtid] = []
+            spurt_pitch = pitch[spurtid]
+            spurt_feats = dnnfeatures[spurtid]
+            for row_pitch, row_feats in zip(spurt_pitch, spurt_feats):
+                combinedfeatures[spurtid].append(row_pitch + row_feats)
+        return combinedfeatures
+
+
+    def generate_acoustic_features(self, dnnfeatures, mlpg = True):
+        """ Predict the acoustic features
+
+            if mlpg is True then mlpg is applied
+        """
+        self.log.debug("Generating acoustic features")
+        acoustic = collections.OrderedDict()
+        for spurtid, spurtfeatures in dnnfeatures.items():
+            self.log.debug('generating acoustic features for ' + spurtid)
+            acousticmatrix = self._acousticmodel.forward(spurtfeatures)
+
+            if mlpg:
+                self.log.debug('applying MLPG')
+
+            acoustic[spurtid] = acousticmatrix
+        return acoustic
 
 
     def durations_to_mlf(self, fname, durations):
@@ -293,6 +340,9 @@ class TangleVoice:
     @property
     def fshift(self):
         return self._fshift
+    @property
+    def voicedir(self):
+        return self._voicedir
 
     def _load_txp(self):
         """ Load the text processing components """
@@ -318,13 +368,33 @@ class TangleVoice:
 
     def _load_gen(self):
         """ Loads the generative modelling parts of the voice """
-        cexfreqtablefn = os.path.join(self._voicedir, 'lang',  'cex.ark.freq')
-        if not os.path.isfile(cexfreqtablefn):
-            raise IOError("Cannot find cex frequency table: '{0}'".format(cexfreqtablefn))
-        self._cexfreqtable = gen.load_cexfreqtable(cexfreqtablefn)
-        self._durmodel = self._load_dnn(os.path.join(self._voicedir, 'dur'))
-        self._pitchmodel = self._load_dnn(os.path.join(self._voicedir, 'pitch'))
-        # Load synth model
+        from os.path import join
+        cexfreqtable = join(self._voicedir, 'lang',  'cex.ark.freq')
+        if not os.path.isfile(cexfreqtable):
+            msg = "Cannot find cex frequency table: '{0}'".format(cexfreqtable)
+            self.log.critical(msg)
+            raise IOError(msg)
+        self._cexfreqtable = gen.load_cexfreqtable(cexfreqtable)
+        self._durmodel = self._load_dnn(join(self._voicedir, 'dur'))
+        self._pitchmodel = self._load_dnn(join(self._voicedir, 'pitch'))
+        self._acousticmodel = self._load_dnn(join(self._voicedir, 'acoustic'))
+
+
+    def _load_mlpg(self):
+        """ Loads the parts of the voice that deal with MLPG """
+        from os.path import join
+        self._var_cmpfn = join(self._voicedir, 'lang', 'var_cmp.txt')
+        varfile = open(self._var_cmpfn).readlines()
+        self._variances =  {
+            'logf0' : [float(v.split()[1]) for v in varfile[:6]],
+        }
+
+        self._delta_windows = {
+            'logf0' : (
+                join(self._voicedir, 'win', 'logF0_d1.win'),
+                join(self._voicedir, 'win', 'logF0_d2.win')
+            ),
+        }
 
 
     def _load_vocoder(self):
@@ -436,8 +506,41 @@ class TangleVoice:
         return state_durations
 
 
+    def _apply_pitch_mlpg(self, pitchmatrix):
+        """ Apply MLPG to a pitch matrix """
+        num_frames = len(pitchmatrix)
+        mean = []
+        mean_d = []
+        mean_dd = []
+        var = [self._variances['logf0'][:2]]*num_frames
+        var_d = [self._variances['logf0'][2:4]]*num_frames
+        var_dd = [self._variances['logf0'][4:]]*num_frames
+        var[0] = [0., 0.]
+        var_d[0] = [0., 0.]
+        var_dd[0] = [0., 0.]
+        var[-1] = [0., 0.]
+        var_d[-1] = [0., 0.]
+        var_dd[-1] = [0., 0.]
+
+        for frame in pitchmatrix:
+            mean.append(list(frame[:2]))
+            mean_d.append(list(frame[2:4]))
+            mean_dd.append(list(frame[4:]))
+
+        d1win, d2win = self._delta_windows['logf0']
+        pitch = vocoder.mlpg(mean, mean_d, mean_dd,
+                             var,  var_d,  var_dd,
+                             d1win, d2win,
+                             input_type = 0)
+        return pitch
+
+
+
+
+
+
+
     def _fuzzy_position(self, fuzzy_factor, position, duration):
         real_position = position / duration
         fuzzy_pos =  math.ceil(real_position / fuzzy_factor)
         return fuzzy_pos
-

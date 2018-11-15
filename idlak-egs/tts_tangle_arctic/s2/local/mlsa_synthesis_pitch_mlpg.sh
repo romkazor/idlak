@@ -31,10 +31,10 @@ mlpgf0done=false
 voice_thresh=0.8
 alpha=0.55
 fftlen=1024
-tmpdir=`mktemp -d`
+tmpdir=/home/davelocal/tmp/idlak_tmp # `mktemp -d`
 win=win
 
-[ -f path.sh ] && . ./path.sh; 
+[ -f path.sh ] && . ./path.sh;
 . parse_options.sh || exit 1;
 
 
@@ -130,7 +130,7 @@ if [ "$var_file" != "" ]; then
     cat $cmp | cut -d " " -f $mcep_offset-$(( $mcep_offset + $mcep_len - 1 )) | awk -v var="`cat $vmcep`" '{print $0, var}' | x2x +a +f > $mpdf
     cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | awk -v var="`cat $vf0`" '{print $0, var}' | x2x +a +f > $fpdf
     cat $cmp | cut -d " " -f $bndap_offset-$(( $bndap_offset + $bndap_len - 1 )) | awk -v var="`cat $vbap`" '{print $0, var}' | x2x +a +f > $bpdf
-    
+
     echo "Running mlpg..."
     echo "mcep smoothing"
     mlpg -i 0 -m $mcep_order $mcep_win $mpdf | x2x +f +a$(( $mcep_order + 1 )) > $mcep
@@ -147,7 +147,7 @@ if [ "$var_file" != "" ]; then
     cat ${f0}_raw | x2x +f +a$f0_order | awk -v thresh=$voice_thresh '{if ($1 > thresh) print $2; else print 0.0}' > $f0
     paste $f0 $bap | awk -v FS='\t' -v n=$bndap_order 'BEGIN{zero="0"; for (i = 1; i < n; i++) zero = zero " 0"}{if ($1 > 0.0) print $2; else print zero}' > $bap.2
     mv $bap.2 $bap
-    
+
     # Do not do mlpg on MCEP
     #cat $cmp | cut -d " " -f $mcep_offset-$(($mcep_offset + $mcep_order)) > $mcep
 else
