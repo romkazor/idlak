@@ -18,7 +18,7 @@ import os
 from . import pyIdlak_vocoder
 
 def mlpg(mean, mean_d, mean_dd, var, var_d, var_dd,
-         d_win_filename, dd_win_filename,
+         d_win, dd_win,
          input_type = 0, influence_range = 30
          ):
     """ Convience wrapper for MLPG
@@ -29,8 +29,8 @@ def mlpg(mean, mean_d, mean_dd, var, var_d, var_dd,
         var:                list of variance vectors
         var_d:              list of delta variance vectors
         var_dd:             list of double delta variance vectors
-        d_win_filename:     file name for window for calculating delta
-        dd_win_filename:    file name for window for calculating delta
+        d_win_filename:     first delta coefficients
+        dd_win_filename:    second delta coefficients
         input_type          as per SPTK (0)
         influence_range     as per SPTK (30)
     """
@@ -76,29 +76,20 @@ def mlpg(mean, mean_d, mean_dd, var, var_d, var_dd,
         frame_vec = map(float, fmean + fmean_d + fmean_dd + fvar + fvar_d + fvar_dd)
         mlpg_input.extend(list(frame_vec))
 
-    # Check the window files
-    if not os.path.isfile(d_win_filename):
-        raise ValueError('cannot find d window file ' + d_win_filename)
-    if not os.path.isfile(dd_win_filename):
-        raise ValueError('cannot find dd window file ' + dd_win_filename)
 
-    window_filenames = [d_win_filename, dd_win_filename]
+    windows = [d_win, dd_win]
 
     if input_type not in [0,1,2]:
         raise ValueError("input_type must be 0, 1, or 2")
 
     rawresult = pyIdlak_vocoder.PySPTK_mlpg(mlpg_input,
                                             vector_length,
-                                            window_filenames,
+                                            windows,
                                             input_type,
                                             influence_range)
 
     result = []
     for idx in range(0, len(rawresult), vector_length):
         result.append(list(rawresult[idx: idx+vector_length]))
-    if len(result) != num_frames:
-        print('num frames:', num_frames, '  result:', len(result))
-        print('num rawresult:', len(rawresult)/vector_length)
-        print('num mlpg_input:', len(mlpg_input)/(6*vector_length))
 
     return result

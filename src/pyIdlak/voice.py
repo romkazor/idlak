@@ -382,17 +382,17 @@ class TangleVoice:
 
     def _load_mlpg(self):
         """ Loads the parts of the voice that deal with MLPG """
-        from os.path import join
-        self._var_cmpfn = join(self._voicedir, 'lang', 'var_cmp.txt')
-        varfile = open(self._var_cmpfn).readlines()
+        from os.path import join, isfile
+        var_cmpfn = join(self._voicedir, 'lang', 'var_cmp.txt')
+        varfile = open(var_cmpfn).readlines()
         self._variances =  {
             'logf0' : [float(v.split()[1]) for v in varfile[:6]],
         }
 
         self._delta_windows = {
             'logf0' : (
-                join(self._voicedir, 'win', 'logF0_d1.win'),
-                join(self._voicedir, 'win', 'logF0_d2.win')
+                self._load_float_file(join(self._voicedir, 'win', 'logF0_d1.win')),
+                self._load_float_file(join(self._voicedir, 'win', 'logF0_d2.win'))
             ),
         }
 
@@ -443,6 +443,21 @@ class TangleVoice:
 
 
         return gen.NNet(nnet_model_fn, feat_transform_fn, **kwargs)
+
+
+    def _load_float_file(self, fname):
+        """ Loads a filename into a flat list of floats """
+        ret = []
+        with open(fname) as fin:
+            for line in fin:
+                line = line.strip()
+                if not line:
+                    continue
+                line = line.split()
+                for v in map(float, line):
+                    ret.append(v)
+        return ret
+
 
 
     def _add_state_feature(self, spurtfeatures):

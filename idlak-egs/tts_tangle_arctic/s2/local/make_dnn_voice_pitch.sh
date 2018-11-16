@@ -44,7 +44,10 @@ fi
 rm -rf $outputdir
 mkdir -p $outputdir/{dur,pitch,acoustic,lang,win}
 
-cp $windir/* $outputdir/win/.
+for win in $windir/*; do
+    name=$(basename $win)
+    x2x +fa $win > $outputdir/win/$name
+done
 
 for step in dur pitch acoustic; do
     case $step in

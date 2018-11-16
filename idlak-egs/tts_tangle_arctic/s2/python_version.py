@@ -62,10 +62,10 @@ pyIdlak.gen.feat_to_ark(join(pyoutdir, 'pitch.in.ark'), pitchfeatures, matrix = 
 pyIdlak.gen.feat_to_ark(join(pyoutdir, 'pitch.out.ark'), rawpitchpred, matrix = True, fmt='{:.5f}')
 pyIdlak.gen.feat_to_ark(join(pyoutdir, 'pitch.mlpg.ark'), pitch, matrix = True, fmt='{:.5f}')
 
-pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acfnopitchmlpg.in.ark'), acfdnnfeatures_nopitchmlpg, matrix = True)
-pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acf.in.ark'), acfdnnfeatures, matrix = True)
-pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acfnopitchmlpg.out.ark'), acffeatures_nopitchmlpg, matrix = True)
-pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acf.out.ark'), acffeatures, matrix = True)
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acfnopitchmlpg.in.ark'), acfdnnfeatures_nopitchmlpg, matrix = True, fmt='{:.5f}')
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acf.in.ark'), acfdnnfeatures, matrix = True, fmt='{:.5f}')
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acfnopitchmlpg.out.ark'), acffeatures_nopitchmlpg, matrix = True, fmt='{:.5f}')
+pyIdlak.gen.feat_to_ark(join(pyoutdir, 'acf.out.ark'), acffeatures, matrix = True, fmt='{:.5f}')
 
 
 
@@ -202,7 +202,7 @@ scp_to_spkutt_files(opts['pitch']['lbl'], voice, scpfile)
 run_prediction(opts['pitch'])
 
 # Post process (MLPG)
-f0_win = "-d {voice._delta_windows[logf0][0]} -d {voice._delta_windows[logf0][1]}".format(voice = voice)
+f0_win = "-d win/logF0_d1.win -d win/logF0_d2.win"
 varf0 =  ' '.join(map(str, voice._variances['logf0']))
 
 mlpgcmd = """
@@ -261,12 +261,12 @@ def compare_arks(pyfn, bashfn):
     for spurtid, pymat in pyark.items():
         bashmat = bashark[spurtid]
         if pymat.shape[0] != bashmat.shape[0]:
-            raise ValueError("unequal number of rows"
+            raise ValueError("unequal number of rows "
                              "py: {[0]} bash: {[0]}".format(pymat.shape, bashmat.shape))
         if pymat.shape[1] != bashmat.shape[1]:
             raise ValueError("unequal number of columns "
                              "py: {[1]} bash: {[1]}".format(pymat.shape, bashmat.shape))
-        if not np.allclose(pymat, bashmat, atol = 1e-4, rtol=0.):
+        if not np.allclose(pymat, bashmat, atol = 1e-3, rtol=0.):
             raise ValueError("different values")
 
 

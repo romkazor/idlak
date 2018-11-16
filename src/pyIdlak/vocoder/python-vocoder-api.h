@@ -88,8 +88,8 @@ Note that the changes to the following options:
   "-m" has been removed as total length is required instead
 */
 std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_length,
-                                const std::vector<std::string> &window_filenames, int input_type,
-                                int influence_range);
+                                const std::vector<std::vector<double>> &delta_windows,
+                                int input_type, int influence_range);
 
 
 /*

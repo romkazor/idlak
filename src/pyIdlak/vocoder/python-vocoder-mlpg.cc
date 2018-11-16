@@ -26,6 +26,8 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <iostream>
+#include <exception>
 
 extern "C" {
 #include "SPTK.h"
@@ -35,13 +37,14 @@ extern "C" {
 #include "python-vocoder-lib.h"
 
 
-// Structures from SPTK
+// Structures adapated from SPTK
 typedef struct _DWin {
    int num;                     /* number of static + deltas */
-   char **fn;                   /* delta window coefficient file */
    int **width;                 /* width [0..num-1][0(left) 1(right)] */
    double **coef;               /* coefficient [0..num-1][length[0]..length[1]] */
    int maxw[2];                 /* max width [0(left) 1(right)] */
+   
+  std::vector<std::vector<double>> org; /* original delta window coefficient vector */
 } DWin;
 
 typedef struct _SMatrix {
@@ -73,7 +76,6 @@ typedef struct _PStream {
 
 
 // Constants from SPTK
-typedef double real;
 
 const double INFTY = 1.0e+38;
 const double INFTY2 = 1.0e+19;
@@ -97,24 +99,28 @@ void calc_k(PStream * pst, int d);
 void update_P(PStream * pst);
 void update_c(PStream * pst, int d);
 
+#define abs(x)  ((x)>0.0 ? (x) : -(x))
 #define sign(x)  ((x) >= 0.0 ? 1 : -1)
 #define finv(x)  (abs(x) <= INVINF2 ? sign(x)*INFTY : (abs(x) >= INFTY2 ? 0 : 1.0/(x)))
 #define min(x, y) ((x)<(y) ? (x) : (y))
 
 std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_length,
-                                const std::vector<std::string> &window_filenames, int input_type,
-                                int influence_range) {
+                                const std::vector<std::vector<double>> &delta_windows,
+                                int input_type, int influence_range) {
   std::vector<double> parameters;
 
   PStream pst;
-  pst.order = vector_length;
+  pst.order = vector_length - 1;
   pst.range = influence_range;
   pst.iType = input_type;
-  pst.dw.num = window_filenames.size();
-  pst.dw.fn = (char **) calloc(sizeof(char *), pst.dw.num);
+  pst.dw.num = delta_windows.size() + 1;
+  
+  std::vector<double> constvec(1);
+  constvec.push_back(1.);
+  pst.dw.org.push_back(constvec);
 
-  for (int i = 0; i < window_filenames.size(); i++) {
-    pst.dw.fn[i] = const_cast<char*>(window_filenames[0].c_str());
+  for (int i = 0; i < delta_windows.size(); i++) {
+    pst.dw.org.push_back(delta_windows[i]);
   }
 
   init_pstream(&pst);
@@ -123,28 +129,30 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_len
   int delay = pst.range + pst.dw.maxw[WRIGHT];
 
   std::vector<double>::const_iterator INPUT_it = INPUT.begin();
-  while (vreadf(pst.mean, pst.vSize * 2, INPUT, &INPUT_it) == pst.vSize * 2) {
+  int readsz = pst.vSize * 2;
+  
+  while (vreadf(pst.mean, readsz, INPUT, &INPUT_it) == readsz) {
     if (pst.dw.num == 1) {
-      for (int i = 0; i < pst.order; i++) {
+      for (int i = 0; i < pst.order+1; i++) {
         parameters.push_back(pst.mean[i]);
       }
     } else {
       if (pst.iType == 0) {
-          for (int i = 0; i < pst.vSize; i++)
-              pst.ivar[i] = finv(pst.ivar[i]);
+        for (int i = 0; i < pst.vSize; i++)
+          pst.ivar[i] = finv(pst.ivar[i]);
       }
 
       mlpg(&pst);
-
+      
       if (nframe >= delay) {
-        for (int i = 0; i < pst.order; i++) {
+        for (int i = 0; i < pst.order+1; i++)
           parameters.push_back(pst.par[i]);
-        }
       }
     }
     nframe++;
   }
 
+  
   if (pst.dw.num > 1) {
     for (int i = 0; i < pst.vSize; i++) {
       pst.mean[i] = 0.0;
@@ -152,7 +160,7 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_len
     }
     for (int i = 0; i < min(nframe, delay); i++) {
       mlpg(&pst);
-      for (int i = 0; i < pst.order; i++) {
+      for (int i = 0; i < pst.order+1; i++) {
         parameters.push_back(pst.par[i]);
       }
     }
@@ -166,10 +174,6 @@ std::vector<double> PySPTK_mlpg(const std::vector<double> &INPUT, int vector_len
 
 void init_pstream(PStream * pst)
 {
-   void init_dwin(PStream *);
-   double *dcalloc(int, int);
-   double **ddcalloc(int, int, int, int);
-   double ***dddcalloc(int, int, int, int, int, int);
    int half, full;
    int i, m;
 
@@ -178,7 +182,7 @@ void init_pstream(PStream * pst)
    half = pst->range * 2;
    full = pst->range * 4 + 1;
 
-   pst->vSize = (pst->order) * pst->dw.num;
+   pst->vSize = (pst->order + 1) * pst->dw.num;
 
    pst->sm.length = LENGTH;
    while (pst->sm.length < pst->range + pst->dw.maxw[WRIGHT])
@@ -190,14 +194,14 @@ void init_pstream(PStream * pst)
    pst->sm.mseq = ddcalloc(pst->sm.length, pst->vSize, 0, 0);
    pst->sm.ivseq = ddcalloc(pst->sm.length, pst->vSize, 0, 0);
 
-   pst->sm.c = ddcalloc(pst->sm.length, pst->order, 0, 0);
-   pst->sm.P = dddcalloc(full, pst->sm.length, pst->order, half, 0, 0);
+   pst->sm.c = ddcalloc(pst->sm.length, pst->order + 1, 0, 0);
+   pst->sm.P = dddcalloc(full, pst->sm.length, pst->order + 1, half, 0, 0);
 
    pst->sm.pi =
-       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order,
+       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order + 1,
                 pst->range, 0);
    pst->sm.k =
-       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order,
+       ddcalloc(pst->range + pst->dw.maxw[WRIGHT] + 1, pst->order + 1,
                 pst->range, 0);
 
    for (i = 0; i < pst->sm.length; i++)
@@ -215,48 +219,34 @@ void init_pstream(PStream * pst)
 }
 
 
-void init_dwin(PStream * pst)
-{
-   double *dcalloc(int, int);
-   int i;
-   int fsize, leng;
-   FILE *fp;
+void init_dwin(PStream * pst) {
+  int i;
+  int fsize, leng;
 
-   /* memory allocation */
-   if ((pst->dw.width = (int **) calloc(pst->dw.num, sizeof(int *))) == NULL) {
-      fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-      return;
-   }
-   for (i = 0; i < pst->dw.num; i++)
-      if ((pst->dw.width[i] = (int *) calloc(2, sizeof(int))) == NULL) {
-         fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-         return;
-      }
-   if ((pst->dw.coef =
-        (double **) calloc(pst->dw.num, sizeof(double *))) == NULL) {
-      fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-      return;
-   }
+  /* memory allocation */
+  if ((pst->dw.width = (int **) calloc(pst->dw.num, sizeof(int *))) == NULL)
+    throw std::bad_alloc();
 
-   /* window for static parameter */
-   pst->dw.width[0][WLEFT] = pst->dw.width[0][WRIGHT] = 0;
-   pst->dw.coef[0] = dcalloc(1, 0);
-   pst->dw.coef[0][0] = 1;
+  for (i = 0; i < pst->dw.num; i++) {
+    if ((pst->dw.width[i] = (int *) calloc(2, sizeof(int))) == NULL)
+      throw std::bad_alloc();
+  }
+
+  if ((pst->dw.coef = (double **) calloc(pst->dw.num, sizeof(double *))) == NULL) {
+      throw std::bad_alloc();
+  }
+
+  /* window for static parameter */
+  pst->dw.width[0][WLEFT] = pst->dw.width[0][WRIGHT] = 0;
+  pst->dw.coef[0] = dcalloc(1, 0);
+  pst->dw.coef[0][0] = 1;
 
   /* set delta coefficients */
   for (i = 1; i < pst->dw.num; i++) {
-    /* read from file */
-    const char * rb = "rb"; // LEGACY C COMPATABILITY
-    fp = getfp(pst->dw.fn[i], const_cast<char*>(rb));
-
-    /* check the number of coefficients */
-    fseek(fp, 0L, 2);
-    fsize = ftell(fp) / sizeof(real);
-    fseek(fp, 0L, 0);
-
-    /* read coefficients */
+    fsize = pst->dw.org[i].size();
     pst->dw.coef[i] = dcalloc(fsize, 0);
-    freadf(pst->dw.coef[i], sizeof(**(pst->dw.coef)), fsize, fp);
+    for (int j = 0; j < fsize; j++)
+      pst->dw.coef[i][j] = pst->dw.org[i][j];
 
     /* set pointer */
     leng = fsize / 2;
@@ -267,74 +257,54 @@ void init_dwin(PStream * pst)
       pst->dw.width[i][WRIGHT]--;
   }
 
+  pst->dw.maxw[WLEFT] = pst->dw.maxw[WRIGHT] = 0;
+  for (i = 0; i < pst->dw.num; i++) {
+    if (pst->dw.maxw[WLEFT] > pst->dw.width[i][WLEFT])
+      pst->dw.maxw[WLEFT] = pst->dw.width[i][WLEFT];
+    if (pst->dw.maxw[WRIGHT] < pst->dw.width[i][WRIGHT])
+      pst->dw.maxw[WRIGHT] = pst->dw.width[i][WRIGHT];
+  }
 
-   pst->dw.maxw[WLEFT] = pst->dw.maxw[WRIGHT] = 0;
-   for (i = 0; i < pst->dw.num; i++) {
-      if (pst->dw.maxw[WLEFT] > pst->dw.width[i][WLEFT])
-         pst->dw.maxw[WLEFT] = pst->dw.width[i][WLEFT];
-      if (pst->dw.maxw[WRIGHT] < pst->dw.width[i][WRIGHT])
-         pst->dw.maxw[WRIGHT] = pst->dw.width[i][WRIGHT];
-   }
-
-   return;
+  return;
 }
 
 
-double *dcalloc(int x, int xoff)
-{
-   double *ptr;
 
-   if ((ptr = (double *) calloc(x, sizeof(*ptr))) == NULL) {
-      fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-      return nullptr;
-   }
-   ptr += xoff;
-   return (ptr);
+double *dcalloc(int x, int xoff) {
+  double *ptr;
+  if ((ptr = (double *) calloc(x, sizeof(*ptr))) == NULL)
+    throw std::bad_alloc();
+  ptr += xoff;
+  return (ptr);
 }
 
 
-double **ddcalloc(int x, int y, int xoff, int yoff)
-{
-   double *dcalloc(int, int);
-   double **ptr;
-   int i;
+double **ddcalloc(int x, int y, int xoff, int yoff) {
+  double **ptr;
 
-   if ((ptr = (double **) calloc(x, sizeof(*ptr))) == NULL) {
-      fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-      return nullptr;
-   }
-   for (i = 0; i < x; i++)
-      ptr[i] = dcalloc(y, yoff);
-   ptr += xoff;
-   return (ptr);
+  if ((ptr = (double **) calloc(x, sizeof(*ptr))) == NULL)
+    throw std::bad_alloc();
+  for (int i = 0; i < x; i++)
+    ptr[i] = dcalloc(y, yoff);
+  ptr += xoff;
+  return (ptr);
 }
 
 
-double ***dddcalloc(int x, int y, int z, int xoff, int yoff, int zoff)
-{
-   double **ddcalloc(int, int, int, int);
-   double ***ptr;
-   int i;
-
-   if ((ptr = (double ***) calloc(x, sizeof(*ptr))) == NULL) {
-      fprintf(stderr, "ERROR: Cannot allocate memory!\n");
-      return nullptr;
-   }
-   for (i = 0; i < x; i++)
-      ptr[i] = ddcalloc(y, z, yoff, zoff);
-   ptr += xoff;
-   return (ptr);
+double ***dddcalloc(int x, int y, int z, int xoff, int yoff, int zoff) {
+  double ***ptr;
+  if ((ptr = (double ***) calloc(x, sizeof(*ptr))) == NULL)
+    throw std::bad_alloc();
+  for (int i = 0; i < x; i++)
+    ptr[i] = ddcalloc(y, z, yoff, zoff);
+  ptr += xoff;
+  return (ptr);
 }
 
 /*--------------------------------------------------------------------*/
 
 double *mlpg(PStream * pst)
 {
-   int doupdate(PStream *, int);
-   void calc_pi(PStream *, int);
-   void calc_k(PStream *, int);
-   void update_P(PStream *);
-   void update_c(PStream *, int);
    int tmin, tmax;
    int d, m, u;
 
@@ -375,7 +345,7 @@ int doupdate(PStream * pst, int d)
 {
    int j;
 
-   if (pst->sm.ivseq[pst->sm.t & pst->sm.mask][(pst->order) * d] == 0.0)
+   if (pst->sm.ivseq[pst->sm.t & pst->sm.mask][(pst->order + 1) * d] == 0.0)
       return (0);
    for (j = pst->dw.width[d][WLEFT]; j <= pst->dw.width[d][WRIGHT]; j++)
       if (pst->sm.P[0][(pst->sm.t + j) & pst->sm.mask][0] == INFTY)
@@ -407,7 +377,7 @@ void calc_k(PStream * pst, int d)
    int j, m, u;
    double *ivar, x;
 
-   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
+   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
    for (m = 0; m <= pst->order; m++) {
       x = 0.0;
       for (j = pst->dw.width[d][WLEFT]; j <= pst->dw.width[d][WRIGHT]; j++)
@@ -445,8 +415,8 @@ void update_c(PStream * pst, int d)
    int j, m, u;
    double *mean, *ivar, x;
 
-   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
-   mean = pst->sm.mseq[pst->sm.t & pst->sm.mask] + (pst->order) * d;
+   ivar = pst->sm.ivseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
+   mean = pst->sm.mseq[pst->sm.t & pst->sm.mask] + (pst->order + 1) * d;
    for (m = 0; m <= pst->order; m++) {
       x = mean[m];
       if (pst->iType == 2)

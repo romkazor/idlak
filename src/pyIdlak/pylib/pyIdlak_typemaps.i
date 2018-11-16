@@ -32,6 +32,7 @@ namespace std {
    %template(ComplexDoubleVector) vector<std::complex<double>>;
    %template(StringVector) vector<string>;
    %template(ConstCharVector) vector<const char*>;
+   %template(DoubleVectorList) vector<vector<double>>;
 };
 
 %apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
