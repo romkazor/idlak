@@ -44,9 +44,10 @@ fi
 rm -rf $outputdir
 mkdir -p $outputdir/{dur,pitch,acoustic,lang,win}
 
-for win in $windir/*; do
-    name=$(basename $win)
-    x2x +fa $win > $outputdir/win/$name
+for win in $windir/*.win; do
+    name=$(basename "$win" .win)
+    cp $win $outputdir/win/.
+    x2x +fa $win > $outputdir/win/$name.txt
 done
 
 for step in dur pitch acoustic; do
@@ -77,8 +78,14 @@ for step in dur pitch acoustic; do
             copy-feats $i $outputdir/$step/`basename $i`;
         fi
     done
+    # convert to ark files:
+    i=$dnndir/cmvn.scp
+    if [ -e "$i" ]; then
+        copy-feats scp:$i ark,t:$outputdir/$step/$(basename "$i" .scp).ark
+    fi
+
     # Copy other files (they should really be merged into a configuration file)
-    for i in $dnndir/{indelta_opts,delta_opts,cmvn_opts,incmvn_opts,cmvn.scp}; do
+    for i in $dnndir/{indelta_opts,delta_opts,cmvn_opts,incmvn_opts}; do
         if [ -e "$i" ]; then
             cp $i $outputdir/$step/`basename $i`;
         fi

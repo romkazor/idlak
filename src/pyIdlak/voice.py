@@ -44,7 +44,7 @@ class TangleVoice:
         self._spk = ''
         self._region = ''
         self._fshift = 0.005
-
+        self._voice_thresh = 0.8
 
         if not voice_dir is None:
             self.load_voice(voice_dir)
@@ -117,8 +117,11 @@ class TangleVoice:
         self._load_vocoder()
 
 
-    def speak(self, text):
-        """ Simple interface for speaking text, returns the waveform """
+    def speak(self, text, wav_filename = None):
+        """ Simple interface for speaking text, returns the waveform
+
+            if wav_filename is a file name, then
+        """
         cex = self.process_text(text)
         durfeatures = self.cex_to_dnn_features(cex)
         state_durations = self.generate_state_durations(durfeatures)
@@ -128,8 +131,9 @@ class TangleVoice:
         acousticdnnfeatures = self.combine_pitch_and_features(
             pitch, pitchfeatures)
         acousticfeatures = self.generate_acoustic_features(acousticdnnfeatures)
-        # vocode
-        # return wav
+        waveform = self.vocode_acoustic_features(acousticfeatures, pitch,
+                                                 wav_filename)
+        return waveform
 
 
     def process_text(self, text, normalise=True, cex=True):
@@ -245,7 +249,7 @@ class TangleVoice:
             pitchmatrix = self._pitchmodel.forward(spurtfeatures)
             if mlpg:
                 self.log.debug('applying MLPG to pitch')
-                pitch[spurtid] = self._apply_pitch_mlpg(pitchmatrix)
+                pitch[spurtid] = self._apply_mlpg(pitchmatrix, 'logf0')
             else:
                 if extract:
                     for idx, row in enumerate(pitchmatrix):
@@ -268,22 +272,74 @@ class TangleVoice:
         return combinedfeatures
 
 
-    def generate_acoustic_features(self, dnnfeatures, mlpg = True):
+    def generate_acoustic_features(self, dnnfeatures, mlpg = True, extract = True):
         """ Predict the acoustic features
 
             if mlpg is True then mlpg is applied
+            otherwise if extract is True then split out the MCEPs and Bndaps
         """
         self.log.debug("Generating acoustic features")
         acoustic = collections.OrderedDict()
         for spurtid, spurtfeatures in dnnfeatures.items():
             self.log.debug('generating acoustic features for ' + spurtid)
-            acousticmatrix = self._acousticmodel.forward(spurtfeatures)
+            acf = self._acousticmodel.forward(spurtfeatures)
+            if not (mlpg or extract):
+                acoustic[spurtid] = acf
+                continue
 
+            # order in the matrix is pitch, mcep, bndap
+            #  (3 = mean , dmean, ddmean)
+            mcep_start = 0
+            mcep_end = mcep_start + (self.mcep_order + 1)*3 # include gain
+            bndap_start = mcep_end
+            bndap_end = bndap_start + self.bndap_order*3
+
+            mceps = [[v for v in row[mcep_start:mcep_end]] for row in acf]
+            bndaps = [[v for v in row[bndap_start:bndap_end]] for row in acf]
             if mlpg:
                 self.log.debug('applying MLPG')
+                mceps = self._apply_mlpg(mceps, 'mcep')
+                bndaps = self._apply_mlpg(bndaps, 'bndap')
+            else:
+                mceps = [mrow[:self.mcep_order+1] for mrow in mceps]
+                bndaps = [brow[:self.bndap_order] for brow in bndaps]
 
-            acoustic[spurtid] = acousticmatrix
+            acoustic[spurtid] = {'mcep' : mceps, 'bndap': bndaps}
         return acoustic
+
+
+    def vocode_acoustic_features(self, acoutic_features, pitch,
+                                 mixed_excitation = True,
+                                 wav_filename = None):
+        """ Vocode the acoustic features using MLSA
+
+            if mixed_excitation is set to False, then the residual is
+            generated without mixed excitation
+        """
+        if mixed_excitation:
+            exc_type = vocoder.MCEPExcitation.MIXED
+        else:
+            exc_type = vocoder.MCEPExcitation.SPTK
+
+        waveform = []
+        for spurtid in acoutic_features:
+            f0s = []
+            for (confidence, f0) in pitch[spurtid]:
+                if mixed_excitation or (confidence > self._voice_thresh):
+                    f0s.append(f0)
+                else:
+                    f0s.append(0.0)
+            mceps =  acoutic_features[spurtid]['mcep']
+            bndaps = acoutic_features[spurtid]['bndap']
+            excitation = self._vocoder.gen_excitation(f0s, bndaps, exc_type)
+            spurt_waveform = self._vocoder.apply_mlsa(mceps, excitation)
+            waveform.extend(spurt_waveform)
+
+        if wav_filename:
+            self.log.debug('saving to ' + wav_filename)
+            self._vocoder.to_wav(wav_filename, waveform)
+
+        return waveform
 
 
     def durations_to_mlf(self, fname, durations):
@@ -387,55 +443,90 @@ class TangleVoice:
         varfile = open(var_cmpfn).readlines()
         self._variances =  {
             'logf0' : [float(v.split()[1]) for v in varfile[:6]],
+            'mcep' :  [],
+            'bndap' : [],
         }
+        # bit confusing but the order in the file is:
+        # f0 : df0 : ddf0 : mcep : bndap : d_mcep : d_bndap: dd_mcep : dd_bndap
+        mcep_idx     = 6
+        bndap_idx    = mcep_idx    + (1 + self.mcep_order)
+        d_mcep_idx   = bndap_idx   + self.bndap_order
+        d_bndap_idx  = d_mcep_idx  + (1 + self.mcep_order)
+        dd_mcep_idx  = d_bndap_idx + self.bndap_order
+        dd_bndap_idx = dd_mcep_idx + (1 + self.mcep_order)
+        for idx, line in enumerate(varfile):
+            v = float(line.split()[1])
+            if   idx >= dd_bndap_idx:
+                self._variances['bndap'].append(v)
+            elif idx >= dd_mcep_idx:
+                self._variances['mcep'].append(v)
+            elif idx >= d_bndap_idx:
+                self._variances['bndap'].append(v)
+            elif idx >= d_mcep_idx:
+                self._variances['mcep'].append(v)
+            elif idx >= bndap_idx:
+                self._variances['bndap'].append(v)
+            elif idx >= mcep_idx:
+                self._variances['mcep'].append(v)
 
         self._delta_windows = {
             'logf0' : (
-                self._load_float_file(join(self._voicedir, 'win', 'logF0_d1.win')),
-                self._load_float_file(join(self._voicedir, 'win', 'logF0_d2.win'))
+                self._load_float_file(join(self._voicedir, 'win', 'logF0_d1.txt')),
+                self._load_float_file(join(self._voicedir, 'win', 'logF0_d2.txt'))
+            ),
+            'bndap' : (
+                self._load_float_file(join(self._voicedir, 'win', 'bndap_d1.txt')),
+                self._load_float_file(join(self._voicedir, 'win', 'bndap_d2.txt'))
+            ),
+            'mcep' : (
+                self._load_float_file(join(self._voicedir, 'win', 'mcep_d1.txt')),
+                self._load_float_file(join(self._voicedir, 'win', 'mcep_d2.txt'))
             ),
         }
 
 
     def _load_vocoder(self):
         """ Loads the vocoding info part of the voice """
-
+        self._vocoder = vocoder.MCEPVocoder(srate  = self.srate,
+                                            order  = self.mcep_order,
+                                            alpha  = self.alpha,
+                                            fftlen = self.fftlen,
+                                            fshift = self.fshift)
 
     def _load_dnn(self, dnndir):
         """ Loads a DNN model from a directory """
-        from os.path import join as pjoin
-        from os.path import isdir, isfile
+        from os.path import join, isdir, isfile
 
-        nnet_model_fn = pjoin(dnndir, 'final.nnet')
-        feat_transform_fn = pjoin(dnndir, 'reverse_final.feature_transform')
+        nnet_model_fn = join(dnndir, 'final.nnet')
+        feat_transform_fn = join(dnndir, 'reverse_final.feature_transform')
 
         kwargs = {}
 
         # Input deltas
-        in_delta_optsfn = pjoin(dnndir, 'indelta_opts')
+        in_delta_optsfn = join(dnndir, 'indelta_opts')
         if isfile(in_delta_optsfn) and isfile(in_delta_optsfn):
             kwargs['in_delta_opts'] = open(in_delta_optsfn).read()
 
         # Global input CMVN
-        in_cmvn_global_optsfn = pjoin(dnndir, 'incmvn_opts')
-        in_cmvn_global_fn = pjoin(dnndir, 'incmvn_glob.ark')
+        in_cmvn_global_optsfn = join(dnndir, 'incmvn_opts')
+        in_cmvn_global_fn = join(dnndir, 'incmvn_glob.ark')
         if isfile(in_cmvn_global_optsfn) and isfile(in_cmvn_global_fn):
             kwargs['in_cmvn_global_opts'] = open(in_cmvn_global_optsfn).read()
             kwargs['in_cmvn_global_mat'] = pylib.PyReadKaldiDoubleMatrix(in_cmvn_global_fn)
 
         # Input transform
-        intransformfn = pjoin(dnndir, 'input_final.feature_transform')
+        intransformfn = join(dnndir, 'input_final.feature_transform')
         if isfile(intransformfn):
             kwargs['input_transform'] = intransformfn
 
         # Applying (reversed) fmllr transformation per-speaker
 
         # Output by speaker CMVN
-        out_cmvn_speaker_optsfn = pjoin(dnndir, 'cmvn_opts')
-        out_cmvn_speaker_fn = pjoin(dnndir, 'cmvn.scp')
+        out_cmvn_speaker_optsfn = join(dnndir, 'cmvn_opts')
+        out_cmvn_speaker_fn = join(dnndir, 'cmvn.ark')
         if isfile(out_cmvn_speaker_optsfn) and isfile(out_cmvn_speaker_fn):
             kwargs['out_cmvn_speaker_opts'] = open(out_cmvn_speaker_optsfn).read()
-            rspecifier = 'scp:' +  out_cmvn_speaker_fn
+            rspecifier = 'ark:' +  out_cmvn_speaker_fn
             kwargs['out_cmvn_speaker_mat'] = pylib.get_matrix_by_key(rspecifier, self.spk)
 
 
@@ -521,41 +612,45 @@ class TangleVoice:
         return state_durations
 
 
-    def _apply_pitch_mlpg(self, pitchmatrix):
-        """ Apply MLPG to a pitch matrix """
-        num_frames = len(pitchmatrix)
-        mean = []
-        mean_d = []
-        mean_dd = []
-        var = [self._variances['logf0'][:2]]*num_frames
-        var_d = [self._variances['logf0'][2:4]]*num_frames
-        var_dd = [self._variances['logf0'][4:]]*num_frames
-        var[0] = [0., 0.]
-        var_d[0] = [0., 0.]
-        var_dd[0] = [0., 0.]
-        var[-1] = [0., 0.]
-        var_d[-1] = [0., 0.]
-        var_dd[-1] = [0., 0.]
-
-        for frame in pitchmatrix:
-            mean.append(list(frame[:2]))
-            mean_d.append(list(frame[2:4]))
-            mean_dd.append(list(frame[4:]))
-
-        d1win, d2win = self._delta_windows['logf0']
-        pitch = vocoder.mlpg(mean, mean_d, mean_dd,
-                             var,  var_d,  var_dd,
-                             d1win, d2win,
-                             input_type = 0)
-        return pitch
-
-
-
-
-
-
-
     def _fuzzy_position(self, fuzzy_factor, position, duration):
         real_position = position / duration
         fuzzy_pos =  math.ceil(real_position / fuzzy_factor)
         return fuzzy_pos
+
+
+    def _apply_mlpg(self, matrix, name):
+        """ Apply MLPG
+
+            Assume the order is a third of the matrix
+        """
+        num_frames = len(matrix)
+        order = len(matrix[0])//3
+        mean = []
+        mean_d = []
+        mean_dd = []
+        var = [self._variances[name][:order]]*num_frames
+        var_d = [self._variances[name][order:2*order]]*num_frames
+        var_dd = [self._variances[name][2*order:]]*num_frames
+        for i in range(order):
+            var[0][i] = 0.
+            var_d[0][i] = 0.
+            var_dd[0][i] = 0.
+            var[-1][i] = 0.
+            var_d[-1][i] = 0.
+            var_dd[-1][i] = 0.
+        for frame in matrix:
+            mean.append(list(frame[:order]))
+            mean_d.append(list(frame[order:2*order]))
+            mean_dd.append(list(frame[2*order:]))
+
+        d1win, d2win = self._delta_windows[name]
+        output = vocoder.mlpg(mean, mean_d, mean_dd,
+                              var,  var_d,  var_dd,
+                              d1win, d2win,
+                              input_type = 0)
+        return output
+
+
+
+
+

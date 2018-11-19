@@ -30,7 +30,8 @@ shutil.rmtree(join(datadir), ignore_errors = True)
 os.makedirs(outdir, exist_ok = True)
 os.makedirs(datadir, exist_ok = True)
 
-voice = pyIdlak.TangleVoice(voicedir, loglvl = logging.DEBUG)
+lvl = logging.DEBUG
+voice = pyIdlak.TangleVoice(voicedir, lvl)
 final_cex = voice.process_text(inputtxt)
 durfeatures = voice.cex_to_dnn_features(final_cex)
 durpred = voice.generate_state_durations(durfeatures, False)
@@ -43,9 +44,15 @@ pitch = voice.generate_pitch(pitchfeatures)
 acfdnnfeatures_nopitchmlpg = voice.combine_pitch_and_features(pitch_nomlpg, pitchfeatures)
 acfdnnfeatures = voice.combine_pitch_and_features(pitch, pitchfeatures)
 
-acffeatures_nopitchmlpg = voice.generate_acoustic_features(acfdnnfeatures_nopitchmlpg)
-acffeatures = voice.generate_acoustic_features(acfdnnfeatures)
+acffeatures_nopitchmlpg = voice.generate_acoustic_features(acfdnnfeatures_nopitchmlpg, mlpg = False, extract = False)
+acffeatures = voice.generate_acoustic_features(acfdnnfeatures, mlpg = False, extract = False)
 
+acousticfeatures = voice.generate_acoustic_features(acfdnnfeatures)
+waveform = voice.vocode_acoustic_features(acousticfeatures, pitch,
+                                          wav_filename = join(outdir, 'pytest.wav'))
+
+
+exit()
 ##### Finished
 
 
@@ -97,7 +104,7 @@ def run_prediction(dnnopts):
     if 'cmvn_opts' in dnnopts:
         postproc += " | apply-cmvn --reverse {cmvn_opts}".format(**dnnopts)
         postproc += " --utt2spk=ark:{lbl}/utt2spk".format(**dnnopts)
-        postproc += " scp:{lbl}/cmvn.scp ark:- ark,t:-".format(**dnnopts)
+        postproc += " ark:{lbl}/cmvn.ark ark:- ark,t:-".format(**dnnopts)
     postproc += " | copy-feats ark:- ark,t,scp:{out}/feats.ark,{out}/feats.scp".format(**dnnopts)
 
     durcmd  = "nnet-forward --reverse-transform=true"
@@ -177,7 +184,7 @@ SP.run(to_feat_cmd, shell = True)
 
 scpfile = join(opts['dur']['lbl'], 'feats.scp')
 shutil.copy(join(datadir, "in_durfeats.scp"), scpfile)
-shutil.copy(join(durdnndir, "cmvn.scp"), opts['dur']['lbl'])
+shutil.copy(join(durdnndir, "cmvn.ark"), opts['dur']['lbl'])
 scp_to_spkutt_files(opts['dur']['lbl'], voice, scpfile)
 
 # Predict

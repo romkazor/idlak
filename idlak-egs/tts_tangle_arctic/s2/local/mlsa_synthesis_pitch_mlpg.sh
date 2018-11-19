@@ -31,7 +31,7 @@ mlpgf0done=false
 voice_thresh=0.8
 alpha=0.55
 fftlen=1024
-tmpdir=/home/davelocal/tmp/idlak_tmp # `mktemp -d`
+tmpdir=`mktemp -d`
 win=win
 
 [ -f path.sh ] && . ./path.sh;
@@ -99,21 +99,21 @@ else
 fi
 outblocks=0:1:2:3:5:7:4:6:8
 
-local/swap_file.py -i $inblocks -o $outblocks $cmp_file $cmp
+python3 local/swap_file.py -i $inblocks -o $outblocks $cmp_file $cmp
 
 if [ "$var_file" != "" ]; then
     if [ $delta_mult -eq 2 ]; then
-	mcep_win="-d $win/mcep_d1.win"
-	f0_win="-d $win/logF0_d1.win"
-	bndap_win="-d $win/bndap_d1.win"
+        mcep_win="-d $win/mcep_d1.win"
+        f0_win="-d $win/logF0_d1.win"
+        bndap_win="-d $win/bndap_d1.win"
     elif [ $delta_mult -eq 3 ]; then
-	mcep_win="-d $win/mcep_d1.win -d $win/mcep_d2.win"
-	f0_win="-d $win/logF0_d1.win -d $win/logF0_d2.win"
-	bndap_win="-d $win/bndap_d1.win -d $win/bndap_d2.win"
+        mcep_win="-d $win/mcep_d1.win -d $win/mcep_d2.win"
+        f0_win="-d $win/logF0_d1.win -d $win/logF0_d2.win"
+        bndap_win="-d $win/bndap_d1.win -d $win/bndap_d2.win"
     else
-	mcep_win=""
-	f0_win=""
-	bndap_win=""
+        mcep_win=""
+        f0_win=""
+        bndap_win=""
     fi
     echo "Extracting variances..."
     cat $var_file | awk '{printf "%f ", $2}' \
@@ -175,7 +175,7 @@ if [ "$synth" = "cere" ]; then
     if [ "$srate" = "48000" ]; then
         mlopts="$mlopts -B 8,15,22,30,38,47,58,69,81,95,110,127,147,169,194,224,259,301,353,416,498,606,757,980,1344"
     fi
-    cmd="python $HOME/cereproc/trunk/apps/dsplab/mlsa.py $mlopts -C -a $alpha -m $order -s $srate -f $fftlen -b $bndap_order -i $tmpdir -o $tmpdir $base"
+    cmd="python3 $HOME/cereproc/trunk/apps/dsplab/mlsa.py $mlopts -C -a $alpha -m $order -s $srate -f $fftlen -b $bndap_order -i $tmpdir -o $tmpdir $base"
     echo $cmd
     $cmd
     cp $tmpdir/$base.wav $out_wav
@@ -187,7 +187,7 @@ elif [ "$synth" = "excitation" ]; then
     # We have to drop the first few F0 frames to match SPTK behaviour
     #cat $f0 | awk -v srate=$srate '(NR > 2){if ($1 > 0) print srate / $1; else print 0.0}' | x2x +af \
     #    | excite -p $psize \
-    python local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
+    python3 local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
     cat $resid.float | mlsadf -P 5 -m $order -a $alpha -p $psize $mcep.float.stable | x2x -o +fs > $tmpdir/data.mcep.syn
     sox --norm -t raw -c 1 -r $srate -s -b 16 $tmpdir/data.mcep.syn $out_wav
 elif [ "$synth" = "convolve" ]; then
@@ -195,7 +195,7 @@ elif [ "$synth" = "convolve" ]; then
     psize=`echo "$period * $srate / 1000" | bc`
     isize=`echo "$period * $srate / 5000" | bc`
     echo "Excitation"
-    python local/excitation.py -G 0.8 -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float #$bap
+    python3 local/excitation.py -G 0.8 -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float #$bap
     # Generate mcep spectogram; note that phase has been lost so output waveform will look very different
     echo "Spectrum $fftlen"
     # Rather slow process: we have to generate amplitude and phase separately
@@ -204,7 +204,7 @@ elif [ "$synth" = "convolve" ]; then
     # Combine norm and angle
     merge -s 1 -l 1 -L 1 +f $mcep.sp.arg.float < $mcep.sp.norm.float > $mcep.sp
     echo "Convolution $mcep.sp"
-    python local/convolve.py -m 4.0 -s -l $fftlen -p $psize -i $isize $resid.float $mcep.sp $out_wav
+    python3 local/convolve.py -m 4.0 -s -l $fftlen -p $psize -i $isize $resid.float $mcep.sp $out_wav
 elif [ "$synth" = "WORLD" ]; then
     x2x +ad $bap > $bap.double
     x2x +af $mcep > $mcep.float

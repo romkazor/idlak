@@ -38,21 +38,28 @@ class Vocoder():
         self._srate = srate
 
 
-    def to_wav(self, wavfn):
+    def to_wav(self, wavfn, waveform = False, mode = 'w'):
         """ Save the vocoded waveform into a file,
 
             Uses wave from the Python standard library,
             raises ValueError if the wave form has not been
             created yet.
         """
-        if self._waveform is None:
+        if not mode in ['ab', 'wb', 'a', 'w']:
+            raise ValueError("mode must be 'a' or 'w'")
+
+        if not waveform:
+            waveform = self._waveform
+
+        if waveform is None:
             raise ValueError('No waveform to save')
 
-        wav = wave.open(wavfn, 'wb')
+        mode = mode[0] + 'b' # file must be opened in binary mode
+        wav = wave.open(wavfn, mode)
         wav.setnchannels(1)
         wav.setsampwidth(2) # always using signed integer output
         wav.setframerate(self.srate)
-        for w in self._waveform:
+        for w in waveform:
             wout = int(max(min(w, 0x7fff), (-0x7fff - 1))) # ensures in range
             write_data = struct.pack("<h", wout)
             wav.writeframes(write_data)

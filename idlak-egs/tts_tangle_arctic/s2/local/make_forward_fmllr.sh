@@ -56,7 +56,7 @@ fi
 if [ -e $exp/cmvn_opts ]; then
     echo "Applying (reversed) per-speaker cmvn on output features"
     cmvn_opts=`cat < $exp/cmvn_opts`
-    postproc="$postproc | apply-cmvn --reverse $cmvn_opts --utt2spk=ark:$tst/utt2spk scp:${tst/lbldata/data}/cmvn.scp ark:- ark,t:-"
+    postproc="$postproc | apply-cmvn --reverse $cmvn_opts --utt2spk=ark:$tst/utt2spk ark:${tst/lbldata/data}/cmvn.ark ark:- ark,t:-"
 fi
 
 # optionally add global cmvn applied on output
