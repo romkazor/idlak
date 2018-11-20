@@ -30,7 +30,7 @@ shutil.rmtree(join(datadir), ignore_errors = True)
 os.makedirs(outdir, exist_ok = True)
 os.makedirs(datadir, exist_ok = True)
 
-lvl = logging.DEBUG
+lvl = logging.WARN
 voice = pyIdlak.TangleVoice(voicedir, lvl)
 final_cex = voice.process_text(inputtxt)
 durfeatures = voice.cex_to_dnn_features(final_cex)
@@ -52,10 +52,8 @@ waveform = voice.vocode_acoustic_features(acousticfeatures, pitch,
                                           wav_filename = join(outdir, 'pytest.wav'))
 
 
-exit()
 ##### Finished
-
-
+exit()
 
 # Save bits and pieces of the results
 os.makedirs(pyoutdir, exist_ok = True)

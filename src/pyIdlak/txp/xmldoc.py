@@ -31,7 +31,8 @@ class XMLDoc(object):
 
     def __del__(self):
         """ Clean up underlying memory """
-        pyIdlak_txp.PyPugiXMLDocument_delete(self._doc)
+        if not self._doc is None:
+            pyIdlak_txp.PyPugiXMLDocument_delete(self._doc)
 
 
     def load_string(self, xmlstr):
