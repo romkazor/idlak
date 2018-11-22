@@ -153,7 +153,7 @@ paste-feats ark:$pitchdir/feats.ark scp:$outdir/feats.scp ark,t:- \
 mkdir -p $outdir/wav_nomlpg/
 for cmp in $outdir/cmp/*.cmp; do
     wav=$outdir/wav_nomlpg/$(basename $cmp .cmp).wav
-    local/mlsa_synthesis_pitch_mlpg.sh --synth $synth --voice_thresh $voice_thresh --alpha $alpha --fftlen $fftlen --srate $srate --bndap_order $bndap_order --mcep_order $mcep_order --delta_order $delta_order $cmp
+    local/mlsa_synthesis_pitch_mlpg.sh --synth $synth --voice_thresh $voice_thresh --alpha $alpha --fftlen $fftlen --srate $srate --bndap_order $bndap_order --mcep_order $mcep_order --delta_order $delta_order $cmp $wav
 done
 
 

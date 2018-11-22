@@ -16,7 +16,23 @@ _srcpath = join(abspath(dirname(__file__)), '..', '..', '..', 'src')
 sys.path.insert(0, _srcpath)
 import pyIdlak
 
+"""
+voice = pyIdlak.TangleVoice(voicedir)
+final_cex = voice.process_text(inputtxt)
+durfeatures = voice.cex_to_dnn_features(final_cex)
+durations = voice.generate_state_durations(durfeatures)
+pitchfeatures = voice.combine_durations_and_features(durations, durfeatures)
+pitch = voice.generate_pitch(pitchfeatures)
+acfdnnfeatures = voice.combine_pitch_and_features(pitch, pitchfeatures)
+acousticfeatures = voice.generate_acoustic_features(acfdnnfeatures)
+waveform = voice.vocode_acoustic_features(acousticfeatures, pitch)
 
+-- or --
+
+voice = pyIdlak.TangleVoice(voicedir)
+waveform = voice.speak(inputtxt)
+
+"""
 
 inputtxt = "This is a sample. With two sentences."
 outdir = expanduser('~/tmp/idlak_out')

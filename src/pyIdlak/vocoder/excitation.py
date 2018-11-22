@@ -85,7 +85,7 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
         else:
             fexc = _gen_noise(pmag, period_pre, period, fftlen, gauss)
 
-        frame_excitation = [e*h for (e,h) in zip(fexc, fhann)]
+        frame_excitation = [e*h for (e,h) in zip(fexc, fhann)] # apply the hanning window
         _overlap_and_add(excitation, frame_excitation, sidx)
         period_pre = period
 

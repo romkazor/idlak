@@ -8,6 +8,8 @@
 #   Blaise Potard, 2016
 #
 
+set -eo pipefail
+
 # Allow setshell
 #software=/idiap/resource/software
 #source $software/initfiles/shrc $software
