@@ -2,7 +2,7 @@
 set -euo pipefail
 
 durcmpdir=$1
-datadir=$2
+mlffile=$2
 
 (echo '#!MLF!#'; for cmp in $durcmpdir/*.cmp; do
     cat $cmp | awk -v nstate=5 -v id=`basename $cmp .cmp` '
@@ -35,4 +35,4 @@ BEGIN{print "\"" id ".lab\""; tstart = 0 }
   pd = 0;
 }
 END{print "."}'
-done) > $datadir/synth_lab.mlf
+done) > $mlffile

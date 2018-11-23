@@ -37,6 +37,8 @@ from .pyIdlak_pylib import (
 from .pyoptions import PyOptions
 
 from .utils import (
+        no_pyIdlak_parse_arkfile,
+        compare_arks,
         get_rspecifier_keys,
         get_matrix_by_key,
     )

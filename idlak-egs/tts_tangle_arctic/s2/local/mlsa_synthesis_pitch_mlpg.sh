@@ -33,7 +33,7 @@ mlpgf0done=false
 voice_thresh=0.8
 alpha=0.55
 fftlen=1024
-tmpdir=`mktemp -d`
+tmpdir=$HOME/tmp/idlak_tmp/vocoder #`mktemp -d`
 win=win
 
 [ -f path.sh ] && . ./path.sh;
@@ -67,6 +67,7 @@ sspec=$tmpdir/$base.spec
 
 rm -f $var $cmp $uv $vmcep $vf0 $vbap $mpdf $fpdf $bpdf $mcep $f0 $bap $apf $sspec
 
+mkdir -p $tmpdir
 
 #mcep_order=39
 # Assuming: F0 - MCEP - BNDAP
@@ -129,21 +130,56 @@ if [ "$var_file" != "" ]; then
     cat $var | cut -d " " -f $bndap_voffset-$(( $bndap_voffset + $bndap_len - 1 )) > $vbap
 
     echo "Creating pdfs..."
-    cat $cmp | cut -d " " -f $mcep_offset-$(( $mcep_offset + $mcep_len - 1 )) | awk -v var="`cat $vmcep`" '{print $0, var}' | x2x +a +f > $mpdf
-    cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | awk -v var="`cat $vf0`" '{print $0, var}' | x2x +a +f > $fpdf
-    cat $cmp | cut -d " " -f $bndap_offset-$(( $bndap_offset + $bndap_len - 1 )) | awk -v var="`cat $vbap`" '{print $0, var}' | x2x +a +f > $bpdf
+    noframes=$(wc -l $cmp | cut -f 1 -d " ")
+
+    # bit hacky to put 0 variance at start and end
+    cat $cmp | cut -d " " -f $mcep_offset-$(( $mcep_offset + $mcep_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$mcep_len -v var="$(cat $vmcep)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $mpdf.txt | x2x +a +f > $mpdf
+
+    cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$f0_len -v var="$(cat $vf0)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $fpdf.txt | x2x +a +f > $fpdf
+
+    cat $cmp | cut -d " " -f $bndap_offset-$(( $bndap_offset + $bndap_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$bndap_len -v var="$(cat $vbap)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $bpdf.txt | x2x +a +f > $bpdf
 
     echo "Running mlpg..."
     echo "mcep smoothing"
     mlpg -i 0 -m $mcep_order $mcep_win $mpdf | x2x +f +a$(( $mcep_order + 1 )) > $mcep
     if [ "$mlpgf0done" != true ]; then
         echo "f0 smoothing"
-        mlpg -i 0 -m $(( $f0_order - 1 )) $f0_win $fpdf > ${f0}_raw
+        mlpg -i 0 -l $f0_order $f0_win $fpdf > ${f0}_raw
     else
         cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | x2x +a +f > ${f0}_raw
     fi
     echo "bndap smoothing"
-    mlpg -i 0 -m $(( $bndap_order - 1 )) $bndap_win $bpdf | x2x +f +a$bndap_order | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
+    mlpg -i 0 -l $bndap_order $bndap_win $bpdf | x2x +f +a$bndap_order | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
 
     #cat $cmp | cut -d " " -f $(($f0_offset + 1))-$(($f0_offset + 1)) > $uv
     cat ${f0}_raw | x2x +f +a$f0_order | awk -v thresh=$voice_thresh '{if ($1 > thresh) print $2; else print 0.0}' > $f0

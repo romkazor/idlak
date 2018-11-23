@@ -185,6 +185,7 @@ class RESD:
 
         self.lstsample = 0
         while excitation_frame_idx < self.nrframes and self.lstsample <  raw.size:
+            # print ("excitation_frame_idx:", excitation_frame_idx)
             if verbose:
                 print("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
 

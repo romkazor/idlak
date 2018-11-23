@@ -44,6 +44,7 @@ fi
 rm -rf $outputdir
 mkdir -p $outputdir/{dur,pitch,acoustic,lang,win}
 
+# convert the window files to ascii for pyIdlak
 for win in $windir/*.win; do
     name=$(basename "$win" .win)
     cp $win $outputdir/win/.

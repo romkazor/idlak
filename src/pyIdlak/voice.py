@@ -14,11 +14,13 @@
 # See the Apache 2 License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
+import copy
+import logging
+import math
 import os
 import sys
-import logging
-import collections
-import math
+
 from lxml import etree
 
 from . import txp
@@ -235,10 +237,13 @@ class TangleVoice:
         return combinedfeatures
 
 
-    def generate_pitch(self, dnnfeatures, mlpg = True, extract = True):
+    def generate_pitch(self, dnnfeatures, mlpg = True, extract = True,
+                             save_pdf_directory = ""):
         """ Predict the pitch features
 
             if mlpg is True then mlpg is applied
+            if save_pdf_directory is set then the means and variances will
+                be saved into that directory (used for debugging)
             if extract is True then only the first two columns are returned
                 which are the voicing confidence and F0 respectively
         """
@@ -249,7 +254,11 @@ class TangleVoice:
             pitchmatrix = self._pitchmodel.forward(spurtfeatures)
             if mlpg:
                 self.log.debug('applying MLPG to pitch')
-                pitch[spurtid] = self._apply_mlpg(pitchmatrix, 'logf0')
+                if os.path.isdir(save_pdf_directory):
+                    pdffile = os.path.join(save_pdf_directory, spurtid + '.pitch.pdf')
+                else:
+                    pdffile = False
+                pitch[spurtid] = self._apply_mlpg(pitchmatrix, 'logf0', pdffile)
             else:
                 if extract:
                     for idx, row in enumerate(pitchmatrix):
@@ -272,11 +281,14 @@ class TangleVoice:
         return combinedfeatures
 
 
-    def generate_acoustic_features(self, dnnfeatures, mlpg = True, extract = True):
+    def generate_acoustic_features(self, dnnfeatures, mlpg = True, extract = True,
+                                         save_pdf_directory = ""):
         """ Predict the acoustic features
 
             if mlpg is True then mlpg is applied
             otherwise if extract is True then split out the MCEPs and Bndaps
+            if save_pdf_directory is set then the means and variances will
+            be saved into that directory (used for debugging)
         """
         self.log.debug("Generating acoustic features")
         acoustic = collections.OrderedDict()
@@ -287,19 +299,39 @@ class TangleVoice:
                 acoustic[spurtid] = acf
                 continue
 
-            # order in the matrix is pitch, mcep, bndap
-            #  (3 = mean , dmean, ddmean)
+            # order in the matrix is mcep, bndap, mcep_d, bndap_d, mcep_dd, bndap_dd
             mcep_start = 0
-            mcep_end = mcep_start + (self.mcep_order + 1)*3 # include gain
+            mcep_end = mcep_start + self.mcep_order + 1
             bndap_start = mcep_end
-            bndap_end = bndap_start + self.bndap_order*3
+            bndap_end = bndap_start + self.bndap_order
+            mcep_d_start = bndap_end
+            mcep_d_end = mcep_d_start + self.mcep_order + 1
+            bndap_d_start = mcep_d_end
+            bndap_d_end = bndap_d_start + self.bndap_order
+            mcep_dd_start = bndap_d_end
+            mcep_dd_end = mcep_dd_start + self.mcep_order + 1
+            bndap_dd_start = mcep_dd_end
+            bndap_dd_end = bndap_dd_start + self.bndap_order
 
-            mceps = [[v for v in row[mcep_start:mcep_end]] for row in acf]
-            bndaps = [[v for v in row[bndap_start:bndap_end]] for row in acf]
+            mceps = []
+            bndaps = []
+            for row in acf:
+                mceps.append(row[mcep_start:mcep_end] + row[mcep_d_start:mcep_d_end] + row[mcep_dd_start:mcep_dd_end])
+                bndaps.append(row[bndap_start:bndap_end] + row[bndap_d_start:bndap_d_end] + row[bndap_dd_start:bndap_dd_end])
+
             if mlpg:
                 self.log.debug('applying MLPG')
-                mceps = self._apply_mlpg(mceps, 'mcep')
-                bndaps = self._apply_mlpg(bndaps, 'bndap')
+                if os.path.isdir(save_pdf_directory):
+                    mcep_pdf_file = os.path.join(save_pdf_directory,
+                                                 spurtid + '.mcep.pdf')
+                    bndap_pdf_file = os.path.join(save_pdf_directory,
+                                                  spurtid + '.bndap.pdf')
+                else:
+                    mcep_pdf_file = False
+                    bndap_pdf_file = False
+
+                mceps = self._apply_mlpg(mceps, 'mcep', mcep_pdf_file)
+                bndaps = self._apply_mlpg(bndaps, 'bndap', bndap_pdf_file)
             else:
                 mceps = [mrow[:self.mcep_order+1] for mrow in mceps]
                 bndaps = [brow[:self.bndap_order] for brow in bndaps]
@@ -618,30 +650,49 @@ class TangleVoice:
         return fuzzy_pos
 
 
-    def _apply_mlpg(self, matrix, name):
+    def _apply_mlpg(self, matrix, name, pdffile):
         """ Apply MLPG
 
             Assume the order is a third of the matrix
         """
         num_frames = len(matrix)
         order = len(matrix[0])//3
+
         mean = []
         mean_d = []
         mean_dd = []
-        var = [self._variances[name][:order]]*num_frames
-        var_d = [self._variances[name][order:2*order]]*num_frames
-        var_dd = [self._variances[name][2*order:]]*num_frames
-        for i in range(order):
-            var[0][i] = 0.
-            var_d[0][i] = 0.
-            var_dd[0][i] = 0.
-            var[-1][i] = 0.
-            var_d[-1][i] = 0.
-            var_dd[-1][i] = 0.
         for frame in matrix:
             mean.append(list(frame[:order]))
             mean_d.append(list(frame[order:2*order]))
             mean_dd.append(list(frame[2*order:]))
+
+        var = [self._variances[name][:order]] * num_frames
+        var_d = [self._variances[name][order:2*order]]  * num_frames
+        var_dd = [self._variances[name][2*order:]] * num_frames
+        var[0] = [0.]*order
+        var_d[0] = [0.]*order
+        var_dd[0] = [0.]*order
+        var[-1] = [0.]*order
+        var_d[-1] = [0.]*order
+        var_dd[-1] = [0.]*order
+
+        if pdffile:
+            with open(pdffile, 'w') as fout:
+                for fidx in range(num_frames):
+                    def _tostr(v):
+                        return '{0:.5f}'.format(v)
+                    fout.write(' '.join(map(_tostr, mean[fidx])))
+                    fout.write(' ')
+                    fout.write(' '.join(map(_tostr, mean_d[fidx])))
+                    fout.write(' ')
+                    fout.write(' '.join(map(_tostr, mean_dd[fidx])))
+                    fout.write(' ')
+                    fout.write(' '.join(map(_tostr, var[fidx])))
+                    fout.write(' ')
+                    fout.write(' '.join(map(_tostr, var_d[fidx])))
+                    fout.write(' ')
+                    fout.write(' '.join(map(_tostr, var_dd[fidx])))
+                    fout.write('\n')
 
         d1win, d2win = self._delta_windows[name]
         output = vocoder.mlpg(mean, mean_d, mean_dd,
@@ -649,8 +700,3 @@ class TangleVoice:
                               d1win, d2win,
                               input_type = 0)
         return output
-
-
-
-
-

@@ -73,6 +73,7 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
     bands = get_band_info(len(bndaps[0]), srate, fshift)
     period_pre = 0
     for sidx, fidx, period, voiced in _pitch_periods(f0s, srate, sshift, f0min, uv_period):
+        # print('fidx', fidx)
         pmag = float(period)
         fhann = _pitch_sync_hanning(period_pre, period, fftlen)
 
@@ -201,5 +202,3 @@ def _overlap_and_add(excitation, frame_excitation, startidx):
         if startidx + i >= len(excitation):
             break
         excitation[startidx + i] += e
-
-
