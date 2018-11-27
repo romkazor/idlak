@@ -8,6 +8,7 @@ import logging
 import shutil
 import subprocess as SP
 import numpy as np
+import glob
 
 from os.path import expanduser, join, abspath, dirname, isfile, isdir
 
@@ -17,7 +18,7 @@ sys.path.insert(0, _srcpath)
 import pyIdlak
 from pyIdlak.pylib import compare_arks
 
-pydir = expanduser('~/tmp/idlak_tmp_py/pyout')
+pydir = expanduser('~/tmp/idlak_tmp_py')
 bashdir = expanduser('~/tmp/idlak_tmp')
 bashoutdir = expanduser('~/tmp/idlak_out')
 
@@ -116,27 +117,82 @@ sys.stdout.write('OK\n')
 
 #####################################
 sys.stdout.write('PDFs         ... ')
-py_mcep_pdf = np.loadtxt(join(pydir, "test001.mcep.pdf"))
-bash_mcep_pdf = np.loadtxt(join(bashdir, 'vocoder','test001.mcep.pdf.txt'))
-py_bndap_pdf = np.loadtxt(join(pydir, "test001.bndap.pdf"))
-bash_bndap_pdf = np.loadtxt(join(bashdir, 'vocoder','test001.bndap.pdf.txt'))
+
+from os.path import basename, splitext
+spurtids = {splitext(splitext(basename(s))[0])[0] for s in glob.glob(join(pydir, '*.mcep.pdf'))}
 atol = 1e-3
 rtol=0.
-if py_mcep_pdf.shape[0] != bash_mcep_pdf.shape[0]:
-    raise ValueError("unequal number of rows "
-         "A: {[0]} B: {[0]}".format(py_mcep_pdf.shape, bash_mcep_pdf.shape))
-if py_mcep_pdf.shape[1] != bash_mcep_pdf.shape[1]:
-    raise ValueError("unequal number of columns "
-         "A: {[1]} B: {[1]}".format(py_mcep_pdf.shape, bash_mcep_pdf.shape))
-if not np.allclose(py_mcep_pdf, bash_mcep_pdf, atol = atol, rtol=rtol):
-   raise ValueError("different values")
 
-if py_bndap_pdf.shape[0] != bash_bndap_pdf.shape[0]:
-    raise ValueError("unequal number of rows "
-         "A: {[0]} B: {[0]}".format(py_bndap_pdf.shape, bash_bndap_pdf.shape))
-if py_bndap_pdf.shape[1] != bash_bndap_pdf.shape[1]:
-    raise ValueError("unequal number of columns "
-         "A: {[1]} B: {[1]}".format(py_bndap_pdf.shape, bash_bndap_pdf.shape))
-if not np.allclose(py_bndap_pdf, bash_bndap_pdf, atol = atol, rtol=rtol):
-   raise ValueError("different values")
+for spurtid in spurtids:
+    py_mcep_pdf = np.loadtxt(join(pydir, spurtid + ".mcep.pdf"))
+    bash_mcep_pdf = np.loadtxt(join(bashdir, 'vocoder','test001.mcep.pdf.txt'))
+    py_bndap_pdf = np.loadtxt(join(pydir, spurtid + ".bndap.pdf"))
+    bash_bndap_pdf = np.loadtxt(join(bashdir, 'vocoder','test001.bndap.pdf.txt'))
+    if py_mcep_pdf.shape[0] != bash_mcep_pdf.shape[0]:
+        raise ValueError("unequal number of rows "
+            "A: {[0]} B: {[0]}".format(py_mcep_pdf.shape, bash_mcep_pdf.shape))
+    if py_mcep_pdf.shape[1] != bash_mcep_pdf.shape[1]:
+        raise ValueError("unequal number of columns "
+            "A: {[1]} B: {[1]}".format(py_mcep_pdf.shape, bash_mcep_pdf.shape))
+    if not np.allclose(py_mcep_pdf, bash_mcep_pdf, atol = atol, rtol=rtol):
+        raise ValueError("different values")
+
+    if py_bndap_pdf.shape[0] != bash_bndap_pdf.shape[0]:
+        raise ValueError("unequal number of rows "
+            "A: {[0]} B: {[0]}".format(py_bndap_pdf.shape, bash_bndap_pdf.shape))
+    if py_bndap_pdf.shape[1] != bash_bndap_pdf.shape[1]:
+        raise ValueError("unequal number of columns "
+            "A: {[1]} B: {[1]}".format(py_bndap_pdf.shape, bash_bndap_pdf.shape))
+    if not np.allclose(py_bndap_pdf, bash_bndap_pdf, atol = atol, rtol=rtol):
+        raise ValueError("different values")
+
 sys.stdout.write('OK\n')
+
+#####################################
+sys.stdout.write('ACF mlpg     ... ')
+
+for spurtid in spurtids:
+    py_mcep_mlpg = np.loadtxt(join(pydir, 'vocoder', spurtid + '.mcep'))
+    bash_mcep_mlpg = np.loadtxt(join(bashdir, 'vocoder',spurtid + '.mcep'))
+
+    if py_mcep_mlpg.shape[0] != bash_mcep_mlpg.shape[0]:
+        raise ValueError("unequal number of rows "
+            "A: {[0]} B: {[0]}".format(py_mcep_mlpg.shape, bash_mcep_mlpg.shape))
+    if py_mcep_mlpg.shape[1] != bash_mcep_mlpg.shape[1]:
+        raise ValueError("unequal number of columns "
+            "A: {[1]} B: {[1]}".format(py_mcep_mlpg.shape, bash_mcep_mlpg.shape))
+    if not np.allclose(py_mcep_mlpg, bash_mcep_mlpg, atol = atol, rtol=rtol):
+        raise ValueError("different values")
+
+    py_bndap_mlpg = np.loadtxt(join(pydir, 'vocoder', spurtid + '.bndap'))
+    bash_bndap_mlpg = np.loadtxt(join(bashdir, 'vocoder', spurtid + '.bndap_raw'))
+    if py_bndap_mlpg.shape[0] != bash_bndap_mlpg.shape[0]:
+        raise ValueError("unequal number of rows "
+            "A: {[0]} B: {[0]}".format(py_bndap_mlpg.shape, bash_bndap_mlpg.shape))
+    if py_bndap_mlpg.shape[1] != bash_bndap_mlpg.shape[1]:
+        raise ValueError("unequal number of columns "
+            "A: {[1]} B: {[1]}".format(py_bndap_mlpg.shape, bash_bndap_mlpg.shape))
+    if not np.allclose(py_bndap_mlpg, bash_bndap_mlpg, atol = atol, rtol=rtol):
+        raise ValueError("different values")
+
+sys.stdout.write('OK\n')
+
+#####################################
+sys.stdout.write('Excitation   ... ')
+
+for spurtid in spurtids:
+    py_residiual = np.loadtxt(join(pydir, 'vocoder', spurtid + '.res'))
+    bash_residiual = np.loadtxt(join(bashdir, 'vocoder', spurtid + '.resid'))
+    if py_residiual.size != bash_residiual.size:
+        raise ValueError("unequal number of samples "
+            "A: {} B: {}".format(py_residiual.size, bash_residiual.size))
+    if not np.allclose(py_residiual, bash_residiual, atol = atol, rtol=rtol):
+        raise ValueError("different values")
+
+
+
+sys.stdout.write('OK\n')
+
+#####################################
+sys.stdout.write('All checks passed\n')
+

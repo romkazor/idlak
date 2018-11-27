@@ -336,17 +336,29 @@ class TangleVoice:
                 mceps = [mrow[:self.mcep_order+1] for mrow in mceps]
                 bndaps = [brow[:self.bndap_order] for brow in bndaps]
 
+            # convert bndaps to decibels to be inline with other tools (predicted as log value)
+            for fidx in range(len(bndaps)):
+                for bidx, bval in enumerate(bndaps[fidx]):
+                    if bval >= -.5:
+                        bndaps[fidx][bidx] = 0.
+                    else:
+                        bndaps[fidx][bidx] = 20. * (bval + .5) / math.log(10)
+
             acoustic[spurtid] = {'mcep' : mceps, 'bndap': bndaps}
         return acoustic
 
 
     def vocode_acoustic_features(self, acoutic_features, pitch,
                                  mixed_excitation = True,
+                                 save_residual_directory = False,
                                  wav_filename = None):
         """ Vocode the acoustic features using MLSA
 
             if mixed_excitation is set to False, then the residual is
             generated without mixed excitation
+
+            if save_residual_directory is set then the by spurt residual will
+                be saved into that directory (used for debugging)
         """
         if mixed_excitation:
             exc_type = vocoder.MCEPExcitation.MIXED
@@ -355,15 +367,25 @@ class TangleVoice:
 
         waveform = []
         for spurtid in acoutic_features:
+            mceps =  acoutic_features[spurtid]['mcep']
+            bndaps = copy.copy(acoutic_features[spurtid]['bndap'])
             f0s = []
-            for (confidence, f0) in pitch[spurtid]:
-                if mixed_excitation or (confidence > self._voice_thresh):
+            for fidx, (confidence, f0) in enumerate(pitch[spurtid]):
+                if confidence > self._voice_thresh:
                     f0s.append(f0)
                 else:
                     f0s.append(0.0)
-            mceps =  acoutic_features[spurtid]['mcep']
-            bndaps = acoutic_features[spurtid]['bndap']
+                    for bidx in range(self.bndap_order):
+                        bndaps[fidx][bidx] = 0.0
+
             excitation = self._vocoder.gen_excitation(f0s, bndaps, exc_type)
+            if os.path.isdir(save_residual_directory):
+                residualfile = os.path.join(save_residual_directory, spurtid + '.res')
+                with open(residualfile, 'w') as fout:
+                    def _tostr(v):
+                        return '{0:.5f}'.format(v)
+                    fout.write('\n'.join(map(_tostr, excitation)))
+                    fout.write('\n')
             spurt_waveform = self._vocoder.apply_mlsa(mceps, excitation)
             waveform.extend(spurt_waveform)
 

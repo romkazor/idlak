@@ -57,12 +57,12 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
         fshift:     frame shift in seconds
         f0min:      floor f0 to this value
         fftlen:     length of FFT to use (must be pow of 2)
-        uv_period:  shift in unvoiced region in seconds (defaults to half fshift)
+        uv_period:  shift in unvoiced region in seconds (defaults to double fshift)
         gauss:      use normally distributed noise
         seed:       seed for random number generator
     """
     if uv_period is None:
-        uv_period = fshift / 2.
+        uv_period = 2. * fshift
     sshift = int(srate * fshift) # frame shift in samples
     noframes = len(f0s)
     nosamples = noframes * sshift
@@ -70,10 +70,10 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
     random.seed(seed)
 
     excitation = [0.] * nosamples
+    hanning_totals = [0.] * nosamples
     bands = get_band_info(len(bndaps[0]), srate, fshift)
     period_pre = 0
     for sidx, fidx, period, voiced in _pitch_periods(f0s, srate, sshift, f0min, uv_period):
-        # print('fidx', fidx)
         pmag = float(period)
         fhann = _pitch_sync_hanning(period_pre, period, fftlen)
 
@@ -88,9 +88,20 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
 
         frame_excitation = [e*h for (e,h) in zip(fexc, fhann)] # apply the hanning window
         _overlap_and_add(excitation, frame_excitation, sidx)
+        # keeping track of the hanning totals for later normalisation
+        _overlap_and_add(hanning_totals, fhann, sidx)
         period_pre = period
 
-    return excitation
+    # renorm based on the hanning window locations
+    for sidx, (e, h) in enumerate(zip(excitation, hanning_totals)):
+        if h > 0:
+            excitation[sidx] = e / h
+        else:
+            excitation[sidx] = e
+
+    # remove the offset introduced by building the excitation fft window
+    offset = fftlen // 2 - sshift
+    return excitation[offset:]
 
 
 def get_band_info(numbands, srate, fshift, **kwargs):

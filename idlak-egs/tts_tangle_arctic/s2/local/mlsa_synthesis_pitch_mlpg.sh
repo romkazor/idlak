@@ -179,7 +179,8 @@ if [ "$var_file" != "" ]; then
         cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | x2x +a +f > ${f0}_raw
     fi
     echo "bndap smoothing"
-    mlpg -i 0 -l $bndap_order $bndap_win $bpdf | x2x +f +a$bndap_order | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
+    mlpg -i 0 -l $bndap_order $bndap_win $bpdf | x2x +f +a$bndap_order > ${bap}_raw
+    cat ${bap}_raw | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
 
     #cat $cmp | cut -d " " -f $(($f0_offset + 1))-$(($f0_offset + 1)) > $uv
     cat ${f0}_raw | x2x +f +a$f0_order | awk -v thresh=$voice_thresh '{if ($1 > thresh) print $2; else print 0.0}' > $f0
@@ -226,6 +227,7 @@ elif [ "$synth" = "excitation" ]; then
     #cat $f0 | awk -v srate=$srate '(NR > 2){if ($1 > 0) print srate / $1; else print 0.0}' | x2x +af \
     #    | excite -p $psize \
     python3 local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
+    x2x +fa $resid.float > $resid
     cat $resid.float | mlsadf -P 5 -m $order -a $alpha -p $psize $mcep.float.stable | x2x -o +fs > $tmpdir/data.mcep.syn
     sox --norm -t raw -c 1 -r $srate -s -b 16 $tmpdir/data.mcep.syn $out_wav
 elif [ "$synth" = "convolve" ]; then
