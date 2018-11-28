@@ -182,9 +182,14 @@ class RESD:
         mcep_frame_idx = 0
         pitch_period_prv = int(float(self.srate) / self.uvf0)
 
+        with open(os.path.expanduser('~/tmp/idlak_tmp/vocoder/fidx.txt'), 'w') as fout:
+            pass
 
         self.lstsample = 0
         while excitation_frame_idx < self.nrframes and self.lstsample <  raw.size:
+            with open(os.path.expanduser('~/tmp/idlak_tmp/vocoder/fidx.txt'), 'a') as fout:
+                fout.write('{:d}\n'.format(time_idx))
+
             if verbose:
                 print("Building excitation, Iteration: {0:> 4d}    {1:> 4d} / {2}".format(self.iteration, excitation_frame_idx, self.nrframes))
 

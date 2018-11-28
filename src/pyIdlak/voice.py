@@ -547,6 +547,7 @@ class TangleVoice:
                                             fftlen = self.fftlen,
                                             fshift = self.fshift)
 
+
     def _load_dnn(self, dnndir):
         """ Loads a DNN model from a directory """
         from os.path import join, isdir, isfile
@@ -602,7 +603,6 @@ class TangleVoice:
                 for v in map(float, line):
                     ret.append(v)
         return ret
-
 
 
     def _add_state_feature(self, spurtfeatures):

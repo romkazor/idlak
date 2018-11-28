@@ -162,10 +162,10 @@ for spurtid in spurtids:
         raise ValueError("unequal number of columns "
             "A: {[1]} B: {[1]}".format(py_mcep_mlpg.shape, bash_mcep_mlpg.shape))
     if not np.allclose(py_mcep_mlpg, bash_mcep_mlpg, atol = atol, rtol=rtol):
-        raise ValueError("different values")
+        raise ValueError("mcep different values")
 
     py_bndap_mlpg = np.loadtxt(join(pydir, 'vocoder', spurtid + '.bndap'))
-    bash_bndap_mlpg = np.loadtxt(join(bashdir, 'vocoder', spurtid + '.bndap_raw'))
+    bash_bndap_mlpg = np.loadtxt(join(bashdir, 'vocoder', spurtid + '.bndap'))
     if py_bndap_mlpg.shape[0] != bash_bndap_mlpg.shape[0]:
         raise ValueError("unequal number of rows "
             "A: {[0]} B: {[0]}".format(py_bndap_mlpg.shape, bash_bndap_mlpg.shape))
@@ -173,12 +173,13 @@ for spurtid in spurtids:
         raise ValueError("unequal number of columns "
             "A: {[1]} B: {[1]}".format(py_bndap_mlpg.shape, bash_bndap_mlpg.shape))
     if not np.allclose(py_bndap_mlpg, bash_bndap_mlpg, atol = atol, rtol=rtol):
-        raise ValueError("different values")
+        raise ValueError("bndap different values")
 
 sys.stdout.write('OK\n')
 
 #####################################
 sys.stdout.write('Excitation   ... ')
+
 
 for spurtid in spurtids:
     py_residiual = np.loadtxt(join(pydir, 'vocoder', spurtid + '.res'))
@@ -190,9 +191,7 @@ for spurtid in spurtids:
         raise ValueError("different values")
 
 
-
 sys.stdout.write('OK\n')
 
 #####################################
 sys.stdout.write('All checks passed\n')
-
