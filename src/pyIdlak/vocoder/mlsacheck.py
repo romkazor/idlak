@@ -14,12 +14,21 @@
 # See the Apache 2 License for the specific language governing permissions and
 # limitations under the License.
 
-# SWIG wrapped API
-from . import pyIdlak_vocoder as c_api
+from . import pyIdlak_vocoder
 
+def stablise_mceps(mceps, alpha, fftlen, check_type = 2, stable_condition = 0,
+              pade_order = 5, threshold = 0.0, quiet = True):
+    """ Return stable mceps """
+    flattened_mceps = []
+    mcep_order = len(mceps[0]) - 1
+    for frame in mceps:
+        flattened_mceps.extend(frame)
 
-from .vocoders import MCEPVocoder, MCEPExcitation
+    rawresult = pyIdlak_vocoder.PySPTK_mlsacheck(flattened_mceps, mcep_order,
+        alpha, fftlen, check_type, stable_condition, pade_order,
+        threshold, quiet)
 
-from . import excitation
-from .mlpg import mlpg
-from .mlsacheck import stablise_mceps
+    result = []
+    for idx in range(0, len(rawresult), mcep_order+1):
+        result.append(list(rawresult[idx: idx+vector_length]))
+    return result
