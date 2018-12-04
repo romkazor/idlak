@@ -33,7 +33,7 @@ mlpgf0done=false
 voice_thresh=0.8
 alpha=0.55
 fftlen=1024
-tmpdir=$HOME/tmp/idlak_tmp/vocoder #`mktemp -d`
+tmpdir=`mktemp -d`
 win=win
 
 [ -f path.sh ] && . ./path.sh;

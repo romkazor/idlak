@@ -38,7 +38,7 @@ durdnndir=$voice_dir/dur
 f0dnndir=$voice_dir/pitch
 dnndir=$voice_dir/acoustic
 cleanup=""
-datadir=$HOME/tmp/idlak_tmp #/`mktemp -d`
+datadir=`mktemp -d`
 mkdir -p $datadir
 tpdb=`readlink -f $voice_dir/lang/`
 
