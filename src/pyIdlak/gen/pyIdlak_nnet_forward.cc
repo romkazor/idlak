@@ -107,7 +107,6 @@ kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
 
     CuMatrix<BaseFloat> feats, feats_transf, nnet_out;
 
-
     Timer time;
 
     KALDI_VLOG(2) << "Processing " << input.NumRows() << "frames";

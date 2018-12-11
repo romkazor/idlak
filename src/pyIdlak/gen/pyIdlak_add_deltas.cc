@@ -45,11 +45,11 @@ kaldi::Matrix<kaldi::BaseFloat> * PyAddDeltas(PySimpleOptions * pyopts,
 
   if (!input.NumRows()) {
     KALDI_WARN << "PyAddDeltas called with empty input matrix";
-    auto output = new kaldi::Matrix<BaseFloat>(input);
+    auto output = new kaldi::Matrix<kaldi::BaseFloat>(input);
     return output;
   }
 
-  auto output = new kaldi::Matrix<BaseFloat>;
+  auto output = new kaldi::Matrix<kaldi::BaseFloat>;
   if (truncate != 0) {
     if (truncate > input.NumCols()) {
       KALDI_ERR << "PyAddDeltas cannot truncate features as dimension " << input.NumCols()
@@ -57,7 +57,7 @@ kaldi::Matrix<kaldi::BaseFloat> * PyAddDeltas(PySimpleOptions * pyopts,
       delete output;
       return nullptr;
     }
-    kaldi::SubMatrix<BaseFloat> feats_sub(input, 0, input.NumRows(), 0, truncate);
+    kaldi::SubMatrix<kaldi::BaseFloat> feats_sub(input, 0, input.NumRows(), 0, truncate);
     kaldi::ComputeDeltas(*add_deltas_opts, feats_sub, output);
   } else {
     kaldi::ComputeDeltas(*add_deltas_opts, input, output);
