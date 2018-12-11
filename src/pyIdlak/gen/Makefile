@@ -7,6 +7,9 @@ OBJFILES = pyIdlak_nnet_forward.o pyIdlak_apply_cmvn.o pyIdlak_add_deltas.o pyId
 
 LIBNAME = _pyIdlak_gen
 
+LDFLAGS += $(CUDA_LDFLAGS)
+LDLIBS += $(CUDA_LDLIBS)
+
 ADDLIBS = ../pylib/_pyIdlak_pylib.a  ../../idlakfeat/idlak-feat.a ../../feat/kaldi-feat.a ../../transform/kaldi-transform.a \
           ../../nnet/kaldi-nnet.a ../../cudamatrix/kaldi-cudamatrix.a ../../lat/kaldi-lat.a \
           ../../gmm/kaldi-gmm.a ../../tree/kaldi-tree.a ../../hmm/kaldi-hmm.a \

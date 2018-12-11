@@ -27,6 +27,10 @@
 
 // TODO: Refactor as templates then use swig templates
 // TODO: Convert to Python3 generator class
+typedef kaldi::Matrix<kaldi::BaseFloat> KaldiMatrixWrap_BaseFloat;
+typedef kaldi::Matrix<double> KaldiMatrixWrap_Double;
+typedef KaldiMatrixWrap_BaseFloat KaldiMatrixBaseFloat_list;
+typedef KaldiMatrixWrap_Double    KaldiMatrixDouble_list;
 
 class PyIdlakSequentialBaseFloatMatrixReader {
 private:
@@ -137,6 +141,11 @@ public:
 
 kaldi::Matrix<double> PyReadKaldiDoubleMatrix(const std::string &rxfilename);
 
+
+KaldiMatrixBaseFloat_list * PyKaldiMatrixBaseFloat_tolist(kaldi::Matrix<kaldi::BaseFloat> * M);
+KaldiMatrixDouble_list * PyKaldiMatrixDouble_tolist(kaldi::Matrix<double> * M);
+kaldi::Matrix<kaldi::BaseFloat> * PyKaldiMatrixBaseFloat_frmlist(const double * MATRIX, int m, int n);
+kaldi::Matrix<double> * PyKaldiMatrixDouble_frmlist(const double * MATRIX, int m, int n);
 
 
 #endif // KALDI_PYIDLAK_PYLIB_PYIDLAK_IO_H_

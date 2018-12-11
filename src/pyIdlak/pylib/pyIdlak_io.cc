@@ -28,3 +28,33 @@ kaldi::Matrix<double> PyReadKaldiDoubleMatrix(const std::string &rxfilename) {
   output.Read(ki.Stream(), binary);
   return output;
 }
+
+KaldiMatrixBaseFloat_list * PyKaldiMatrixBaseFloat_tolist(kaldi::Matrix<kaldi::BaseFloat> * M) {
+  return reinterpret_cast<KaldiMatrixBaseFloat_list *>(M);
+}
+
+KaldiMatrixDouble_list * PyKaldiMatrixDouble_tolist(kaldi::Matrix<double> * M) {
+  return reinterpret_cast<KaldiMatrixDouble_list *>(M);
+}
+
+kaldi::Matrix<kaldi::BaseFloat> * PyKaldiMatrixBaseFloat_frmlist(const double * MATRIX, int m, int n) {
+    int i, j;
+    kaldi::Matrix<kaldi::BaseFloat> * kaldimat = new kaldi::Matrix<kaldi::BaseFloat>(m, n);
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            kaldimat->operator()(i,j) = MATRIX[i*n + j];
+        }
+    }
+    return kaldimat;
+}
+
+kaldi::Matrix<double> * PyKaldiMatrixDouble_frmlist(const double * MATRIX, int m, int n) {
+    int i, j;
+    kaldi::Matrix<double> * kaldimat = new kaldi::Matrix<double>(m, n);
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            kaldimat->operator()(i,j) = MATRIX[i*n + j];
+        }
+    }
+    return kaldimat;
+}
