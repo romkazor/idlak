@@ -46,7 +46,7 @@ kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
   bool norm_means = apply_cmvn_opts->norm_means;
   bool reverse = apply_cmvn_opts->reverse;
 
-  auto output = new kaldi::Matrix<BaseFloat>(input);
+  auto output = new kaldi::Matrix<kaldi::BaseFloat>(input);
 
   if (!norm_means && !norm_vars) {
     // No-opt just return a copy
