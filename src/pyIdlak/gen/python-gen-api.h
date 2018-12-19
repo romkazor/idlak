@@ -23,6 +23,14 @@
 
 #include "pyIdlak/pylib/pyIdlak_types.h"
 
-std::string PyGen_dummy();
+kaldi::Matrix<kaldi::BaseFloat> * PyGenNnetForwardPass(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input);
+
+kaldi::Matrix<kaldi::BaseFloat> * PyApplyCMVN(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input,
+    const kaldi::Matrix<double> &cmvn_stats);
+
+kaldi::Matrix<kaldi::BaseFloat> * PyAddDeltas(PySimpleOptions * pyopts,
+    const kaldi::Matrix<kaldi::BaseFloat> &input);
 
 #endif // KALDI_PYIDLAK_GEN_PYTHON_GEN_API_H_

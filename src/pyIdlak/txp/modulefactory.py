@@ -37,7 +37,8 @@ class CppTxpModule(object):
 
     def __del__(self):
         """ Free C memory """
-        pyIdlak_txp.PyIdlakModule_delete(self._mod)
+        if not self._mod is None:
+            pyIdlak_txp.PyIdlakModule_delete(self._mod)
 
 
     def process(self, doc):

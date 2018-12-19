@@ -2,7 +2,7 @@ include ../../kaldi.mk
 
 ifeq ($(PYIDLAK), true)
 
-OBJFILES = pyIdlak-nnet-forward.o pyIdlak_nnet_forward_wrap.o
+OBJFILES = pyIdlak_nnet_forward.o pyIdlak_nnet_forward_wrap.o
 
 LIBNAME = _pyIdlak_nnet_forward
 
@@ -31,7 +31,7 @@ endif
 
 .PHONY: wrapper
 wrapper:
-	$(SWIG) -c++ -python -o pyIdlak_nnet_forward_wrap.cc pyIdlak-nnet-forward.i
+	$(SWIG) -c++ -python -o pyIdlak_nnet_forward_wrap.cc pyIdlak_nnet_forward.i
 pyIdlak_nnet_forward_wrap.o: wrapper
 
 sharedlib: $(STATICLIB)

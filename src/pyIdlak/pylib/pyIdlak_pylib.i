@@ -22,25 +22,10 @@
 
 %module pyIdlak_pylib
 
-%include "std_string.i"
-%include <std_vector.i>
-%include <argcargv.i>
-%include "typemaps.i"
-
-namespace std {
-   %template(IntVector) vector<int>;
-   %template(DoubleVector) vector<double>;
-   %template(StringVector) vector<string>;
-   %template(ConstCharVector) vector<const char*>;
-};
-
-%apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
+%include "pyIdlak_typemaps.i"
 
 %{
 #include "python-pylib-api.h"
 %}
 
 %include "python-pylib-api.h"
-
-
-

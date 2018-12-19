@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2018 Cereproc Ltd. (author: Matthew Aylett)
+# Copyright 2018 Cereproc Ltd. (author: David Braude
+#                                       Matthew Aylett)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,4 +19,6 @@ from . import txp
 from . import vocoder
 from . import gen
 
-__all__ = ['txp', 'vocoder', 'gen']
+from .voice import TangleVoice
+
+__all__ = ['gen', 'txp', 'vocoder']
