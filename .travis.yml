@@ -48,7 +48,9 @@ env:
   - CI_TARGETS="depend"     # Job1: Build main programs.
   - CI_TARGETS="all"        # Job2: Build main programs.
   - CI_TARGETS="ext_depend" # Job3: Build extra programs
-  - CI_TARGETS="ext"        # Job4: Build extra programs
+  - CI_TARGETS="online"     # Job4.a: Build extra programs
+  - CI_TARGETS="onlinebin"  # Job4.b: Build extra programs
+  - CI_TARGETS="pyIdlak"    # Job4.c: Build extra programs
   - CI_TARGETS="test"       # Job5: Test libraries.
   #### ext_test? adds 5min compile, runs 1 test.
 
