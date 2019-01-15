@@ -80,12 +80,11 @@ GSYMS
 /src/kaldi.mk.tmp
 /src/kaldi.mk.bak
 
-
 # /egs/ & /idlak-egs/
-/egs/*/s*/mfcc
-/egs/*/s*/plp
-/egs/*/s*/exp
-/egs/*/s*/data
+/egs/*/*/mfcc
+/egs/*/*/plp
+/egs/*/*/exp
+/egs/*/*/data
 /idlak-egs/*/s*/mfcc
 /idlak-egs/*/s*/plp
 /idlak-egs/*/s*/exp
@@ -212,3 +211,6 @@ GSYMS
 /tools/opengrm-ngram-1.3.4/
 
 /kaldiwin_vs*
+/tools/cub-1.8.0.zip
+/tools/cub-1.8.0/
+/tools/cub
