@@ -1,14 +1,16 @@
 import json
-from app import app, api, jwt, db
+from app import app, api, jwt, db, reqparser
 from app.models.voice import Voice
-from flask_restful import Resource, reqparse, abort, request
+from flask_restful import Resource, abort, request
 from datetime import date
 
-vcs_parser = reqparse.RequestParser()
-vcs_parser.add_argument('language', help='ISO 2 letter code', location='json')
-vcs_parser.add_argument('accent', help='2 letter accent code', location='json')
+vcs_parser = reqparser.RequestParser()
+vcs_parser.add_argument('language', location='json',
+                        help='Provide a ISO 2 letter language code')
+vcs_parser.add_argument('accent', help='Provide a 2 letter accent code',
+                        location='json')
 vcs_parser.add_argument('gender', choices=['male', 'female'],
-                        help='male|female', location='json')
+                        help='Valid choices: male|female', location='json')
 
 
 class Voices(Resource):
@@ -28,14 +30,15 @@ class Voices(Resource):
         """
         # get available voices
         args = vcs_parser.parse_args()
+        if isinstance(args, app.response_class):
+            return args
         """ create a query based on the parameters """
         query = db.session.query(Voice)
-        app.logger.debug(args['language'])
-        if args['language'] is not None:
+        if 'language' in args:
             query = query.filter(Voice.language == args['language'])
-        if args['language'] is not None and args['accent'] is not None:
+        if 'language' in args and 'accent' in args:
             query = query.filter(Voice.accent == args['accent'])
-        if args['gender'] is not None:
+        if 'gender' in args:
             query = query.filter(Voice.gender == args['gender'])
         """ get voices based on the query """
         voices = query.all()

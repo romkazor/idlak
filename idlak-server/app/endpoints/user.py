@@ -1,13 +1,13 @@
-from app import api, jwt
+from app import app, api, jwt, reqparser
 from app.models.user import User
 from app.middleware.auth import admin_required, not_expired
-from flask_restful import Resource, reqparse, abort, request
+from flask_restful import Resource, abort, request
 from flask_jwt_simple import jwt_required, get_jwt_identity
 from functools import wraps
 
-usr_parser = reqparse.RequestParser()
+usr_parser = reqparser.RequestParser()
 usr_parser.add_argument('uid', help='user id', location='json')
-usr_parser.add_argument('admin', type=bool,
+usr_parser.add_argument('admin', type='Bool',
                         help='does user need admin permissions',
                         location='json')
 
@@ -41,8 +41,10 @@ class Users(Resource):
                 obj: details of the new user with a password provided
         """
         args = usr_parser.parse_args()
+        if isinstance(args, app.response_class):
+            return args
         # convert admin parameter into a boolean
-        admin = bool(args['admin'])
+        admin = False if 'admin' not in args else args['admin']
         # check if the id of user is provided
         if args['uid'] is not None:
             user = User.new_user(admin, args['uid'])

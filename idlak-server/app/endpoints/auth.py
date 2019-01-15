@@ -1,16 +1,16 @@
 import flask_jwt_simple
-from app import app, api, jwt
+from app import app, api, jwt, reqparser
 from app.models.user import User
 from app.middleware.auth import not_expired, EXPIRED
 from flask import jsonify
-from flask_restful import Resource, reqparse, abort, request
+from flask_restful import Resource, abort, request
 from flask_jwt_simple import create_jwt, decode_jwt, jwt_required
 from passlib.hash import pbkdf2_sha256 as sha256
 
 """ login arguments:
     uid (str) : user id
     password (str) : user password """
-usr_parser = reqparse.RequestParser()
+usr_parser = reqparser.RequestParser()
 usr_parser.add_argument('uid', help='user id', location='json', required=True)
 usr_parser.add_argument('password', help='user password', location='json',
                         required=True)
@@ -28,6 +28,8 @@ class Auth(Resource):
                 returns an error message
         """
         args = usr_parser.parse_args()
+        if isinstance(args, app.response_class):
+            return args
         user = User.query.get(args['uid'])
         if user and sha256.verify(args['password'], user.password):
             return {'access_token': create_jwt(identity=user.id)}, 200

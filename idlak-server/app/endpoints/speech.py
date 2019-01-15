@@ -5,24 +5,30 @@ import os
 import uuid
 import time
 import shutil
-from app import app, api, jwt
+import wave
+import uuid
+import struct
+from app import app, api, jwt, reqparser
 from app.middleware.auth import not_expired
 from flask import send_from_directory
-from flask_restful import Resource, reqparse, abort, request
+from flask_restful import Resource, abort, request
 from flask_jwt_simple import jwt_required
 from app.models.voice import Voice
 
+sys.path.append('../src/')
+from pyIdlak import TangleVoice         # noqa
 
-spch_parser = reqparse.RequestParser()
-spch_parser.add_argument('voice_id', help='voice id', location='json',
-                         required=True)
+spch_parser = reqparser.RequestParser()
+spch_parser.add_argument('voice_id', help='Provide a voice id',
+                         location='json', required=True)
 spch_parser.add_argument('audio_format', choices=['wav', 'ogg', 'mp3'],
-                         help='wav|ogg|mp3, default=wav', location='json')
-spch_parser.add_argument('text', help='text to syntesise speech',
+                         help='Valid choices: wav|ogg|mp3, default=wav',
+                         location='json', default='wav')
+spch_parser.add_argument('text', help='Provide a text to syntesise speech',
                          location='json', required=True)
 
 
-def convertTo(audio_format, filename):
+def _convert_to(audio_format, filename):
     """ Converts a wav audio file into a provided audio format
 
         Args:
@@ -39,16 +45,16 @@ def convertTo(audio_format, filename):
     return new_filename
 
 
-def removeOldOutputFiles():
-    """ Removes an output folder if it is older than 5 minutes """
-    path = "output/"
-    current_time = time.time() - 300
-    for filename in os.listdir(path):
-        full_path = os.path.join(path, filename)
-        if os.stat(full_path).st_mtime < current_time:
-            shutil.rmtree(full_path)
-            app.logger.info("Directory \"" + full_path + "\" was deleted " +
-                            "because it wasn't necessary anymore.")
+def _wav_to_file(waveform, fn, srate=48000):
+    wav = wave.open(fn, 'wb')
+    wav.setnchannels(1)
+    wav.setsampwidth(2)
+    wav.setframerate(srate)
+    for w in waveform:
+        wout = int(max(min(w, 0x7fff), (-0x7fff - 1)))  # ensures in range
+        write_data = struct.pack("<h", wout)
+        wav.writeframes(write_data)
+    wav.close()
 
 
 class Speech(Resource):
@@ -59,7 +65,7 @@ class Speech(Resource):
 
             Args:
                 voice_id (str): id of the voice
-                audio_format (str, optional): wav|ogg|mp3 - assume is correct
+                audio_format (str, optional): wav|ogg|mp3
                 text (str): text to process
 
             Returns:
@@ -67,62 +73,32 @@ class Speech(Resource):
         """
 
         args = spch_parser.parse_args()
+        if isinstance(args, app.response_class):
+            return args
         voice = Voice.query.filter_by(id=args['voice_id']).first()
         if voice is None:
             return {"message": "Voice could not be found"}, 400
 
-        removeOldOutputFiles()
+        # creating syntesised speach and saving into file
+        tanglevoice = TangleVoice(voice_dir=os.path.abspath(voice.directory))
+        audio_fn = os.path.abspath(uuid.uuid4().hex[:8] + '.wav')
+        waveform = tanglevoice.speak(args['text'])
+        _wav_to_file(waveform, audio_fn)
 
-        # set the current path to where the speech files are for the processing
-        current_path = os.getcwd()
-        os.chdir(app.config['SPEECH_PATH'])
-
-        app.logger.info("PROCESSING SPEECH:\nVoice id: {}\nText: {}"
-                        .format(voice.id, args['text']))
-        voice_dir = "voices/{}/{}/{}_pmdl".format(voice.language, voice.accent,
-                                                  voice.id)
-        output_dir = current_path + "/output/" + uuid.uuid4().hex[:8]
-
-        command = ("echo {} | local/synthesis_voice_pitch.sh {} {}"
-                   .format(args['text'], voice_dir, output_dir))
-        return_code = subprocess.call(command, shell=True)
-        if return_code == 0:
-            app.logger.info("Processing went through successfully, the " +
-                            "audio files have been stored in " + output_dir)
-        else:
-            app.logger.error("PROCESSING FAILED!!!")
-            os.chdir(current_path)
-            return {"message": "The process has failed"}, 400
-
-        # remove temporary files of the user after processing
-        if 'CURRENT_USER' in app.config:
-            subprocess.call("ls -l /tmp | grep \"" +
-                            app.config['CURRENT_USER'] +
-                            ".*tmp*\" | awk '{print \"/tmp/\"$NF}' | " +
-                            "xargs rm -rf", shell=True)
-            app.logger.info("Deleted temporary processing files")
-
-        # change the path to the path of this program to
-        # continue on converting the file if necessary
-        os.chdir(current_path)
-
-        output_dir += "/wav_mlpg/"
-        audio_file = "test001.wav"
-
-        if not os.path.isfile(os.path.join(output_dir, audio_file)):
-            app.logger.error("PROCESSING FAILED: no audio file " +
-                             "has been found!!!")
-            return {"message": "The process has failed"}, 400
-
-        # check if the audio file needs to be converted
-        if args['audio_format'] is not None and args['audio_format'] != "wav":
-            audio_file = convertTo(args['audio_format'],
-                                   os.path.join(output_dir, audio_file))
-            audio_file = audio_file.split('/')[len(audio_file.split('/'))-1]
-            app.logger.info("Audio file has been converted to " +
-                            args['audio_format'])
-
-        return send_from_directory(output_dir, audio_file)
+        # convert to requested type
+        if 'audio_format' in args and args['audio_format'] != "wav":
+            old_audio_fn = audio_fn
+            audio_fn = _convert_to(args['audio_format'], audio_fn)
+            os.remove(old_audio_fn)
+        elif 'audio_format' not in args:
+            args['audio_format'] = "wav"
+        # get the audio as bytes, delete the file and return audio as bytes
+        with open(audio_fn, 'rb') as audio_f:
+            wavefile = b''.join(audio_f.readlines())
+        os.remove(audio_fn)
+        response = app.make_response(wavefile)
+        response.headers['Content-Type'] = 'audio/' + args['audio_format']
+        return response
 
 
 api.add_resource(Speech, '/speech')
