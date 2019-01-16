@@ -79,7 +79,7 @@ class Speech(Resource):
         if voice is None:
             return {"message": "Voice could not be found"}, 400
 
-        # creating syntesised speach and saving into file
+        # creating syntesised speech and saving into file
         tanglevoice = TangleVoice(voice_dir=os.path.abspath(voice.directory))
         audio_fn = os.path.abspath(uuid.uuid4().hex[:8] + '.wav')
         waveform = tanglevoice.speak(args['text'])
