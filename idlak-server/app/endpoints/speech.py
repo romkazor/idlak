@@ -58,7 +58,8 @@ def _wav_to_file(waveform, fn, srate=48000):
 
 
 class Speech(Resource):
-    decorators = [not_expired, jwt_required]
+    decorators = ([not_expired, jwt_required]
+                  if app.config['AUTHENTICATION'] else [])
 
     def post(self):
         """ Speech endpoint

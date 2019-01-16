@@ -28,6 +28,10 @@ handler.setLevel(app.config['LOGGING'])
 app.logger.addHandler(handler)
 app.logger.setLevel(app.config['LOGGING'])
 
+if not app.config['AUTHENTICATION']:
+    app.logger.warn('AUTHENTICATION is turned off, this should only be used ' +
+                    'during debugging!!! Turn it back on in the config file!')
+
 from app import models, endpoints, reqlogging       # noqa
 from app.models.user import User                    # noqa
 

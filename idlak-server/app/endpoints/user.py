@@ -15,7 +15,8 @@ usr_parser.add_argument('admin', type='Bool',
 class Users(Resource):
     """ Class for endpoints responsible for providing information about
         users and creating a new user """
-    decorators = [admin_required, not_expired, jwt_required]
+    decorators = ([admin_required, not_expired, jwt_required]
+                  if app.config['AUTHENTICATION'] else [])
 
     def get(self):
         """ Get info of all users endpoint
@@ -65,7 +66,8 @@ class Users(Resource):
 
 class Users_Password(Resource):
     """ Class for generating new user password endpoint """
-    decorators = [admin_required, not_expired, jwt_required]
+    decorators = ([admin_required, not_expired, jwt_required]
+                  if app.config['AUTHENTICATION'] else [])
 
     def post(self, user_id):
         """ Reset password endpoint
@@ -82,7 +84,8 @@ class Users_Password(Resource):
 
 class Users_Delete(Resource):
     """ Class for deleting a user endpoint """
-    decorators = [admin_required, not_expired, jwt_required]
+    decorators = ([admin_required, not_expired, jwt_required]
+                  if app.config['AUTHENTICATION'] else [])
 
     def delete(self, user_id):
         """ Delete user endpoint
@@ -111,7 +114,8 @@ class Users_Delete(Resource):
 
 class Toggle_Admin(Resource):
     """ Class for toggling user admin status endpoint """
-    decorators = [admin_required, not_expired, jwt_required]
+    decorators = ([admin_required, not_expired, jwt_required]
+                  if app.config['AUTHENTICATION'] else [])
 
     def post(self, user_id):
         """ Toggle user admin status endpoint

@@ -23,6 +23,17 @@ def load_config_file(conf):
     # load all default
     for key in config['DEFAULT']:
         conf[key.upper()] = config['DEFAULT'][key]
+    # correct AUTHENTICATION value
+    if 'AUTHENTICATION' in conf:
+        auth = conf['AUTHENTICATION']
+        if auth.lower() in ("yes", "true", "t", "1"):
+            conf['AUTHENTICATION'] = True
+        elif auth.lower() in ("no", "false", "f", "0"):
+            conf['AUTHENTICATION'] = False
+        else:
+            raise ValueError('AUTHENTICATION value in config is incorrect!')
+    else:
+        conf['AUTHENTICATION'] = True
     return conf
     # set logging value
     if 'LOGGING' in conf:
