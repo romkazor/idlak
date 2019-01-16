@@ -1,4 +1,5 @@
 from app import api, jwt, db
+from app.respmsg import mk_response
 from app.models.voice import Voice
 from flask_restful import Resource, reqparse, abort, request
 
@@ -30,7 +31,7 @@ class Accents(Resource):
                    .filter(Voice.language == lang_iso)
                    .distinct().all())
         if not accents:
-            return {'message': 'Language could not be found'}, 404
+            return mk_response('Language could not be found', 404)
         ret_accents = []
         for a in accents:
             ret_accents.append(a[0])

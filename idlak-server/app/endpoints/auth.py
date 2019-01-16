@@ -1,5 +1,6 @@
 import flask_jwt_simple
 from app import app, api, jwt, reqparser
+from app.respmsg import mk_response
 from app.models.user import User
 from app.middleware.auth import not_expired, EXPIRED
 from flask import jsonify
@@ -32,8 +33,8 @@ class Auth(Resource):
             return args
         user = User.query.get(args['uid'])
         if user and sha256.verify(args['password'], user.password):
-            return {'access_token': create_jwt(identity=user.id)}, 200
-        return {"message": "Login details are incorrect"}, 401
+            return {'access_token': create_jwt(identity=user.id)}
+        return mk_response("Login details are incorrect", 401)
 
 
 class Auth_Expire(Resource):
@@ -61,9 +62,9 @@ class Auth_Expire(Resource):
         if user_id is not None:
             EXPIRED.append(access_token)
             app.logger.info("Expire token for user " + user_id['sub'])
-            return {"message": "The token has been manually expired."}, 200
+            return mk_response("The token has been manually expired.", 200)
         else:
-            return {"message": "The token could not expire."}, 400
+            return mk_response("The token could not expire.", 400)
 
 
 api.add_resource(Auth, '/auth')
@@ -72,14 +73,14 @@ api.add_resource(Auth_Expire, '/auth/expire')
 
 @jwt.expired_token_loader
 def expired_token():
-    return jsonify({"message": "Access token has expired"}), 401
+    return mk_response("Access token has expired", 401)
 
 
 @jwt.invalid_token_loader
 def invalid_token(error_msg):
-    return jsonify({"message": "Access token is invalid"}), 401
+    return mk_response("Access token is invalid", 401)
 
 
 @jwt.unauthorized_loader
 def unauthorized_token(error_msg):
-    return jsonify({"message": "Access token is invalid"}), 401
+    return mk_response("Access token is invalid", 401)

@@ -1,5 +1,6 @@
 import json
 from app import app, api, jwt, db, reqparser
+from app.respmsg import mk_response
 from app.models.voice import Voice
 from flask_restful import Resource, abort, request
 from datetime import date
@@ -63,7 +64,7 @@ class VoiceDetails(Resource):
         # get voice details
         voice = Voice.query.get(voice_id)
         if voice is None:
-            return {"message": "Voice could not be found"}, 404
+            return mk_response("Voice could not be found", 404)
         return voice.to_dict()
 
 

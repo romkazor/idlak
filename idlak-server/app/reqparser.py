@@ -2,8 +2,8 @@
 # which was depricated. Should act in a similar manner, although has only
 # necessary functionalities
 
-from app import app
 from marshmallow import Schema, fields, validate, ValidationError
+from app.respmsg import mk_response
 from flask_restful import request
 
 
@@ -114,7 +114,7 @@ class RequestParser():
                     for r in err.messages:
                         if r in self.help:
                             err.messages[r].append(self.help[r])
-                    errs = ', '.join([i + ': ' + ' '.join(err.messages[i])
-                                      for i in err.messages])
-                    return app.make_response((errs, 422))
+                    for i in err.messages:
+                        err.messages[i] = ' '.join(err.messages[i])
+                    return mk_response(err.messages, 422)
         return data

@@ -9,6 +9,7 @@ import wave
 import uuid
 import struct
 from app import app, api, jwt, reqparser
+from app.respmsg import mk_response
 from app.middleware.auth import not_expired
 from flask import send_from_directory
 from flask_restful import Resource, abort, request
@@ -78,7 +79,7 @@ class Speech(Resource):
             return args
         voice = Voice.query.filter_by(id=args['voice_id']).first()
         if voice is None:
-            return {"message": "Voice could not be found"}, 400
+            return mk_response("Voice could not be found", 400)
 
         # creating syntesised speech and saving into file
         tanglevoice = TangleVoice(voice_dir=os.path.abspath(voice.directory))

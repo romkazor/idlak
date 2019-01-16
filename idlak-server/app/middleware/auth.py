@@ -1,4 +1,5 @@
 from app.models.user import User
+from app.respmsg import mk_response
 from flask_jwt_simple import get_jwt, decode_jwt, get_jwt_identity
 from functools import wraps
 from datetime import datetime, timedelta
@@ -20,11 +21,11 @@ def admin_required(func):
             app.logger.info("User requesting access: {}".format(user.id))
         else:
             app.logger.info("None-existing user tried to request for access")
-            return abort(401, message="The user with such access token " +
-                                      "does not exist")
+            return mk_response("The user with such access token does " +
+                               "not exist", 401)
         if user.admin:
             return func(*args, **kwargs)
-        return abort(401, message="Admin permissions required")
+        return mk_response("Admin permissions required", 401)
     return wrapper
 
 
@@ -47,7 +48,7 @@ def not_expired(func):
         remove_expired()
 
         if token in EXPIRED:
-            return abort(401, message="Access token has expired")
+            return mk_response("Access token has expired", 401)
         else:
             return func(*args, **kwargs)
     return wrapper

@@ -234,7 +234,7 @@ Voices
 
 **Get available voices**
 
-    **[ GET ]** ‏‏‎ ‏‏‎ ‏‏‎ \| ‏‏‎ ‏‏‎ ‏‏‎ */voices*
+    **[ POST ]** ‏‏‎ ‏‏‎ ‏‏‎ \| ‏‏‎ ‏‏‎ ‏‏‎ */voices*
 
 Permissions: ``none``\  Authorization Header: ``none``\  Accepted
 content types: ``application/json``\  Arguments:

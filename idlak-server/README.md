@@ -97,7 +97,7 @@ Permissions: ```admin```<br>
 Authorization Header: ```Bearer <access_token>```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```uid``` | ```userid``` | Optional | User id, generated randomly by default  |
@@ -145,7 +145,7 @@ Typical error response (```422 UNPROCESSABLE ENTITY```):
 
 Permissions: ```admin```<br>
 Authorization Header: ```Bearer <access_token>```<br>
-Response (```200 OK```): 
+Response (```200 OK```):
 ```json
 {
     "admin": true,
@@ -223,14 +223,14 @@ Typical error response (```404 NOT FOUND```):
 ## Voices
 **Get available voices**
 
-| [ GET ] | */voices* |
+| [ POST ] | */voices* |
 | - | - |
 
 Permissions: ```none```<br>
 Authorization Header: ```none```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```language``` | ```en``` | Optional | Language code in ISO 2 letter format |
@@ -295,7 +295,7 @@ Permissions: ```none```<br>
 Authorization Header: ```Bearer <access_token>```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```voice_id``` | ```voiceid``` | Required | Voice ID |
