@@ -1,0 +1,27 @@
+digraph "MultistreamComponent"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node8 [label="MultistreamComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node9 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="UpdatableComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet1_1_1UpdatableComponent.html",tooltip="Class UpdatableComponent is a Component which has trainable parameters, it contains SGD training hype..."];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1Component.html",tooltip="Abstract class, building block of the network. "];
+  Node11 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="kMarkerMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkMarkerMap.html"];
+  Node12 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" kMarkerMap" ,fontname="Helvetica"];
+  Node12 [label="key_value",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1Component_1_1key__value.html",tooltip="A pair of type and marker,. "];
+  Node13 -> Node12 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" value" ,fontname="Helvetica"];
+  Node13 [label="char",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node14 -> Node12 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" key" ,fontname="Helvetica"];
+  Node14 [label="ComponentType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node15 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" output_dim_\ninput_dim_" ,fontname="Helvetica"];
+  Node15 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node16 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node16 [label="NnetTrainOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1NnetTrainOptions.html"];
+  Node17 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" learn_rate\nmomentum\nl1_penalty\nl2_penalty" ,fontname="Helvetica"];
+  Node17 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node17 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bias_learn_rate_coef\l_\nlearn_rate_coef_" ,fontname="Helvetica"];
+  Node18 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sequence_lengths_" ,fontname="Helvetica"];
+  Node18 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

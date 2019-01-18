@@ -229,7 +229,7 @@ elif [ "$synth" = "excitation" ]; then
     python3 local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
     x2x +fa $resid.float > $resid
     cat $resid.float | mlsadf -P 5 -m $order -a $alpha -p $psize $mcep.float.stable | x2x -o +fs > $tmpdir/data.mcep.syn
-    sox --norm -t raw -c 1 -r $srate -s -b 16 $tmpdir/data.mcep.syn $out_wav
+    sox --norm -t raw -c 1 -r $srate -e signed-integer -b 16 $tmpdir/data.mcep.syn $out_wav
 elif [ "$synth" = "convolve" ]; then
     x2x +af $mcep > $mcep.float
     psize=`echo "$period * $srate / 1000" | bc`
@@ -260,7 +260,7 @@ else
     cat $f0 | awk -v srate=$srate '(NR > 2){if ($1 > 0) print srate / $1; else print 0.0}' | x2x +af \
         | excite -p $psize \
         | mlsadf -P 5 -m $order -a $alpha -p $psize $mcep.float | x2x -o +fs > $tmpdir/data.mcep.syn
-    sox --norm -t raw -c 1 -r $srate -s -b 16 $tmpdir/data.mcep.syn $out_wav
+    sox --norm -t raw -c 1 -r $srate -e signed-integer -b 16 $tmpdir/data.mcep.syn $out_wav
 fi
 
 #-sigp 1.2

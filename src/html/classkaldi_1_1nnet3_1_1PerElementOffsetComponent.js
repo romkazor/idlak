@@ -1,0 +1,28 @@
+var classkaldi_1_1nnet3_1_1PerElementOffsetComponent =
+[
+    [ "PerElementOffsetComponent", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a6a24a6e92c2c15299035ae4268a89c5d", null ],
+    [ "PerElementOffsetComponent", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#ab1c9959414fe5f4664613cc7257a24e1", null ],
+    [ "Add", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#acdb3e97b46276e3c9f4f696c2bef3943", null ],
+    [ "Backprop", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#ab9638bc0dac5a54a0e2c4a5eb44aeca7", null ],
+    [ "Copy", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a1f11a4fb3396dda21cae55e81f23c750", null ],
+    [ "DotProduct", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a87b95e5c043a8221ad58b2512b2d81c9", null ],
+    [ "Info", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a245d65d566725422b859c99bff7623f8", null ],
+    [ "InitFromConfig", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#ac4f5c35427c2657c50173313e99e3f01", null ],
+    [ "InputDim", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#ad4cb6aed1f1980c2c36f34e09ceea0e0", null ],
+    [ "NumParameters", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a1ff16fe9504cbce1089af9cd84386405", null ],
+    [ "operator=", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#ae206c4dd75e97f6517b5bd2ace80fc3f", null ],
+    [ "OutputDim", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a323155ad8034c0b14762dd78ae4415b5", null ],
+    [ "PerturbParams", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a69a59272c763dc9372ad7d0671a87dad", null ],
+    [ "Propagate", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a8f1f1b05a170bd81a544caefe1acb040", null ],
+    [ "Properties", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a4a16a6da3a5108ec53e759722a51fd47", null ],
+    [ "Read", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a8e7d2790fc7e94fe9780ccc937de1270", null ],
+    [ "Scale", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a5a4fc4a0524ae8957baf45b8cb168843", null ],
+    [ "Type", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#af2d951f58073f362411ee482aa469975", null ],
+    [ "UnVectorize", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a8619ba84ef93f98fa42dbcd11011e3a3", null ],
+    [ "Vectorize", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#afa4edb6094210608b8d3923f312f5a75", null ],
+    [ "Write", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a68f354fd5f096134162f01719096e6fc", null ],
+    [ "dim_", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a08031ac0ce0b0973ed948e43ebd706be", null ],
+    [ "offsets_", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a53ffed10fc900e858d31fcf189b78860", null ],
+    [ "preconditioner_", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a85355b0cd1150cc42b8c3b6dc571e32d", null ],
+    [ "use_natural_gradient_", "classkaldi_1_1nnet3_1_1PerElementOffsetComponent.html#a57660849c075b7ff1f48bd4c943b668c", null ]
+];

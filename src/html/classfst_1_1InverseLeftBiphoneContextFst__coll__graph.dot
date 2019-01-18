@@ -1,0 +1,25 @@
+digraph "InverseLeftBiphoneContextFst"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="InverseLeftBiphoneContextFst",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="DeterministicOnDemandFst\l\< StdArc \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfst_1_1DeterministicOnDemandFst.html"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ilabel_map_" ,fontname="Helvetica"];
+  Node4 [label="unordered_map\< vector\l\< int32 \>, Label, kaldi\l::VectorHasher\< int32 \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ilabel_info_" ,fontname="Helvetica"];
+  Node5 [label="vector\< vector\< int32 \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" disambig_syms_\nphone_syms_" ,fontname="Helvetica"];
+  Node6 [label="ConstIntegerSet\< Label \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1ConstIntegerSet.html"];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" quick_\ncontiguous_" ,fontname="Helvetica"];
+  Node7 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" slow_set_" ,fontname="Helvetica"];
+  Node8 [label="vector\< Label \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" quick_set_" ,fontname="Helvetica"];
+  Node9 [label="vector\< bool \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" highest_member_\nlowest_member_" ,fontname="Helvetica"];
+  Node10 [label="Label",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nonterm_phones_offset_" ,fontname="Helvetica"];
+  Node11 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

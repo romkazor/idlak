@@ -1,0 +1,12 @@
+digraph "FrameExtractionOptions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="FrameExtractionOptions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" preemph_coeff\nframe_shift_ms\nframe_length_ms\ndither\nsamp_freq\nblackman_coeff" ,fontname="Helvetica"];
+  Node2 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" window_type" ,fontname="Helvetica"];
+  Node3 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" allow_downsample\nsnip_edges\nremove_dc_offset\nround_to_power_of_two" ,fontname="Helvetica"];
+  Node4 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+}

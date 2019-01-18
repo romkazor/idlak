@@ -1,0 +1,28 @@
+var classkaldi_1_1RegtreeFmllrDiagGmm =
+[
+    [ "RegtreeFmllrDiagGmm", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a3c3c930725e0435cb6b0c2e49de97ace", null ],
+    [ "RegtreeFmllrDiagGmm", "classkaldi_1_1RegtreeFmllrDiagGmm.html#aad103d1065e32362caab7dce10483b97", null ],
+    [ "~RegtreeFmllrDiagGmm", "classkaldi_1_1RegtreeFmllrDiagGmm.html#aff49cdae258d2beb72d0d23d3c6fb65f", null ],
+    [ "Base2RegClass", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a551149f00328e16ba6dcfe12c093fd97", null ],
+    [ "ComputeLogDets", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a8bea65004726c7817bee50ab191c8e29", null ],
+    [ "Dim", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a6db7dfbac0d670f69c3754ed195b3c61", null ],
+    [ "GetLogDets", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a085736894e0a87b6eaa1a471335052a8", null ],
+    [ "GetXformMatrix", "classkaldi_1_1RegtreeFmllrDiagGmm.html#aa39b0ce6ebed456a46ba35df0e5ffeac", null ],
+    [ "Init", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a6f80e6bef2820dd673bc580088cb0bf6", null ],
+    [ "NumBaseClasses", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a2c8a668ee9fec91d8cd64b9d914fee4e", null ],
+    [ "NumRegClasses", "classkaldi_1_1RegtreeFmllrDiagGmm.html#ae0d07841c6c635f740950dd11936f098", null ],
+    [ "operator=", "classkaldi_1_1RegtreeFmllrDiagGmm.html#aa3decd38ec5ed2edba05d5e9f7e886b9", null ],
+    [ "Read", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a5125549a655a7f2acb992a7bbb50c978", null ],
+    [ "set_bclass2xforms", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a2d685ab6ef217022450ac4566ca00045", null ],
+    [ "SetParameters", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a5c5e2716c7e723bea1277ae4e1d0c08b", null ],
+    [ "SetUnit", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a15104fce7d15e55ce68377923b4ee045", null ],
+    [ "TransformFeature", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a61f5c6d6b3d5a55e44b5903501c418de", null ],
+    [ "Validate", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a6a17e4539f5b0c67dbd36bae0c2c0c8a", null ],
+    [ "Write", "classkaldi_1_1RegtreeFmllrDiagGmm.html#affa097bf4d31dd363669a7de66a970ac", null ],
+    [ "bclass2xforms_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a221004ed998f6a3f214cd1ff5c0771d1", null ],
+    [ "dim_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a08031ac0ce0b0973ed948e43ebd706be", null ],
+    [ "logdet_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a0e4bd1105ed75c7f6ee16f32a743a41d", null ],
+    [ "num_xforms_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a86acd6ede8b890d907700f6093bded2a", null ],
+    [ "valid_logdet_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#a78c3005956e067f99af4ba21609122c9", null ],
+    [ "xform_matrices_", "classkaldi_1_1RegtreeFmllrDiagGmm.html#aade1db8629892205b53728ec3d748395", null ]
+];

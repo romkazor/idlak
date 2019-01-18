@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="ComputationVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1ComputationVariables.html",tooltip="This class relates the matrices and sub-matrices in the computation to imaginary \"variables\", such that we can think of the operations as operating on sets of individual variables, and we can then do analysis that lets us do optimization. "];
+}

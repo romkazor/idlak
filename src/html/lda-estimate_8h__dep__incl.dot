@@ -1,0 +1,28 @@
+digraph "transform/lda-estimate.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node65 [label="transform/lda-estimate.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node65 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="transform/lda-estimate\l-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$lda-estimate-test_8cc.html"];
+  Node65 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="transform/lda-estimate.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$lda-estimate_8cc.html"];
+  Node65 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="bin/acc-lda.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$acc-lda_8cc.html"];
+  Node65 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="bin/est-lda.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$est-lda_8cc.html"];
+  Node65 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="bin/sum-lda-accs.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$sum-lda-accs_8cc.html"];
+  Node65 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="nnet2/get-feature-transform.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$get-feature-transform_8h.html",tooltip="This file is modified from transform/lda-estimate.h It contains a class intended to be used in precon..."];
+  Node71 -> Node72 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="nnet2/get-feature-transform.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$get-feature-transform_8cc.html"];
+  Node71 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="nnet2bin/nnet-get-feature\l-transform-multi.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-get-feature-transform-multi_8cc.html"];
+  Node71 -> Node74 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="nnet2bin/nnet-get-feature\l-transform.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-get-feature-transform_8cc.html"];
+  Node65 -> Node75 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node75 [label="nnet3bin/nnet3-acc\l-lda-stats.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet3-acc-lda-stats_8cc.html"];
+  Node65 -> Node76 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="nnet3bin/nnet3-compute\l-from-egs.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet3-compute-from-egs_8cc.html"];
+}

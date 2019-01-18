@@ -1,0 +1,21 @@
+digraph "nnet3/discriminative-training.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node130 [label="nnet3/discriminative\l-training.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node130 -> Node131 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node131 [label="nnet3/discriminative\l-training.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$discriminative-training_8cc.html"];
+  Node130 -> Node132 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node132 [label="nnet3/nnet-discriminative\l-diagnostics.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-discriminative-diagnostics_8h.html"];
+  Node132 -> Node133 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node133 [label="nnet3/nnet-discriminative\l-diagnostics.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-discriminative-diagnostics_8cc.html"];
+  Node132 -> Node134 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node134 [label="nnet3bin/nnet3-discriminative\l-compute-objf.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet3-discriminative-compute-objf_8cc.html"];
+  Node130 -> Node133 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node130 -> Node135 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node135 [label="nnet3/nnet-discriminative\l-training.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-discriminative-training_8h.html"];
+  Node135 -> Node136 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node136 [label="nnet3/nnet-discriminative\l-training.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-discriminative-training_8cc.html"];
+  Node135 -> Node137 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node137 [label="nnet3bin/nnet3-discriminative\l-train.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet3-discriminative-train_8cc.html"];
+}

@@ -1,0 +1,14 @@
+digraph "nnet/nnet-pdf-prior.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node80 [label="nnet/nnet-pdf-prior.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node80 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="nnet/nnet-pdf-prior.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-pdf-prior_8cc.html"];
+  Node80 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="nnetbin/nnet-forward.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-forward_8cc.html"];
+  Node80 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="nnetbin/nnet-train\l-mmi-sequential.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-train-mmi-sequential_8cc.html"];
+  Node80 -> Node84 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node84 [label="nnetbin/nnet-train\l-mpe-sequential.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-train-mpe-sequential_8cc.html"];
+}

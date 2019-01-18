@@ -1,0 +1,27 @@
+var classkaldi_1_1nnet1_1_1Xent =
+[
+    [ "Xent", "classkaldi_1_1nnet1_1_1Xent.html#a99e14a8e72d47e212c866fd2c8b6945e", null ],
+    [ "~Xent", "classkaldi_1_1nnet1_1_1Xent.html#a8f8f0034a1085174b12c0f02b8b80a2c", null ],
+    [ "AvgLoss", "classkaldi_1_1nnet1_1_1Xent.html#a1cc3e046db90f394ab825b982dce0c9b", null ],
+    [ "Eval", "classkaldi_1_1nnet1_1_1Xent.html#a4896a87d2350b5de43ccc68d3ffa4469", null ],
+    [ "Eval", "classkaldi_1_1nnet1_1_1Xent.html#a1c77ea0b198c883a7923762877910bd6", null ],
+    [ "Report", "classkaldi_1_1nnet1_1_1Xent.html#aa12edfb647804f310f854803e289d8e3", null ],
+    [ "ReportPerClass", "classkaldi_1_1nnet1_1_1Xent.html#a1f9dd08ec35a12a3927f32af42c41183", null ],
+    [ "correct_", "classkaldi_1_1nnet1_1_1Xent.html#a6b4f5d9ee73aa74a7d6ff5e7c9094212", null ],
+    [ "elapsed_seconds_", "classkaldi_1_1nnet1_1_1Xent.html#adc6183a73d881deed57f939718bf61b0", null ],
+    [ "entropy_", "classkaldi_1_1nnet1_1_1Xent.html#a60b9502e6f25f6bfc596adc12c52f4bb", null ],
+    [ "entropy_aux_", "classkaldi_1_1nnet1_1_1Xent.html#a5515c53b87c4c24bce915ef829e3ca8f", null ],
+    [ "entropy_progress_", "classkaldi_1_1nnet1_1_1Xent.html#a7ecf3b2e25e1977cdacea503a139fa76", null ],
+    [ "frame_weights_", "classkaldi_1_1nnet1_1_1Xent.html#aab559e99ee95a9afc0c797016276d7dc", null ],
+    [ "frames_", "classkaldi_1_1nnet1_1_1Xent.html#a9f01587e132ae9511c6cd0a5cb6277d9", null ],
+    [ "frames_aux_", "classkaldi_1_1nnet1_1_1Xent.html#a46a02f86f4bf983e40ce919acbb509e1", null ],
+    [ "frames_progress_", "classkaldi_1_1nnet1_1_1Xent.html#a091239fb54ba47bfac87715a867e9987", null ],
+    [ "loss_vec_", "classkaldi_1_1nnet1_1_1Xent.html#a84a155230b2873aef715cb59017318f5", null ],
+    [ "max_id_out_", "classkaldi_1_1nnet1_1_1Xent.html#ab5c9e2ed0047b47cc585e92137050e43", null ],
+    [ "max_id_tgt_", "classkaldi_1_1nnet1_1_1Xent.html#a4f1b1995febb8beb9ebdeba9bf387207", null ],
+    [ "target_sum_", "classkaldi_1_1nnet1_1_1Xent.html#ad4dd263581be235704ff0b89d5050c1c", null ],
+    [ "tgt_mat_", "classkaldi_1_1nnet1_1_1Xent.html#ad8f96cf39a87de4bb099cd0f9adfd5a0", null ],
+    [ "xentropy_", "classkaldi_1_1nnet1_1_1Xent.html#ab64def6eb633eb3489080ca0ae2a7e81", null ],
+    [ "xentropy_aux_", "classkaldi_1_1nnet1_1_1Xent.html#a3508898d54a9c3aa504b8ab87560c785", null ],
+    [ "xentropy_progress_", "classkaldi_1_1nnet1_1_1Xent.html#a8b85ac3b338d78e100fedc922bd0ef1a", null ]
+];

@@ -1,0 +1,16 @@
+digraph "sgmm2/decodable-am-sgmm2.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node81 [label="sgmm2/decodable-am\l-sgmm2.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node81 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="sgmm2/decodable-am\l-sgmm2.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$decodable-am-sgmm2_8cc.html"];
+  Node81 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="sgmm2bin/sgmm2-align\l-compiled.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$sgmm2-align-compiled_8cc.html"];
+  Node81 -> Node84 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node84 [label="sgmm2bin/sgmm2-latgen\l-faster-parallel.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$sgmm2-latgen-faster-parallel_8cc.html"];
+  Node81 -> Node85 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node85 [label="sgmm2bin/sgmm2-latgen\l-faster.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$sgmm2-latgen-faster_8cc.html"];
+  Node81 -> Node86 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node86 [label="sgmm2bin/sgmm2-rescore\l-lattice.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$sgmm2-rescore-lattice_8cc.html"];
+}

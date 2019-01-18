@@ -18,6 +18,7 @@
 
 #include "idlaktxp/txpxmldata.h"
 #include <math.h>
+// #include <cstdlib>
 
 namespace kaldi {
 
@@ -87,7 +88,9 @@ static const char * _get_str_field(std::string work, char sep, int pos) {
         }
         if (next == std::string::npos) return NULL;
     }
-    return work.substr(std::min(n, next), abs(next - n)).c_str();
+	size_t sz = static_cast<size_t>(abs(static_cast<long int>(next) - 	static_cast<long int>(n)));
+	return work.substr(std::min(n, next), sz).c_str();
+   // return work.substr(std::min(n, next), abs(next - n)).c_str();
 }
 
 bool TxpXmlData::Parse(const std::string &tpdb) {

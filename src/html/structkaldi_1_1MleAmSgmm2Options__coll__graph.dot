@@ -1,0 +1,12 @@
+digraph "MleAmSgmm2Options"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="MleAmSgmm2Options",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" max_impr_u\ntau_c\nmax_cond\ntau_map_M\ncov_diag_ratio\nepsilon\ncov_floor" ,fontname="Helvetica"];
+  Node2 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" map_M_prior_iters\nweight_projections\l_iters" ,fontname="Helvetica"];
+  Node3 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" full_col_cov\nfull_row_cov\nrenormalize_V\nrenormalize_N" ,fontname="Helvetica"];
+  Node4 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+}

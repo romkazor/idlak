@@ -1,0 +1,32 @@
+digraph "CRnnLM"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="CRnnLM",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" syn1b\nsyncb\nsyn0b\nsync\nsyn0\nsyn1\nbptt_syn0" ,fontname="Helvetica"];
+  Node2 [label="synapse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structrnnlm_1_1synapse.html"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" weight" ,fontname="Helvetica"];
+  Node3 [label="double",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" beta\nllogp\ndynamic\nsyn_db\ngradient_cutoff\nsyn_d\nalpha\nlogp\nstarting_alpha" ,fontname="Helvetica"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" min_improvement" ,fontname="Helvetica"];
+  Node4 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" valid_file\nlmprob_file\nrnnlm_file\ntest_file\ntrain_file" ,fontname="Helvetica"];
+  Node5 [label="char",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" direct_size" ,fontname="Helvetica"];
+  Node6 [label="long long",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vocab" ,fontname="Helvetica"];
+  Node7 [label="vocab_word",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structrnnlm_1_1vocab__word.html"];
+  Node3 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prob" ,fontname="Helvetica"];
+  Node5 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" word" ,fontname="Helvetica"];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" class_index\ncn" ,fontname="Helvetica"];
+  Node8 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bptt_block\nvocab_hash\nvocab_max_size\nuse_lmprob\nbptt_history\nlayerc_size\nalpha_divide\ndirect_order\nvocab_hash_size\ntrain_words\n..." ,fontname="Helvetica"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" unk_sym" ,fontname="Helvetica"];
+  Node9 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" unk_penalty" ,fontname="Helvetica"];
+  Node10 [label="unordered_map\< std\l::string, float \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" neu2b\nbptt_hidden\nneu1b\nneucb\nneu0b\nneuc\nneu0\nneu1\nneu2\nneu1b2\n..." ,fontname="Helvetica"];
+  Node11 [label="neuron",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structrnnlm_1_1neuron.html"];
+  Node3 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ac\ner" ,fontname="Helvetica"];
+}

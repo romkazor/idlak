@@ -1,0 +1,40 @@
+digraph "LatticePhoneAligner"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="LatticePhoneAligner",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" queue_" ,fontname="Helvetica"];
+  Node2 [label="vector\< std::pair\<\l kaldi::LatticePhoneAligner\l::Tuple, StateId \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node3 [label="PhoneAlignLatticeOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1PhoneAlignLatticeOptions.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" replace_output_symbols\nremove_epsilon\nreorder" ,fontname="Helvetica"];
+  Node4 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lat_out_" ,fontname="Helvetica"];
+  Node5 [label="CompactLattice *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" error_" ,fontname="Helvetica"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" map_" ,fontname="Helvetica"];
+  Node6 [label="unordered_map\< Tuple,\l StateId, TupleHash,\l TupleEqual \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lat_" ,fontname="Helvetica"];
+  Node7 [label="VectorFst\< CompactLattice\lArc \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" tmodel_" ,fontname="Helvetica"];
+  Node8 [label="TransitionModel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1TransitionModel.html"];
+  Node9 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" topo_" ,fontname="Helvetica"];
+  Node9 [label="HmmTopology",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1HmmTopology.html",tooltip="A class for storing topology information for phones. "];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" phones_\nphone2idx_" ,fontname="Helvetica"];
+  Node10 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" entries_" ,fontname="Helvetica"];
+  Node11 [label="vector\< TopologyEntry \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" id2state_\nid2pdf_id_\nstate2id_" ,fontname="Helvetica"];
+  Node12 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" tuples_" ,fontname="Helvetica"];
+  Node12 [label="vector\< kaldi::Transition\lModel::Tuple \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" non_self_loop_log_probs\l_\nlog_probs_" ,fontname="Helvetica"];
+  Node13 [label="Vector\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1Vector.html"];
+  Node14 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="VectorBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1VectorBase.html"];
+  Node15 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node15 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node16 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" dim_" ,fontname="Helvetica"];
+  Node16 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node16 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_pdfs_" ,fontname="Helvetica"];
+}

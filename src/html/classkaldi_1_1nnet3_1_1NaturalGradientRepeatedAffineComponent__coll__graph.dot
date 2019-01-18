@@ -1,0 +1,43 @@
+digraph "NaturalGradientRepeatedAffineComponent"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="NaturalGradientRepeatedAffine\lComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="RepeatedAffineComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1RepeatedAffineComponent.html"];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="UpdatableComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1UpdatableComponent.html",tooltip="Class UpdatableComponent is a Component which has trainable parameters; it extends the interface of C..."];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1Component.html",tooltip="Abstract base-class for neural-net components. "];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" learning_rate_\nlearning_rate_factor\l_\nl2_regularize_\nmax_change_" ,fontname="Helvetica"];
+  Node8 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" is_gradient_" ,fontname="Helvetica"];
+  Node9 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node10 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" linear_params_" ,fontname="Helvetica"];
+  Node10 [label="CuMatrix\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1CuMatrix.html"];
+  Node11 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="CuMatrixBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1CuMatrixBase.html"];
+  Node8 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node12 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" stride_\nnum_cols_\nnum_rows_" ,fontname="Helvetica"];
+  Node12 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_repeats_" ,fontname="Helvetica"];
+  Node13 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bias_params_" ,fontname="Helvetica"];
+  Node13 [label="CuVector\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1CuVector.html"];
+  Node14 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="CuVectorBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1CuVectorBase.html"];
+  Node8 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node12 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" dim_" ,fontname="Helvetica"];
+  Node15 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" preconditioner_in_" ,fontname="Helvetica"];
+  Node15 [label="OnlineNaturalGradient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1OnlineNaturalGradient.html",tooltip="Keywords for search: natural gradient, naturalgradient, NG-SGD. "];
+  Node8 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" alpha_\nrho_t_\ndelta_\nnum_minibatches\l_history_\nnum_samples_history\l_\nepsilon_" ,fontname="Helvetica"];
+  Node10 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" W_t_" ,fontname="Helvetica"];
+  Node9 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" self_debug_\nfrozen_" ,fontname="Helvetica"];
+  Node16 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" d_t_" ,fontname="Helvetica"];
+  Node16 [label="Vector\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1Vector.html"];
+  Node17 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="VectorBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1VectorBase.html"];
+  Node8 -> Node17 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node12 -> Node17 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" dim_" ,fontname="Helvetica"];
+  Node12 -> Node15 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" update_period_\nt_\nrank_" ,fontname="Helvetica"];
+}

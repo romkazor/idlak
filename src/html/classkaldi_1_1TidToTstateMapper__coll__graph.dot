@@ -1,0 +1,31 @@
+digraph "TidToTstateMapper"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TidToTstateMapper",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" check_no_self_loops_" ,fontname="Helvetica"];
+  Node2 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" disambig_syms_" ,fontname="Helvetica"];
+  Node3 [label="vector\< int32 \> &",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" trans_model_" ,fontname="Helvetica"];
+  Node4 [label="TransitionModel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1TransitionModel.html"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" topo_" ,fontname="Helvetica"];
+  Node5 [label="HmmTopology",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1HmmTopology.html",tooltip="A class for storing topology information for phones. "];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" phones_\nphone2idx_" ,fontname="Helvetica"];
+  Node6 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" entries_" ,fontname="Helvetica"];
+  Node7 [label="vector\< TopologyEntry \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" id2state_\nid2pdf_id_\nstate2id_" ,fontname="Helvetica"];
+  Node8 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" tuples_" ,fontname="Helvetica"];
+  Node8 [label="vector\< kaldi::Transition\lModel::Tuple \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" non_self_loop_log_probs\l_\nlog_probs_" ,fontname="Helvetica"];
+  Node9 [label="Vector\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1Vector.html"];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="VectorBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1VectorBase.html"];
+  Node11 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node11 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node12 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" dim_" ,fontname="Helvetica"];
+  Node12 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_pdfs_" ,fontname="Helvetica"];
+}

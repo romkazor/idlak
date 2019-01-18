@@ -1,0 +1,29 @@
+digraph "basic_filebuf&lt; CharT, Traits &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="basic_filebuf\< CharT,\l Traits \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="basic_streambuf\< CharT,\l Traits \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_extbuf_min" ,fontname="Helvetica"];
+  Node4 [label="char",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_file" ,fontname="Helvetica"];
+  Node5 [label="FILE *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_ebs\n_M_ibs" ,fontname="Helvetica"];
+  Node6 [label="size_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classsize__t.html"];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_cm\n_M_om" ,fontname="Helvetica"];
+  Node7 [label="openmode",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_intbuf" ,fontname="Helvetica"];
+  Node8 [label="char_type *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_always_noconv\n_M_owns_eb\n_M_owns_ib" ,fontname="Helvetica"];
+  Node9 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node10 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_st_last\n_M_st" ,fontname="Helvetica"];
+  Node10 [label="state_type",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_extbufnext\n_M_extbufend" ,fontname="Helvetica"];
+  Node11 [label="const char *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_cv" ,fontname="Helvetica"];
+  Node12 [label="codecvt\< char_type,\l char, state_type \> *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" _M_extbuf" ,fontname="Helvetica"];
+  Node13 [label="char *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

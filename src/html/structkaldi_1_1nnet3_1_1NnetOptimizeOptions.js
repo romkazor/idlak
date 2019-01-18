@@ -1,0 +1,28 @@
+var structkaldi_1_1nnet3_1_1NnetOptimizeOptions =
+[
+    [ "NnetOptimizeOptions", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a1d900628e7290ea7c5fc02371687b6cb", null ],
+    [ "operator==", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a7e8d60100297581d30c02a2bcabef377", null ],
+    [ "Read", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a8e7d2790fc7e94fe9780ccc937de1270", null ],
+    [ "Register", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a5a584da9b018440b2b3023e248f448fc", null ],
+    [ "Write", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a68f354fd5f096134162f01719096e6fc", null ],
+    [ "allocate_from_other", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#aeb266389b29b812033c443a46a906a15", null ],
+    [ "allow_left_merge", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a9338247ac24f099364f25f6221981cf8", null ],
+    [ "allow_right_merge", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a2af78454a6c4008c23ec34cb8cefc376", null ],
+    [ "backprop_in_place", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a751610db82b663a3b2b415a839b0cad4", null ],
+    [ "consolidate_model_update", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#adecbb89738ead38979522ea3f9ca2de5", null ],
+    [ "convert_addition", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a916c64dcfc34c507c77acdbb02457562", null ],
+    [ "extend_matrices", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a8d375398d1e2a747b19b2617645419a1", null ],
+    [ "initialize_undefined", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#afc411b18b95a954ce30c56a8c802571c", null ],
+    [ "max_deriv_time", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a3eb30cd32859e75b85a514ee9747f9ef", null ],
+    [ "max_deriv_time_relative", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a3f8e63332a3fd6f3e8c0d357ede046f5", null ],
+    [ "memory_compression_level", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a663557dd3408c5ec0cda6d3e8ed97397", null ],
+    [ "min_deriv_time", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a3d087b2a181462f940490eeba587d5ed", null ],
+    [ "move_sizing_commands", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#addc98e404df5dfefac47028896957554", null ],
+    [ "optimize", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#ada3212723faff5ad5d718401c2b14abd", null ],
+    [ "optimize_looped_computation", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a7112262aeb1c9d82bde19d29e4e5212f", null ],
+    [ "optimize_row_ops", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a62f84b7d1cb40e1f98a6cd8732efcba0", null ],
+    [ "propagate_in_place", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a8de177378a5c3ef537b9d5927012427d", null ],
+    [ "remove_assignments", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a5a9cf0a0e6fa879ef136d18e4b3a7493", null ],
+    [ "snip_row_ops", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a00a502ab79e8521e4ef2fdde4cf8add5", null ],
+    [ "split_row_ops", "structkaldi_1_1nnet3_1_1NnetOptimizeOptions.html#a7141f8a1921a7fda89caea538652fd68", null ]
+];

@@ -1,0 +1,17 @@
+digraph "idlakfeat/feature-window-ext.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node66 [label="idlakfeat/feature-window\l-ext.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node66 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="idlakfeat/feature-aperiodic.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-aperiodic_8h.html"];
+  Node67 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="idlakfeat/feature-aperiodic\l-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-aperiodic-test_8cc.html"];
+  Node67 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="idlakfeat/feature-aperiodic.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-aperiodic_8cc.html"];
+  Node67 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="idlakbin/compute-aperiodic\l-feats.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$compute-aperiodic-feats_8cc.html"];
+  Node66 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="idlakfeat/feature-window\l-ext.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-window-ext_8cc.html"];
+}

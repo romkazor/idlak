@@ -1,0 +1,12 @@
+digraph "ImageAugmentationConfig"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="ImageAugmentationConfig",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" rotation_degree\nvertical_shift\nhorizontal_shift\nrotation_prob\nhorizontal_flip_prob" ,fontname="Helvetica"];
+  Node2 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fill_mode_string" ,fontname="Helvetica"];
+  Node3 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_channels" ,fontname="Helvetica"];
+  Node4 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

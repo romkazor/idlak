@@ -1,0 +1,31 @@
+digraph "OptimizeLbfgs&lt; Real &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="OptimizeLbfgs\< Real \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node2 [label="LbfgsOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1LbfgsOptions.html",tooltip="This is an implementation of L-BFGS. "];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" c1\nc2\nfirst_step_length\nfirst_step_learning\l_rate\nfirst_step_impr\nd" ,fontname="Helvetica"];
+  Node3 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" avg_step_length\nm\nmax_line_search\l_iters" ,fontname="Helvetica"];
+  Node4 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" minimize" ,fontname="Helvetica"];
+  Node5 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" step_lengths_" ,fontname="Helvetica"];
+  Node6 [label="vector\< Real \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" deriv_\ntemp_\nH_\nbest_x_\nrho_\nx_\nnew_x_" ,fontname="Helvetica"];
+  Node7 [label="Vector\< Real \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" computation_state_" ,fontname="Helvetica"];
+  Node8 [label="ComputationState",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node9 [label="Matrix\< Real \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" last_failure_type_" ,fontname="Helvetica"];
+  Node10 [label="anonymous:last_failure\l_type_",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_wolfe_i_failures\l_\nnum_wolfe_ii_failures_" ,fontname="Helvetica"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" H_was_set_" ,fontname="Helvetica"];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" best_f_\nf_\nd_" ,fontname="Helvetica"];
+  Node11 [label="Real",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" k_" ,fontname="Helvetica"];
+  Node12 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

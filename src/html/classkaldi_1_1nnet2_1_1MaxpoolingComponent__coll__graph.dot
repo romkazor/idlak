@@ -1,0 +1,11 @@
+digraph "MaxpoolingComponent"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="MaxpoolingComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet2_1_1Component.html",tooltip="Abstract class, basic element of the network, it is a box with defined inputs, outputs, and tranformation functions interface. "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" index_" ,fontname="Helvetica"];
+  Node4 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" pool_stride_\noutput_dim_\npool_size_\ninput_dim_" ,fontname="Helvetica"];
+}

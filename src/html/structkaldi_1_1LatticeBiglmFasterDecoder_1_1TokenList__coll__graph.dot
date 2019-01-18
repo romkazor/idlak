@@ -1,0 +1,20 @@
+digraph "LatticeBiglmFasterDecoder::TokenList"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="LatticeBiglmFasterDecoder\l::TokenList",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" toks" ,fontname="Helvetica"];
+  Node2 [label="Token",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1LatticeBiglmFasterDecoder_1_1Token.html"];
+  Node2 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next" ,fontname="Helvetica"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" extra_cost\ntot_cost" ,fontname="Helvetica"];
+  Node3 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" links" ,fontname="Helvetica"];
+  Node4 [label="ForwardLink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1LatticeBiglmFasterDecoder_1_1ForwardLink.html"];
+  Node3 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" graph_cost\nacoustic_cost" ,fontname="Helvetica"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" olabel\nilabel" ,fontname="Helvetica"];
+  Node5 [label="Label",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node2 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next_tok" ,fontname="Helvetica"];
+  Node4 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next" ,fontname="Helvetica"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" must_prune_forward\l_links\nmust_prune_tokens" ,fontname="Helvetica"];
+  Node6 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+}

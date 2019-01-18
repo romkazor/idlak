@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="CuBlockMatrix\< Real \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1CuBlockMatrix.html",tooltip="The class CuBlockMatrix holds a vector of objects of type CuMatrix, say, M_1, M_2, . "];
+}

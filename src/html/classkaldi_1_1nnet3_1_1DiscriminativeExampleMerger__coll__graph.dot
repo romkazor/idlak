@@ -1,0 +1,28 @@
+digraph "DiscriminativeExampleMerger"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="DiscriminativeExampleMerger",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" config_" ,fontname="Helvetica"];
+  Node2 [label="ExampleMergingConfig",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1ExampleMergingConfig.html"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" discard_partial_minibatches\nminibatch_size\nmeasure_output_frames" ,fontname="Helvetica"];
+  Node3 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" compress" ,fontname="Helvetica"];
+  Node4 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" rules" ,fontname="Helvetica"];
+  Node5 [label="vector\< std::pair\<\l int32, kaldi::nnet3\l::ExampleMergingConfig\l::IntSet \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" stats_" ,fontname="Helvetica"];
+  Node6 [label="ExampleMergingStats",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1ExampleMergingStats.html",tooltip="This class is responsible for storing, and displaying in log messages, statistics about how examples ..."];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" stats_" ,fontname="Helvetica"];
+  Node7 [label="unordered_map\< std\l::pair\< int32, size\l_t \>, StatsForExampleSize,\l PairHasher\< int32, size_t \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" finished_" ,fontname="Helvetica"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" eg_to_egs_" ,fontname="Helvetica"];
+  Node8 [label="unordered_map\< NnetDiscriminative\lExample *, std::vector\< NnetDiscriminative\lExample * \>, NnetDiscriminativeExampleStructure\lHasher, NnetDiscriminativeExampleStructureCompare \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" writer_" ,fontname="Helvetica"];
+  Node9 [label="TableWriter\< Holder \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1TableWriter.html",tooltip="A templated class for writing objects to an archive or script file; see The Table concept..."];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" impl_" ,fontname="Helvetica"];
+  Node10 [label="TableWriterImplBase\l\< Holder \> *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_egs_written_" ,fontname="Helvetica"];
+  Node11 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

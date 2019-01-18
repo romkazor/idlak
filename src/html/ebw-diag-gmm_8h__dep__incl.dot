@@ -1,0 +1,16 @@
+digraph "gmm/ebw-diag-gmm.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node75 [label="gmm/ebw-diag-gmm.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node75 -> Node76 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="gmm/ebw-diag-gmm-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ebw-diag-gmm-test_8cc.html"];
+  Node75 -> Node77 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 [label="gmm/ebw-diag-gmm.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ebw-diag-gmm_8cc.html"];
+  Node75 -> Node78 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="gmmbin/gmm-est-gaussians\l-ebw.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gmm-est-gaussians-ebw_8cc.html"];
+  Node75 -> Node79 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="gmmbin/gmm-est-weights\l-ebw.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gmm-est-weights-ebw_8cc.html"];
+  Node75 -> Node80 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="gmmbin/gmm-ismooth\l-stats.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gmm-ismooth-stats_8cc.html"];
+}

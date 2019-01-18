@@ -1,0 +1,25 @@
+digraph "PitchInterpolator"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PitchInterpolator",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" pitch_" ,fontname="Helvetica"];
+  Node2 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node3 [label="PitchInterpolatorOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1PitchInterpolatorOptions.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" interpolator_factor\nmax_pitch_change_per\l_frame\nmax_voicing_prob\npitch_interval" ,fontname="Helvetica"];
+  Node4 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prev_log_alpha_\nlog_alpha_" ,fontname="Helvetica"];
+  Node5 [label="Vector\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1Vector.html"];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="VectorBase\< float \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1VectorBase.html"];
+  Node4 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" dim_" ,fontname="Helvetica"];
+  Node7 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" min_pitch_\np_voicing_" ,fontname="Helvetica"];
+  Node8 [label="vector\< float \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" back_pointers_" ,fontname="Helvetica"];
+  Node9 [label="vector\< std::vector\l\< int32 \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_frames_\nnum_pitches_" ,fontname="Helvetica"];
+}

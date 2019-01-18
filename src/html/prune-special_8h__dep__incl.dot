@@ -1,0 +1,13 @@
+digraph "fstext/prune-special.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node39 [label="fstext/prune-special.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node39 -> Node40 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node40 [label="fstext/prune-special\l-inl.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$prune-special-inl_8h.html"];
+  Node40 -> Node39 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node39 -> Node41 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 [label="fstext/prune-special\l-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$prune-special-test_8cc.html"];
+  Node39 -> Node42 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node42 [label="kwsbin/generate-proxy\l-keywords.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$generate-proxy-keywords_8cc.html"];
+}

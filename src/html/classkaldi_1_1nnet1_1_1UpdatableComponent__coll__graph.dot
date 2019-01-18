@@ -1,0 +1,23 @@
+digraph "UpdatableComponent"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node18 [label="UpdatableComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node19 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="Component",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1Component.html",tooltip="Abstract class, building block of the network. "];
+  Node20 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="kMarkerMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkMarkerMap.html"];
+  Node21 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" kMarkerMap" ,fontname="Helvetica"];
+  Node21 [label="key_value",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1Component_1_1key__value.html",tooltip="A pair of type and marker,. "];
+  Node22 -> Node21 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" value" ,fontname="Helvetica"];
+  Node22 [label="char",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node23 -> Node21 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" key" ,fontname="Helvetica"];
+  Node23 [label="ComponentType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node24 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" output_dim_\ninput_dim_" ,fontname="Helvetica"];
+  Node24 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node25 -> Node18 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node25 [label="NnetTrainOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet1_1_1NnetTrainOptions.html"];
+  Node26 -> Node25 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" learn_rate\nmomentum\nl1_penalty\nl2_penalty" ,fontname="Helvetica"];
+  Node26 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node26 -> Node18 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bias_learn_rate_coef\l_\nlearn_rate_coef_" ,fontname="Helvetica"];
+}

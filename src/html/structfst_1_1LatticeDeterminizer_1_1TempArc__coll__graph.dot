@@ -1,0 +1,17 @@
+digraph "LatticeDeterminizer&lt; Weight, IntType &gt;::TempArc"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="LatticeDeterminizer\l\< Weight, IntType \>\l::TempArc",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ilabel" ,fontname="Helvetica"];
+  Node2 [label="Label",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nextstate" ,fontname="Helvetica"];
+  Node3 [label="StateId",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" string" ,fontname="Helvetica"];
+  Node4 [label="Entry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structfst_1_1LatticeStringRepository_1_1Entry.html"];
+  Node4 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parent" ,fontname="Helvetica"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" i" ,fontname="Helvetica"];
+  Node5 [label="IntType",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" weight" ,fontname="Helvetica"];
+  Node6 [label="Weight",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

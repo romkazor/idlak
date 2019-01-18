@@ -1,0 +1,8 @@
+digraph "matrix/jama-eig.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node30 [label="matrix/jama-eig.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node30 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="matrix/kaldi-matrix.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$kaldi-matrix_8cc.html"];
+}

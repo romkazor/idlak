@@ -1,0 +1,45 @@
+digraph "DerivativeTimeLimiter"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="DerivativeTimeLimiter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" whole_submatrices_\nsubmatrix_map_if_deriv\l_\nsubmatrix_map_" ,fontname="Helvetica"];
+  Node2 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prune_info_\nmatrix_prune_info_" ,fontname="Helvetica"];
+  Node3 [label="vector\< kaldi::nnet3\l::DerivativeTimeLimiter\l::MatrixPruneInfo \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" memos_to_delete_" ,fontname="Helvetica"];
+  Node4 [label="unordered_set\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" computation_" ,fontname="Helvetica"];
+  Node5 [label="NnetComputation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet3_1_1NnetComputation.html"];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" commands" ,fontname="Helvetica"];
+  Node6 [label="vector\< kaldi::nnet3\l::NnetComputation::Command \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexes_multi\nindexes_ranges" ,fontname="Helvetica"];
+  Node7 [label="vector\< std::vector\l\< std::pair\< int32,\l int32 \> \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" matrices" ,fontname="Helvetica"];
+  Node8 [label="vector\< kaldi::nnet3\l::NnetComputation::MatrixInfo \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" submatrices" ,fontname="Helvetica"];
+  Node9 [label="vector\< kaldi::nnet3\l::NnetComputation::SubMatrix\lInfo \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" matrix_debug_info" ,fontname="Helvetica"];
+  Node10 [label="vector\< kaldi::nnet3\l::NnetComputation::MatrixDebug\lInfo \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" need_model_derivative" ,fontname="Helvetica"];
+  Node11 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node12 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexes_ranges_cuda" ,fontname="Helvetica"];
+  Node12 [label="vector\< kaldi::CuArray\l\< Int32Pair \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" component_precomputed\l_indexes" ,fontname="Helvetica"];
+  Node13 [label="vector\< kaldi::nnet3\l::NnetComputation::Precomputed\lIndexesInfo \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node14 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexes" ,fontname="Helvetica"];
+  Node14 [label="vector\< std::vector\l\< int32 \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node15 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexes_cuda" ,fontname="Helvetica"];
+  Node15 [label="vector\< kaldi::CuArray\l\< int32 \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node16 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nnet_" ,fontname="Helvetica"];
+  Node16 [label="Nnet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1Nnet.html"];
+  Node17 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" node_names_\ncomponent_names_" ,fontname="Helvetica"];
+  Node17 [label="vector\< std::string \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node18 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nodes_" ,fontname="Helvetica"];
+  Node18 [label="vector\< kaldi::nnet3\l::NetworkNode \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node19 -> Node16 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" components_" ,fontname="Helvetica"];
+  Node19 [label="vector\< kaldi::nnet3\l::Component * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node20 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" max_deriv_time_\nmin_deriv_time_" ,fontname="Helvetica"];
+  Node20 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

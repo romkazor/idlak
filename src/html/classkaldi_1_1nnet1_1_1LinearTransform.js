@@ -1,0 +1,25 @@
+var classkaldi_1_1nnet1_1_1LinearTransform =
+[
+    [ "LinearTransform", "classkaldi_1_1nnet1_1_1LinearTransform.html#a8ce2f2687266c3121a7aed7fde8f1348", null ],
+    [ "~LinearTransform", "classkaldi_1_1nnet1_1_1LinearTransform.html#ad1cb32c4974ca631308b7da9f16f6a1d", null ],
+    [ "BackpropagateFnc", "classkaldi_1_1nnet1_1_1LinearTransform.html#a5f6bd333e90fc68c7e54f98a43057d32", null ],
+    [ "Copy", "classkaldi_1_1nnet1_1_1LinearTransform.html#abb13c5d95d865e34997403d4fec5b8d1", null ],
+    [ "GetGradient", "classkaldi_1_1nnet1_1_1LinearTransform.html#a62b9e404c729fb0c3c7765eb29f897cb", null ],
+    [ "GetLinearity", "classkaldi_1_1nnet1_1_1LinearTransform.html#a6e8a13dcf5786546a1352bb026b76063", null ],
+    [ "GetLinearityCorr", "classkaldi_1_1nnet1_1_1LinearTransform.html#ac20d4caf87cd76bdfa256341b83706ec", null ],
+    [ "GetParams", "classkaldi_1_1nnet1_1_1LinearTransform.html#a9da39e5fc93e75b2e7ac7746e50f0fb1", null ],
+    [ "GetType", "classkaldi_1_1nnet1_1_1LinearTransform.html#a22007a1c50248fd33979a917bdf16fd1", null ],
+    [ "Info", "classkaldi_1_1nnet1_1_1LinearTransform.html#a245d65d566725422b859c99bff7623f8", null ],
+    [ "InfoGradient", "classkaldi_1_1nnet1_1_1LinearTransform.html#a18d7858dce1618a0a331fbb00d954fa2", null ],
+    [ "InitData", "classkaldi_1_1nnet1_1_1LinearTransform.html#a86aeb5bd0117670633ba1c65c39bc3db", null ],
+    [ "NumParams", "classkaldi_1_1nnet1_1_1LinearTransform.html#af9dfe53e51247076066f1ec239f29502", null ],
+    [ "PropagateFnc", "classkaldi_1_1nnet1_1_1LinearTransform.html#a8338d7f30a459656b1ca5e3ef2feea5e", null ],
+    [ "ReadData", "classkaldi_1_1nnet1_1_1LinearTransform.html#a4c7ab412d02c039a00011bd5e31fc921", null ],
+    [ "SetLinearity", "classkaldi_1_1nnet1_1_1LinearTransform.html#a3bb848729d22e186835adf44ea2acf6f", null ],
+    [ "SetLinearity", "classkaldi_1_1nnet1_1_1LinearTransform.html#aa1a5f1aa0695931b597f24b665d3ef05", null ],
+    [ "SetParams", "classkaldi_1_1nnet1_1_1LinearTransform.html#acd175dbfd78d68ca3190b41290bb742e", null ],
+    [ "Update", "classkaldi_1_1nnet1_1_1LinearTransform.html#a790ec7c7f9bd5460d6b8c2e1faf990fb", null ],
+    [ "WriteData", "classkaldi_1_1nnet1_1_1LinearTransform.html#afd5cf76d675806eece5bccb1666334aa", null ],
+    [ "linearity_", "classkaldi_1_1nnet1_1_1LinearTransform.html#a7865c7f82b3da24dd088a2ba2df91df2", null ],
+    [ "linearity_corr_", "classkaldi_1_1nnet1_1_1LinearTransform.html#a4dc6b1ffca640f48e8cfa5705177f352", null ]
+];

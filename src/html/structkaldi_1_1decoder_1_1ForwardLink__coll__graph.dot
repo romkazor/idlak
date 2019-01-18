@@ -1,0 +1,13 @@
+digraph "ForwardLink&lt; Token &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="ForwardLink\< Token \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" graph_cost\nacoustic_cost" ,fontname="Helvetica"];
+  Node2 [label="float",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfloat.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" olabel\nilabel" ,fontname="Helvetica"];
+  Node3 [label="Label",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next" ,fontname="Helvetica"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next_tok" ,fontname="Helvetica"];
+  Node4 [label="Token *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

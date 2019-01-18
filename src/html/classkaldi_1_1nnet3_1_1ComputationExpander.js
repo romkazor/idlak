@@ -1,0 +1,25 @@
+var classkaldi_1_1nnet3_1_1ComputationExpander =
+[
+    [ "ComputationExpander", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a357897f866f5c4ab0b3536d31ddf4284", null ],
+    [ "ComputeCommands", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a47b759979e43092bbb39fc8897f6b143", null ],
+    [ "ComputeDebugInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a349da8d95ac1defe31a714e52954bbde", null ],
+    [ "ComputeMatrixInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#aecd7fa564d816a5025ca66346f6b80fe", null ],
+    [ "ComputePrecomputedIndexes", "classkaldi_1_1nnet3_1_1ComputationExpander.html#aad666818585d567208e5833cd3ed6ea4", null ],
+    [ "ComputeSubmatrixInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#ac0618c08b05537029106fab90e16dfe0", null ],
+    [ "EnsureDebugInfoExists", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a2eb79493ded57c85f60b26089cbc7ae3", null ],
+    [ "Expand", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a740071247a178d84b8bf2b17901509b4", null ],
+    [ "ExpandIndexes", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a0d39b8710ac9abb65b0812bc1a82f52e", null ],
+    [ "ExpandRowRangesCommand", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a9bfd022e9b1b6b8bf5494afbcd8aff9d", null ],
+    [ "ExpandRowsCommand", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a87cbe94f28fe1fbbbcde4e650b5fbfe2", null ],
+    [ "ExpandRowsMultiCommand", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a6b2ebb0f18100bdd03194aac19da1e09", null ],
+    [ "GetNewMatrixLocationInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#aaa7be32bf8cc53a5cfb20eb89280dd06", null ],
+    [ "GetNewSubmatLocationInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#ae75e6d0c1a5e33b7b6a02175357f0fcd", null ],
+    [ "InitStrideInfo", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a652f9fe87cd1b276eb349312151054f8", null ],
+    [ "computation_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a81b35995b5ef2650f6367cb1299ef0fd", null ],
+    [ "expanded_computation_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#afa02f703a75537d153178d8ad1e104ad", null ],
+    [ "misc_info_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a96c233d2a3038b6ce3f46adc9eeac6c8", null ],
+    [ "n_stride_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#af983142dc68170e669067284f55e06b8", null ],
+    [ "need_debug_info_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a0ad00746c585650630f59ba3b3c3dad1", null ],
+    [ "nnet_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#adbabf05a7702103113a02a113015205f", null ],
+    [ "num_n_values_", "classkaldi_1_1nnet3_1_1ComputationExpander.html#a9a0388f6e3ce9318db544eef95415305", null ]
+];

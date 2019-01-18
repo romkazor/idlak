@@ -1,0 +1,34 @@
+digraph "OnlineCmvn"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="OnlineCmvn",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="OnlineFeatureInterface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1OnlineFeatureInterface.html",tooltip="OnlineFeatureInterface is an interface for online feature processing (it is also usable in the offlin..."];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" frozen_state_" ,fontname="Helvetica"];
+  Node4 [label="Matrix\< double \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1Matrix.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="MatrixBase\< double \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1MatrixBase.html",tooltip="Base class which provides matrix operations not involving resizing or allocation. ..."];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data_" ,fontname="Helvetica"];
+  Node6 [label="Real",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" stride_\nnum_cols_\nnum_rows_" ,fontname="Helvetica"];
+  Node7 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" cached_stats_modulo_" ,fontname="Helvetica"];
+  Node8 [label="vector\< kaldi::Matrix\l\< double \> * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" opts_" ,fontname="Helvetica"];
+  Node9 [label="OnlineCmvnOptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1OnlineCmvnOptions.html"];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" skip_dims" ,fontname="Helvetica"];
+  Node10 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" normalize_mean\nnormalize_variance" ,fontname="Helvetica"];
+  Node11 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node7 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ring_buffer_size\nglobal_frames\ncmn_window\nmodulus\nspeaker_frames" ,fontname="Helvetica"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" src_" ,fontname="Helvetica"];
+  Node12 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" skip_dims_" ,fontname="Helvetica"];
+  Node12 [label="vector\< int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" cached_stats_ring_" ,fontname="Helvetica"];
+  Node13 [label="vector\< std::pair\<\l int32, kaldi::Matrix\l\< double \> \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node14 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" orig_state_" ,fontname="Helvetica"];
+  Node14 [label="OnlineCmvnState",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1OnlineCmvnState.html",tooltip="Struct OnlineCmvnState stores the state of CMVN adaptation between utterances (but not the state of t..."];
+  Node4 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" speaker_cmvn_stats\nfrozen_state\nglobal_cmvn_stats" ,fontname="Helvetica"];
+}

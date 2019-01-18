@@ -1,0 +1,32 @@
+digraph "feat/feature-mfcc.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node75 [label="feat/feature-mfcc.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node75 -> Node76 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="feat/feature-functions\l-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-functions-test_8cc.html"];
+  Node75 -> Node77 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 [label="feat/feature-mfcc-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-mfcc-test_8cc.html"];
+  Node75 -> Node78 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="feat/feature-mfcc.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-mfcc_8cc.html"];
+  Node75 -> Node79 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="feat/feature-sdc-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$feature-sdc-test_8cc.html"];
+  Node75 -> Node80 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="feat/online-feature.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$online-feature_8h.html"];
+  Node80 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="feat/online-feature\l-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$online-feature-test_8cc.html"];
+  Node80 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="feat/online-feature.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$online-feature_8cc.html"];
+  Node80 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="feat/pitch-functions.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$pitch-functions_8cc.html"];
+  Node80 -> Node84 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node84 [label="nnet2/online-nnet2\l-decodable-test.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$online-nnet2-decodable-test_8cc.html"];
+  Node75 -> Node85 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node85 [label="featbin/compute-mfcc\l-feats.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$compute-mfcc-feats_8cc.html"];
+  Node75 -> Node86 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node86 [label="featbin/extract-feature\l-segments.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$extract-feature-segments_8cc.html"];
+  Node75 -> Node87 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node87 [label="featbin/wav-copy.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$wav-copy_8cc.html"];
+  Node75 -> Node88 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node88 [label="featbin/wav-to-duration.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$wav-to-duration_8cc.html"];
+}

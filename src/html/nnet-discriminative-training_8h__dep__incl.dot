@@ -1,0 +1,10 @@
+digraph "nnet3/nnet-discriminative-training.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node149 [label="nnet3/nnet-discriminative\l-training.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node149 -> Node150 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node150 [label="nnet3/nnet-discriminative\l-training.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet-discriminative-training_8cc.html"];
+  Node149 -> Node151 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node151 [label="nnet3bin/nnet3-discriminative\l-train.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$nnet3-discriminative-train_8cc.html"];
+}

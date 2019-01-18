@@ -1,0 +1,11 @@
+digraph "Classes and functions related to clustering"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir=LR;
+  Node2 [label="Algorithms for clustering",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__clustering__group__algo.html",tooltip="See Clustering mechanisms in Kaldi for context. "];
+  Node1 [label="Some simple functions\l used in clustering algorithms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__clustering__group__simple.html",tooltip="See Clustering mechanisms in Kaldi for context. "];
+  Node0 [label="Classes and functions\l related to clustering",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node0->Node2 [shape=plaintext, dir="back", style="solid"];
+}

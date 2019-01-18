@@ -1,0 +1,17 @@
+digraph "PushSpecialClass"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PushSpecialClass",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" occ_" ,fontname="Helvetica"];
+  Node2 [label="vector\< double \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lambda_" ,fontname="Helvetica"];
+  Node3 [label="double",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fst_" ,fontname="Helvetica"];
+  Node4 [label="VectorFst\< StdArc \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_states_\ninitial_state_" ,fontname="Helvetica"];
+  Node5 [label="StateId",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" pred_" ,fontname="Helvetica"];
+  Node6 [label="vector\< std::vector\l\< std::pair\< StateId,\l double \> \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

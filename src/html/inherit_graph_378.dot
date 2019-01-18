@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="MinimumBayesRisk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1MinimumBayesRisk.html",tooltip="This class does the word-level Minimum Bayes Risk computation, and gives you either the 1-best MBR ou..."];
+}

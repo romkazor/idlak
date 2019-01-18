@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="RegtreeFmllrDiagGmm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1RegtreeFmllrDiagGmm.html",tooltip="An FMLLR (feature-space MLLR) transformation, also called CMLLR (constrained MLLR) is an affine trans..."];
+}

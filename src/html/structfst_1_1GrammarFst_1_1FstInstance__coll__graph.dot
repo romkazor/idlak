@@ -1,0 +1,17 @@
+digraph "GrammarFst::FstInstance"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="GrammarFst::FstInstance",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" expanded_states" ,fontname="Helvetica"];
+  Node2 [label="unordered_map\< BaseState\lId, fst::GrammarFst::Expanded\lState * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" fst" ,fontname="Helvetica"];
+  Node3 [label="const ConstFst\< StdArc \> *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" child_instances" ,fontname="Helvetica"];
+  Node4 [label="unordered_map\< int64,\l int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parent_reentry_arcs" ,fontname="Helvetica"];
+  Node5 [label="unordered_map\< int32,\l int32 \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parent_instance\nparent_state\nifst_index" ,fontname="Helvetica"];
+  Node6 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

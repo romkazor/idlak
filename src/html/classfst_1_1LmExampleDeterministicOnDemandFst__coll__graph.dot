@@ -1,0 +1,19 @@
+digraph "LmExampleDeterministicOnDemandFst&lt; Arc &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="LmExampleDeterministicOn\lDemandFst\< Arc \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="DeterministicOnDemandFst\l\< Arc \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfst_1_1DeterministicOnDemandFst.html",tooltip="class DeterministicOnDemandFst is an \"FST-like\" base-class. "];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" state_vec_" ,fontname="Helvetica"];
+  Node4 [label="vector\< std::vector\l\< Label \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" eos_symbol_\nbos_symbol_" ,fontname="Helvetica"];
+  Node5 [label="Label",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" start_state_" ,fontname="Helvetica"];
+  Node6 [label="StateId",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" state_map_" ,fontname="Helvetica"];
+  Node7 [label="unordered_map\< std\l::vector\< Label \>, StateId,\l kaldi::VectorHasher\< Label \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lm\nlm_" ,fontname="Helvetica"];
+  Node8 [label="void *",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

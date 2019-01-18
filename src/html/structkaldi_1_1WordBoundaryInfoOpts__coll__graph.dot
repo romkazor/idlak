@@ -1,0 +1,12 @@
+digraph "WordBoundaryInfoOpts"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="WordBoundaryInfoOpts",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" silence_may_be_word\l_internal\nsilence_has_olabels\nreorder" ,fontname="Helvetica"];
+  Node2 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wbegin_and_end_phones\nsilence_phones\nwinternal_phones\nwbegin_phones\nwend_phones" ,fontname="Helvetica"];
+  Node3 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" silence_label\npartial_word_label" ,fontname="Helvetica"];
+  Node4 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

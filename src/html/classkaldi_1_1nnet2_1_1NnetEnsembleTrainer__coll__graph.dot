@@ -1,0 +1,21 @@
+digraph "NnetEnsembleTrainer"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="NnetEnsembleTrainer",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" updater_ensemble_" ,fontname="Helvetica"];
+  Node2 [label="vector\< kaldi::nnet2\l::NnetUpdater * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" count_this_phase_\nbeta_\navg_logprob_this\l_phase_" ,fontname="Helvetica"];
+  Node3 [label="double",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" buffer_" ,fontname="Helvetica"];
+  Node4 [label="vector\< kaldi::nnet2\l::NnetExample \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" config_" ,fontname="Helvetica"];
+  Node5 [label="NnetEnsembleTrainerConfig",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1nnet2_1_1NnetEnsembleTrainerConfig.html"];
+  Node3 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" beta" ,fontname="Helvetica"];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" minibatches_per_phase\nminibatch_size" ,fontname="Helvetica"];
+  Node6 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" num_phases_\nminibatches_seen\l_this_phase_" ,fontname="Helvetica"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nnet_ensemble_" ,fontname="Helvetica"];
+  Node7 [label="vector\< kaldi::nnet2\l::Nnet * \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

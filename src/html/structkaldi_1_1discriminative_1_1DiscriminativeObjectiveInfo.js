@@ -1,0 +1,27 @@
+var structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo =
+[
+    [ "DiscriminativeObjectiveInfo", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a9eea0d993eb1d323f9c5717ca1671492", null ],
+    [ "DiscriminativeObjectiveInfo", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a49f695fa49fb1be760497fbb39dc28b6", null ],
+    [ "DiscriminativeObjectiveInfo", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ad92697bb8b9ac9d8949ae61f74c40d4a", null ],
+    [ "AccumulateGradients", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a48a986f02ccb598518ef6ade17b05b8a", null ],
+    [ "AccumulateOutput", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a373b1b5fd828b6390461f94ea25280d5", null ],
+    [ "Add", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#aa9c68644ebfc672964bae432a24f5eeb", null ],
+    [ "Configure", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a918ade984da72473afd093874f5442f9", null ],
+    [ "Print", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a879f8ab290fa1f954e3ef187c9f150ff", null ],
+    [ "PrintAll", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a0848af7ed6befa9a72f1546f14bd7e9b", null ],
+    [ "PrintAvgGradientForPdf", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#afb5ed63875f8c11f7c4ccd14165cc75f", null ],
+    [ "Reset", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a372de693ad40b3f42839c8ec6ac845f4", null ],
+    [ "TotalObjf", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#aff2ef2a1001f15d08c0fe36da58fb305", null ],
+    [ "accumulate_gradients", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ac8dbb6fd3d4b73650f891ba71577c849", null ],
+    [ "accumulate_output", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a053744d484d7da7ae0b36d9fead78adc", null ],
+    [ "gradients", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ac0d4b0893b1542feb4d0adf8b41b1dfb", null ],
+    [ "num_pdfs", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a532ab41b5dd92cc5e6a1724f5c611fd6", null ],
+    [ "output", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a33920a1db3f92e7c2a1f3d1efc8e428a", null ],
+    [ "tot_den_count", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ab13c9234a23315371f623b16b46db9c5", null ],
+    [ "tot_l2_term", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ae8d88207d26cb61de4cc3fbebd2e1253", null ],
+    [ "tot_num_count", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#aeb3cc1b98c6f5b57bc86cc62a16b3778", null ],
+    [ "tot_num_objf", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a5d4c6cabca699fcf2a2abbf0259a2d6b", null ],
+    [ "tot_objf", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#ac43bd60d7f24d0fcd41e98b875d1072e", null ],
+    [ "tot_t", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#afd867b0559c7b539a6e9900d407d0e32", null ],
+    [ "tot_t_weighted", "structkaldi_1_1discriminative_1_1DiscriminativeObjectiveInfo.html#a16866f48bfe712e38e490f220b049540", null ]
+];

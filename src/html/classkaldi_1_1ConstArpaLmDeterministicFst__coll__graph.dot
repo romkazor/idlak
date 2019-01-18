@@ -1,0 +1,23 @@
+digraph "ConstArpaLmDeterministicFst"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="ConstArpaLmDeterministicFst",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="DeterministicOnDemandFst\l\< fst::StdArc \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfst_1_1DeterministicOnDemandFst.html"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" start_state_" ,fontname="Helvetica"];
+  Node4 [label="StateId",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" state_to_wseq_" ,fontname="Helvetica"];
+  Node5 [label="vector\< std::vector\l\< Label \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wseq_to_state_" ,fontname="Helvetica"];
+  Node6 [label="unordered_map\< std\l::vector\< Label \>, StateId,\l VectorHasher\< Label \> \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lm_" ,fontname="Helvetica"];
+  Node7 [label="ConstArpaLm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1ConstArpaLm.html"];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" lm_states_size_" ,fontname="Helvetica"];
+  Node8 [label="int64",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" memory_assigned_\ninitialized_" ,fontname="Helvetica"];
+  Node9 [label="bool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classbool.html"];
+  Node10 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ngram_order_\neos_symbol_\nlm_states_\nlm_states_end_\noverflow_buffer\l_\nnum_words_\nunigram_states\l_\nunk_symbol_\noverflow_buffer\l_size_\nbos_symbol_\n..." ,fontname="Helvetica"];
+  Node10 [label="int32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

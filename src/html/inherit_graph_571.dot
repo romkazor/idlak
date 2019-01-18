@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Sgmm2PerFrameDerivedVars",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structkaldi_1_1Sgmm2PerFrameDerivedVars.html",tooltip="Holds the per-frame precomputed quantities x(t), x_{i}(t), z_{i}(t), and n_{i}(t) (cf..."];
+}
