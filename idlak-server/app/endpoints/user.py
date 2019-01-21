@@ -1,22 +1,23 @@
-from app import app, api, jwt, reqparser
+from app import db, api, jwt, reqparser
 from app.respmsg import mk_response
 from app.models.user import User
 from app.middleware.auth import admin_required, not_expired
+from flask import current_app
 from flask_restful import Resource, abort, request
 from flask_jwt_simple import jwt_required, get_jwt_identity
 from functools import wraps
 
+
 usr_parser = reqparser.RequestParser()
-usr_parser.add_argument('uid', help='user id', location='json')
-usr_parser.add_argument('admin', type='Bool', location='json',
-                        help='does user need admin permissions')
+usr_parser.add_argument('uid', location='json')
+usr_parser.add_argument('admin', type='Bool', location='json')
 
 
 class Users(Resource):
     """ Class for endpoints responsible for providing information about
         users and creating a new user """
     decorators = ([admin_required, not_expired, jwt_required]
-                  if app.config['AUTHENTICATION'] else [])
+                  if current_app.config['AUTHORIZATION'] else [])
 
     def get(self):
         """ Get info of all users endpoint
@@ -42,7 +43,7 @@ class Users(Resource):
                 obj: details of the new user with a password provided
         """
         args = usr_parser.parse_args()
-        if isinstance(args, app.response_class):
+        if isinstance(args, current_app.response_class):
             return args
         # convert admin parameter into a boolean
         admin = False if 'admin' not in args else args['admin']
@@ -67,7 +68,7 @@ class Users(Resource):
 class Users_Password(Resource):
     """ Class for generating new user password endpoint """
     decorators = ([admin_required, not_expired, jwt_required]
-                  if app.config['AUTHENTICATION'] else [])
+                  if current_app.config['AUTHORIZATION'] else [])
 
     def post(self, user_id):
         """ Reset password endpoint
@@ -85,7 +86,7 @@ class Users_Password(Resource):
 class Users_Delete(Resource):
     """ Class for deleting a user endpoint """
     decorators = ([admin_required, not_expired, jwt_required]
-                  if app.config['AUTHENTICATION'] else [])
+                  if current_app.config['AUTHORIZATION'] else [])
 
     def delete(self, user_id):
         """ Delete user endpoint
@@ -109,13 +110,13 @@ class Users_Delete(Resource):
 
         user.delete()
 
-        return {'message': "User '{}' has been deleted".format(user.id)}
+        return mk_response("User '{}' has been deleted".format(user.id))
 
 
 class Toggle_Admin(Resource):
     """ Class for toggling user admin status endpoint """
     decorators = ([admin_required, not_expired, jwt_required]
-                  if app.config['AUTHENTICATION'] else [])
+                  if current_app.config['AUTHORIZATION'] else [])
 
     def post(self, user_id):
         """ Toggle user admin status endpoint
@@ -140,9 +141,3 @@ class Toggle_Admin(Resource):
         user.toggle_admin()
 
         return {'uid': user.id, 'admin': user.admin}
-
-
-api.add_resource(Users, '/users')
-api.add_resource(Users_Password, '/users/<user_id>/password')
-api.add_resource(Users_Delete, '/users/<user_id>')
-api.add_resource(Toggle_Admin, '/users/<user_id>/admin')

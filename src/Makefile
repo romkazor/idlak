@@ -111,6 +111,9 @@ test: $(addsuffix /test, $(SUBDIRS_LIB))
 
 ext_test: $(addsuffix /test, $(EXT_SUBDIRS_LIB))
 
+server_test:
+	$(MAKE) -C ../idlak-server/
+
 # Define an implicit rule, expands to e.g.:
 #  base/test: base
 #     $(MAKE) -C base test

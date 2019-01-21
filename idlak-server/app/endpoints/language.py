@@ -15,6 +15,8 @@ class Languages(Resource):
                                  .label("language")).all()
         """ convert language list into a returnable format """
         ret_langs = [l[0] for l in langs]
+        if len(ret_langs) == 0:
+            return mk_response('NO CONTENT', 204)
         return {'languages': ret_langs}
 
 
@@ -35,8 +37,6 @@ class Accents(Resource):
         ret_accents = []
         for a in accents:
             ret_accents.append(a[0])
+        if len(ret_accents) == 0:
+            return mk_response('NO CONTENT', 204)
         return {'language': lang_iso, 'accents': ret_accents}
-
-
-api.add_resource(Languages, '/languages')
-api.add_resource(Accents, '/languages/<lang_iso>/accents')

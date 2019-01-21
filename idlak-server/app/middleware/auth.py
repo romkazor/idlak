@@ -4,8 +4,9 @@ from flask_jwt_simple import get_jwt, decode_jwt, get_jwt_identity
 from functools import wraps
 from datetime import datetime, timedelta
 from flask_restful import abort, request
-from app import jwt, app
+from app import jwt, db
 
+app = db.app
 EXPIRED = []
 
 

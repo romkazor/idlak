@@ -1,7 +1,6 @@
 # Custom request data parsing to replace flask_restful reqparse
 # which was depricated. Should act in a similar manner, although has only
 # necessary functionalities
-
 from marshmallow import Schema, fields, validate, ValidationError
 from app.respmsg import mk_response
 from flask_restful import request
@@ -100,8 +99,8 @@ class RequestParser():
             'args': request.args.to_dict(),
             'values': request.values.to_dict(),
             'text': request.get_data(),
-            'headers': dict(zip([i[0] for i in request.headers.to_list()],
-                                [i[1] for i in request.headers.to_list()])),
+            'headers': dict(zip([i[0] for i in request.headers.to_wsgi_list()],
+                                [i[1] for i in request.headers.to_wsgi_list()])),
             'cookies': request.cookies
         }
         for loc in locations:
@@ -110,6 +109,13 @@ class RequestParser():
                     req = self.reqschema['json'].load(locations[loc])
                     if req.data is not None:
                         data.update(req.data)
+                    error = {}
+                    for i in self.reqschema['json'].fields:
+                        f = self.reqschema['json'].fields[i]
+                        if f.required and (req.data is None or i not in req.data):
+                            error[i] = [f.error_messages['required']]
+                    if len(error) > 0:
+                        raise ValidationError(error)
                 except ValidationError as err:
                     for r in err.messages:
                         if r in self.help:

@@ -1,6 +1,7 @@
-from app import app, db
+from app import db
 from passlib.hash import pbkdf2_sha256 as sha256
 from flask_restful import abort
+from flask import current_app
 import uuid
 
 
@@ -46,13 +47,13 @@ class User(db.Model):
         user = User(user_id, hashed_pass, isAdmin)
         db.session.add(user)
         db.session.commit()
-        app.logger.debug("New user created:\n{{\n"
-                         "\tuid: {},\n"
-                         "\tpassword: {},\n"
-                         "\tencrypted-password: {},\n"
-                         "\tadmin: {}\n}}"
-                         .format(user.id, user_pass, user.password,
-                                 user.admin))
+        current_app.logger.debug("New user created:\n{{\n"
+                                 "\tuid: {},\n"
+                                 "\tpassword: {},\n"
+                                 "\tencrypted-password: {},\n"
+                                 "\tadmin: {}\n}}"
+                                 .format(user.id, user_pass, user.password,
+                                         user.admin))
         # create user with the unhashed password
         user = User(user_id, user_pass, isAdmin)
         return user
@@ -75,13 +76,13 @@ class User(db.Model):
         user = User(user_id, hashed_pass, admin)
         db.session.add(user)
         db.session.commit()
-        app.logger.debug("New user created:\n{{\n"
-                         "\tuid: {},\n"
-                         "\tpassword: {},\n"
-                         "\tencrypted-password: {},\n"
-                         "\tadmin: {}\n}}"
-                         .format(user.id, user_pass, user.password,
-                                 user.admin))
+        current_app.logger.debug("New user created:\n{{\n"
+                                 "\tuid: {},\n"
+                                 "\tpassword: {},\n"
+                                 "\tencrypted-password: {},\n"
+                                 "\tadmin: {}\n}}"
+                                 .format(user.id, user_pass, user.password,
+                                         user.admin))
         # create user with the unhashed password
         user = User(user_id, user_pass, admin)
         return user
@@ -99,8 +100,8 @@ class User(db.Model):
         self.password = hashed_pass
         db.session.merge(self)
         db.session.commit()
-        app.logger.debug("Password for user {} has been changed into {}"
-                         .format(self.id, user_pass))
+        current_app.logger.debug("Password for user {} has been changed into {}"
+                                 .format(self.id, user_pass))
         return user_pass
 
     def toggle_admin(self):
@@ -108,14 +109,14 @@ class User(db.Model):
         self.admin = not self.admin
         db.session.merge(self)
         db.session.commit()
-        app.logger.debug("Admin status for user {} has been changed into {}"
-                         .format(self.id, self.admin))
+        current_app.logger.debug("Admin status for user {} has been changed into {}"
+                                 .format(self.id, self.admin))
 
     def delete(self):
         """ Deletes user from a database. """
         db.session.delete(self)
         db.session.commit()
-        app.logger.debug("User {} has been deleted".format(self.id))
+        current_app.logger.debug("User {} has been deleted".format(self.id))
 
 
 def authenticate(user_id, password):
@@ -132,7 +133,7 @@ def authenticate(user_id, password):
     """
     user = User.query.get(user_id)
     if user and sha256.verify(password, user.password):
-            return user
+        return user
 
 
 def identity(payload):

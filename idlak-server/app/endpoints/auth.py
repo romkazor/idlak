@@ -1,20 +1,20 @@
 import flask_jwt_simple
-from app import app, api, jwt, reqparser
+from app import db, api, jwt, reqparser
 from app.respmsg import mk_response
 from app.models.user import User
 from app.middleware.auth import not_expired, EXPIRED
-from flask import jsonify
+from flask import jsonify, current_app
 from flask_restful import Resource, abort, request
 from flask_jwt_simple import create_jwt, decode_jwt, jwt_required
 from passlib.hash import pbkdf2_sha256 as sha256
+
 
 """ login arguments:
     uid (str) : user id
     password (str) : user password """
 usr_parser = reqparser.RequestParser()
-usr_parser.add_argument('uid', help='user id', location='json', required=True)
-usr_parser.add_argument('password', help='user password', location='json',
-                        required=True)
+usr_parser.add_argument('uid', location='json', required=True)
+usr_parser.add_argument('password', location='json', required=True)
 
 
 class Auth(Resource):
@@ -29,7 +29,7 @@ class Auth(Resource):
                 returns an error message
         """
         args = usr_parser.parse_args()
-        if isinstance(args, app.response_class):
+        if isinstance(args, current_app.response_class):
             return args
         user = User.query.get(args['uid'])
         if user and sha256.verify(args['password'], user.password):
@@ -39,7 +39,7 @@ class Auth(Resource):
 
 class Auth_Expire(Resource):
     decorators = ([not_expired, jwt_required]
-                  if app.config['AUTHENTICATION'] else [])
+                  if current_app.config['AUTHORIZATION'] else [])
 
     def post(self):
         """ Expire token endpoint
@@ -50,7 +50,7 @@ class Auth_Expire(Resource):
                 str: success or error message
         """
         # get access token from header
-        header_name = app.config['JWT_HEADER_NAME']
+        header_name = current_app.config['JWT_HEADER_NAME']
         jwt_header = request.headers.get(header_name, None)
         if len(jwt_header.split()) == 1:
             access_token = jwt_header
@@ -61,14 +61,10 @@ class Auth_Expire(Resource):
 
         if user_id is not None:
             EXPIRED.append(access_token)
-            app.logger.info("Expire token for user " + user_id['sub'])
+            current_app.logger.info("Expire token for user " + user_id['sub'])
             return mk_response("The token has been manually expired.", 200)
         else:
             return mk_response("The token could not expire.", 400)
-
-
-api.add_resource(Auth, '/auth')
-api.add_resource(Auth_Expire, '/auth/expire')
 
 
 @jwt.expired_token_loader
@@ -83,4 +79,4 @@ def invalid_token(error_msg):
 
 @jwt.unauthorized_loader
 def unauthorized_token(error_msg):
-    return mk_response("Access token is invalid", 401)
+    return mk_response(error_msg, 401)

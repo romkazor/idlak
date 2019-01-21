@@ -1,4 +1,5 @@
-from app import app
+from app import db
+from flask import jsonify
 from flask.json import dumps
 
 
@@ -25,7 +26,9 @@ def mk_response(*argv):
         if isinstance(argv[0], str):
             msg = argv[0]
             code = 200
-            return app.make_response((str({"message": msg}), code))
+            response = db.app.make_response((dumps({"message": msg}), code))
+            response.headers['Content-Type'] = 'application/json'
+            return response
         else:
             return args[0]
     elif len(argv) == 2:
@@ -41,8 +44,10 @@ def mk_response(*argv):
         else:
             msg = str(argv[0])
             code = argv[1]
-        response = app.make_response((dumps({"message": msg}), code))
+
+        response = db.app.make_response((dumps({"message": msg}), code))
         response.headers['Content-Type'] = 'application/json'
+
         return response
     else:
         code = argv[-1]
@@ -56,6 +61,6 @@ def mk_response(*argv):
                 msg.append(', '.join([j + ': ' + str(i[j]) for j in i]))
             else:
                 msg.append(str(i))
-        response = app.make_response((dumps({"message": msg}), code))
+        response = db.app.make_response((dumps({"message": msg}), code))
         response.headers['Content-Type'] = 'application/json'
         return response
