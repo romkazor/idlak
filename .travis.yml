@@ -39,8 +39,10 @@ before_install:
   - export SWIG=swig3.0
 
 install:
+  - sudo apt-get install software-properties-common
+  - sudo add-apt-repository ppa:deadsnakes/ppa
+  - sudo apt-get update
   - sudo apt-get install python3.6
-  - python -V
   - pip3 install -r idlak-server/requirements.txt
 
 before_script:
