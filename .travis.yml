@@ -39,7 +39,7 @@ before_install:
   - export SWIG=swig3.0
 
 install:
-  - pip install -r idlak-server/requirements.txt
+  - pip3 install -r idlak-server/requirements.txt
 
 before_script:
   - which ccache
