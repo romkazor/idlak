@@ -43,6 +43,7 @@ install:
   - sudo add-apt-repository ppa:deadsnakes/ppa -y
   - sudo apt-get update
   - sudo apt-get install python3.6
+  - command -v pip3
   - pip3 install -r idlak-server/requirements.txt
 
 before_script:
