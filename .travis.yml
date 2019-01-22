@@ -38,6 +38,9 @@ before_install:
   - export PATH=$XROOT/usr/bin:$PATH
   - export SWIG=swig3.0
 
+install:
+  - pip install -r idlak-server/requirements.txt
+
 before_script:
   - which ccache
   - ccache --version
