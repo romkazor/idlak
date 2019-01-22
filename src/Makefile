@@ -186,5 +186,6 @@ idlaktxp: base util matrix
 idlakfeat: base util hmm feat transform
 ifeq ($(PYIDLAK), true)
 pyIdlak: base util matrix idlakfeat feat transform gmm tree hmm nnet lat idlaktxp
-test_server: pyIdlak server_tests
+test_server: pyIdlak
+	$(MAKE) -C ../idlak-server/
 endif
