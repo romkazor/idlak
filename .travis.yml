@@ -15,7 +15,7 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.8
-      - jonathonf-python-3.6
+      - deadsnakes
     packages:
       - gdb
       - g++-4.9
