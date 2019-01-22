@@ -1,6 +1,10 @@
 SHELL := /bin/bash
 PYTHONPATH := $(PYTHONPATH):$(CURDIR)/venv/lib64/python3.6/site-packages/
 
+ADDLIBS = ../src/pyIdlak/_pyIdlak.a
+
+include ../src/makefiles/default_rules.mk
+
 idlak-server-test:
 	source setup-server.sh
 	python ./testing/integrationtest.py
