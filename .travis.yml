@@ -40,6 +40,7 @@ before_install:
   - export SWIG=swig3.0
 
 install:
+  - locate pip3
   - pip3 install -r idlak-server/requirements.txt
 
 before_script:
