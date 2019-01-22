@@ -42,7 +42,7 @@ before_install:
   - sudo python3.6 get-pip.py
 
 install:
-  - pip install -r idlak-server/requirements.txt
+  - sudo pip install -r idlak-server/requirements.txt
 
 before_script:
   - which ccache
