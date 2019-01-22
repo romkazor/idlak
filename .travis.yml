@@ -11,9 +11,6 @@ cache:
 os:
   - linux
 
-python:
-    - "3.6"
-
 addons:
   apt:
     sources:
@@ -26,8 +23,8 @@ addons:
       - liblapack-dev
       - clang-3.8
       - csh
-      - python3.5
-      - libpython3.5-dev
+      - python3.6
+      - libpython3.6-dev
       - sox
       - swig3.0
 
