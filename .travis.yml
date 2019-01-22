@@ -3,12 +3,16 @@ notifications:
 
 language: cpp
 
+
 cache:
   directories:
   - $HOME/.ccache
 
 os:
   - linux
+
+python:
+    - "3.6"
 
 addons:
   apt:
