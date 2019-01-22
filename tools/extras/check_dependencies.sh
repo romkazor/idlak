@@ -110,7 +110,7 @@ if ! which python3.5 >&/dev/null; then
      python_ver=`python3 --version | awk '{print $2}'`
      verlte 3.5.0 $python_ver && pythonok=true || pythonok=false
      if [ $pythonok = "false" ]; then
-        echo "$0: python3 has a version which is too low. Please install python3.5 or higher"
+        echo "$0: python3 has a version which is too low. Please install python3.5 or higher, current: $python_ver"
         add_packages python3.5
      fi
   else
