@@ -24,7 +24,7 @@ addons:
       - clang-3.8
       - csh
       - python3.6
-      - libpython3.5-dev
+      - libpython3.6-dev
       - sox
       - swig3.0
 
@@ -49,6 +49,7 @@ before_script:
   - ccache --version
   - ccache --show-stats
   - ccache --zero-stats --max-size=3G
+  - python -V
 
 env:
   - CI_TARGETS="depend"       # Job1: Build main programs.
