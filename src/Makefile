@@ -111,7 +111,7 @@ test: $(addsuffix /test, $(SUBDIRS_LIB))
 
 ext_test: $(addsuffix /test, $(EXT_SUBDIRS_LIB))
 
-test_server:
+server_tests:
 	$(MAKE) -C ../idlak-server/
 
 # Define an implicit rule, expands to e.g.:
@@ -186,4 +186,5 @@ idlaktxp: base util matrix
 idlakfeat: base util hmm feat transform
 ifeq ($(PYIDLAK), true)
 pyIdlak: base util matrix idlakfeat feat transform gmm tree hmm nnet lat idlaktxp
+test_server: pyIdlak server_tests
 endif
