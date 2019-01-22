@@ -38,10 +38,10 @@ before_install:
   - tools/extras/travis_install_bindeps.sh $XROOT
   - export PATH=$XROOT/usr/bin:$PATH
   - export SWIG=swig3.0
+  - sudo python3.6 get-pip.py
 
 install:
-  - locate pip3
-  - pip3 install -r idlak-server/requirements.txt
+  - pip install -r idlak-server/requirements.txt
 
 before_script:
   - which ccache
