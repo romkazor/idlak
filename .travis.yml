@@ -45,7 +45,8 @@ before_install:
 
 install:
   - sudo pip install numpy
-  - sudo pip install -r idlak-server/requirements.txt
+  - sudo pip install -r idlak-server/test_requirements_p1.txt
+  - sudo pip install -r idlak-server/test_requirements_p2.txt
 
 before_script:
   - which ccache
