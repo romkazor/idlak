@@ -40,7 +40,8 @@ before_install:
   - export SWIG=swig3.0
   - wget https://bootstrap.pypa.io/get-pip.py
   - sudo ln -s /usr/bin/python3.6 /usr/local/bin/python3
-  - sudo python3 get-pip.py
+  - sudo ln -s /usr/bin/python3.6 /usr/local/bin/python
+  - sudo python get-pip.py
 
 install:
   - sudo pip install -r idlak-server/requirements.txt
