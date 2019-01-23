@@ -129,7 +129,7 @@ class TangleVoice:
         state_durations = self.generate_state_durations(durfeatures)
         pitchfeatures = self.combine_durations_and_features(
             state_durations, durfeatures)
-        pitch = self.generate_pitch(pitchdnnfeatures)
+        pitch = self.generate_pitch(pitchfeatures)
         acousticdnnfeatures = self.combine_pitch_and_features(
             pitch, pitchfeatures)
         acousticfeatures = self.generate_acoustic_features(acousticdnnfeatures)

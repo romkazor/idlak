@@ -1,4 +1,4 @@
-from app import app, db
+from app import db
 from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy import inspect
 from datetime import datetime
@@ -50,7 +50,7 @@ class Voice(db.Model):
         """ Removes voice from the database """
         db.session.delete(self)
         db.session.commit()
-        app.logger.debug("Voice {} has been deleted".format(self.id))
+        db.app.logger.debug("Voice {} has been deleted".format(self.id))
 
     @classmethod
     def new_voice(self, id, name, lang, acc, gndr, directory):
@@ -75,13 +75,13 @@ class Voice(db.Model):
         voice = Voice(id, name, lang, acc, gndr, directory)
         db.session.add(voice)
         db.session.commit()
-        app.logger.debug("[{}] New voice created:\n{{\n"
-                         "\tid: {}\n"
-                         "\tname: {}\n"
-                         "\tlanguage: {}\n"
-                         "\taccent: {}\n"
-                         "\tgender: {}\n"
-                         "\tdirectory: {}\n}}"
-                         .format(datetime.now(), id, name, lang, acc,
-                                 gndr, directory))
+        db.app.logger.debug("[{}] New voice created:\n{{\n"
+                            "\tid: {}\n"
+                            "\tname: {}\n"
+                            "\tlanguage: {}\n"
+                            "\taccent: {}\n"
+                            "\tgender: {}\n"
+                            "\tdirectory: {}\n}}"
+                            .format(datetime.now(), id, name, lang, acc,
+                                    gndr, directory))
         return voice

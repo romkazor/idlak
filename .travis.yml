@@ -15,6 +15,7 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.8
+      - deadsnakes
     packages:
       - gdb
       - g++-4.9
@@ -22,8 +23,8 @@ addons:
       - liblapack-dev
       - clang-3.8
       - csh
-      - python3.5
-      - libpython3.5-dev
+      - python3.6
+      - libpython3.6-dev
       - sox
       - swig3.0
 
@@ -37,6 +38,13 @@ before_install:
   - tools/extras/travis_install_bindeps.sh $XROOT
   - export PATH=$XROOT/usr/bin:$PATH
   - export SWIG=swig3.0
+  - wget https://bootstrap.pypa.io/get-pip.py
+  - sudo ln -s /usr/bin/python3.6 /usr/local/bin/python3
+  - sudo ln -s /usr/bin/python3.6 /usr/local/bin/python
+  - sudo python get-pip.py
+
+install:
+  - sudo pip install -r idlak-server/requirements.txt -v
 
 before_script:
   - which ccache
@@ -45,13 +53,14 @@ before_script:
   - ccache --zero-stats --max-size=3G
 
 env:
-  - CI_TARGETS="depend"     # Job1: Build main programs.
-  - CI_TARGETS="all"        # Job2: Build main programs.
-  - CI_TARGETS="ext_depend" # Job3: Build extra programs
-  - CI_TARGETS="online"     # Job4.a: Build extra programs
-  - CI_TARGETS="onlinebin"  # Job4.b: Build extra programs
-  - CI_TARGETS="pyIdlak"    # Job4.c: Build extra programs
-  - CI_TARGETS="test"       # Job5: Test libraries.
+  - CI_TARGETS="depend"       # Job1: Build main programs.
+  - CI_TARGETS="all"          # Job2: Build main programs.
+  - CI_TARGETS="ext_depend"   # Job3: Build extra programs
+  - CI_TARGETS="online"       # Job4.a: Build extra programs
+  - CI_TARGETS="onlinebin"    # Job4.b: Build extra programs
+  - CI_TARGETS="pyIdlak"      # Job4.c: Build extra programs
+  - CI_TARGETS="test"         # Job5: Test libraries.
+  - CI_TARGETS="test_server"  # Job6: Test server.
   #### ext_test? adds 5min compile, runs 1 test.
 
 script:

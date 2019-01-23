@@ -37,12 +37,6 @@ namespace std {
 
 %apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
 
-%{
-#include "matrix/matrix-lib.h"
-#include "pyIdlak/pylib/pyIdlak_io.h"
-%}
-
-%include "pyIdlak_io.h"
 
 /* base float matrix from list of list */
 %typemap(in) (const double * MATRIX, int m, int n) %{
@@ -118,3 +112,11 @@ namespace std {
     }
   }
 }
+
+
+%{
+#include "matrix/matrix-lib.h"
+#include "pyIdlak/pylib/pyIdlak_io.h"
+%}
+
+%include "pyIdlak_io.h"
