@@ -44,6 +44,7 @@ before_install:
   - sudo python get-pip.py
 
 install:
+  - sudo pip install numpy
   - sudo pip install -r idlak-server/requirements.txt
 
 before_script:
