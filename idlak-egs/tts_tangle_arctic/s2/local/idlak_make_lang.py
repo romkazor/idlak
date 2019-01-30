@@ -215,7 +215,7 @@ def forward_context(logger, input_fname, input_freqtable_fname, cexoutput_filena
                     #v = str(lookuptables[table][v])
                     if v not in lookuptables[table]:
                         logger.log('critical', ' no such key %s in row %s' % (v, table))
-                        v = lookuptables[table].keys()[0]
+                        v = list(lookuptables[table].keys())[0]
                     v = binary_array(lookuptables[table][v], lookuptables_len[table])
                 fp.write(v + ' ')
             fp.write('; ')

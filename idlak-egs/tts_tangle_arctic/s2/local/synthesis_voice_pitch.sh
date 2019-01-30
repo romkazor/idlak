@@ -36,7 +36,7 @@ var_cmp=$voice_dir/lang/var_cmp.txt
 durdnndir=$voice_dir/dur
 f0dnndir=$voice_dir/pitch
 dnndir=$voice_dir/acoustic
-cleanup=
+cleanup=1
 datadir=`mktemp -d`
 tpdb=`readlink -f $voice_dir/lang/`
 

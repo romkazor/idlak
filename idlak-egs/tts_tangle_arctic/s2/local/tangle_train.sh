@@ -3,70 +3,86 @@ set -euo pipefail
 source cmd.sh
 source path.sh
 
-
-# Idlak audio data is hosted at archive.org, while the rest of the resources are available from Github
-
-srate=48000
-FRAMESHIFT=0.005
-TMPDIR=/tmp
-stage=-1
-endstage=7
-nj=4 # max 9
-lng="ru"
-acc="ru"
-runnorm=0
-# Speaker ID
-spks="abr" # Must be a speaker from the Idlak Resources
-network_type=dnn # dnn or lstm
-nodev=50 # the number of samples used for calculating loss
-         # the remaining will be in the training set.
-         # 50 utterances in the test set assumes that the number of utterances
-         # in the recording script is between 500 and 600
+lng=
+acc=
+spks=
+srate=
+rawaudiodir=
+labeldir=
+stage=
+endstage=
+runnorm=
+tpdb=
+nodev=
+nj=
+network_type=
+FRAMESHIFT=
+TMPDIR=
 
 . parse_options.sh || exit 1;
 
-# Input directories
-tpdb=$KALDI_ROOT/idlak-data/
-testdatadir=$KALDI_ROOT/idlak-data/$lng/testdata
+echo
+echo "---- Running Tangle Training ----"
+echo "  language:      $lng"
+echo "  accent:        $acc"
+echo "  speaker(s):    $spks"
+echo "  sample rate:   $srate"
+echo "  network type:  $network_type"
+echo "  audio dir:     $rawaudiodir"
+echo "  label dir:     $labeldir"
+echo "  tpdb dir:      $tpdb"
+echo "---------------------------------"
+echo
 
-# Working directories
-datadir=$HERE/data/$lng/$acc
-f0datadir=$HERE/f0data/$lng/$acc
-expdir=$HERE/exp/$lng/$acc
-lbldatadir=$HERE/lbldata/$lng/$acc
-lblf0datadir=$HERE/lblf0data/$lng/$acc
-lbldurdatadir=$HERE/lbldurdata/$lng/$acc
-durdatadir=$HERE/durdata/$lng/$acc
-exp_dnndir=$HERE/exp_dnn/$lng/$acc
-
-# Output directories
-voicedir=voices/$lng/$acc/${spks}_pmdl
-testoutdir=testout/$lng/$acc
-
-function incr_stage(){
+function incr_stage() {
     stage=$(( $stage + 1 ))
     if [ $stage -gt $endstage ]; then
+        echo
         echo "##### Finished after running step $(( $stage - 1 )) #####"
+        echo
         exit 0
     fi
 }
 
+testdatadir=$tpdb/$lng/testdata
+
+# Working directories
+datadir=$HERE/data/$lng/$acc/$spks
+f0datadir=$HERE/f0data/$lng/$acc/$spks
+expdir=$HERE/exp/$lng/$acc/$spks
+lbldatadir=$HERE/lbldata/$lng/$acc/$spks
+lblf0datadir=$HERE/lblf0data/$lng/$acc/$spks
+lbldurdatadir=$HERE/lbldurdata/$lng/$acc/$spks
+durdatadir=$HERE/durdata/$lng/$acc/$spks
+exp_dnndir=$HERE/exp-dnn/$lng/$acc/$spks
+exp_aligndir=$HERE/exp-align/$lng/$acc/$spks
+
+# Output directories
+voicedir=voices/$lng/$acc/${spks}_pmdl
+testoutdir=testout/$lng/$acc/$spks
+
+# Temporary directories
+export featdir=$TMPDIR/dnn_feats/idlak/$lng/$acc/$spks
 
 ############################################
 #####     Step -2/-1: Clean options    #####
 ############################################
 
 # Clean up all working directories
-if [ $stage -le -10 ]; then
+if [ $stage -le -2 ]; then
+    echo "##### Step -2: cleaning up ALL voices and working directories #####"
     cd $HERE
-    rm -rf data f0data exp lbldata lblf0data lbldurdata durdata exp_dnn
-    stage=0
+    rm -rf data f0data exp lbldata lblf0data lbldurdata durdata exp-dnn exp-align voices testoutdir
+    stage=-1 # bit of a hack
+    incr_stage
 fi
 
-# Clean up voice
+# Clean up voice working directories
 if [ $stage -le -1 ]; then
-    rm -rf $datadir/train $datadir/eval $datadir/dev $datadir/train_* $datadir/eval_* $datadir/dev_* $datadir/full
-    stage=0
+    echo "##### Step -1: cleaning up voice and working directories #####"
+    rm -rf $datadir $f0datadir $expdir $lbldatadir $lbldatadir $lblf0datadir $lbldurdatadir
+    rm -rf $durdatadir $exp_dnndir $exp_aligndir $voicedir $testoutdir
+    incr_stage
 fi
 
 ############################################
@@ -81,31 +97,17 @@ if [ $stage -le 0 ]; then
     done
 
     for spk in $spks; do
-        # URL of idlak DB
-        arch=$lng.$acc.$spk.$srate.tar.gz
-        url=https://github.com/idlak/idlak_resources/raw/master/$lng/$acc/$spk/audiourl
-        laburl=https://github.com/idlak/idlak_resources/raw/master/$lng/$acc/$spk/text.xml
-        audio_dir=$HERE/rawaudio/$lng/$acc/$spk/${srate}
-        label_dir=$HERE/labels/$lng/$acc/$spk
+        audio_dir=$rawaudiodir/$lng/$acc/$spk/${srate}
+        label_dir=$labeldir/$lng/$acc/$spk
         mkdir -p $datadir/{train,dev,full}/$spk
 
         # Get the audio at the correct sample rate
         if [ ! -e $audio_dir ]; then
-            # Download data
-            for f in $HERE/rawaudio/$lng/$acc/$spk/*_orig/*.wav; do
-                if [ ! -e "$f" ]; then
-                    mkdir -p $HERE/rawaudio/$lng/$acc/$spk
-                    cd $HERE/rawaudio/$lng/$acc/$spk
-                    wget -c -N $(curl -L $url)
-                    tar -xzf $arch
-                fi
-                break
-            done
             # create a symbolic link for the original audio sample rate
-            for f in $HERE/rawaudio/$lng/$acc/$spk/*_orig/*.wav; do
+            for f in $rawaudiodir/$lng/$acc/$spk/*_orig/*.wav; do
                 org_dir=`dirname $f`
                 org_dir=`basename $org_dir`
-                cd $HERE/rawaudio/$lng/$acc/$spk
+                cd $rawaudiodir/$lng/$acc/$spk
                 org_srate=`sox --info -r $f`
                 if [ ! -e "$org_srate" ]; then
                     ln -s  $org_dir $org_srate
@@ -113,23 +115,23 @@ if [ $stage -le 0 ]; then
                 break
             done
             # if not the same sample rate as original then use sox to resample
-            # these setting are only for downsampling
             if [ ! -e $audio_dir ]; then
                 mkdir -p $audio_dir
-                for i in $HERE/rawaudio/$lng/$acc/$spk/*_orig/*.wav; do
-                    sox $i -r $srate $audio_dir/`basename $i`
-                done
+                if [ "$srate" -gt "$org_srate" ]; then
+                    echo "    Up-sampling data"
+                    for i in $rawaudiodir/$lng/$acc/$spk/*_orig/*.wav; do
+                        sox $i $audio_dir/`basename $i` remix 1 rate -v -s -a 48000 dither -s
+                    done
+                else
+                    echo "    Down-sampling data"
+                    for i in $rawaudiodir/$lng/$acc/$spk/*_orig/*.wav; do
+                        sox $i -r $srate $audio_dir/`basename $i`
+                    done
+                fi
             fi
         fi
 
-        # Get the transcription
-        if [ ! -e $label_dir/text.xml ]; then
-            mkdir -p $label_dir
-            cd $label_dir
-            wget -c -N $laburl
-        fi
-
-        # Create a list of files
+        # Create a list of files to process if not done already (can be modified later)
         flist=$datadir/$lng.$acc.$spk.flist
         if [ ! -e $flist ]; then
             cd $audio_dir
@@ -198,15 +200,13 @@ if [ $stage -le 0 ]; then
     incr_stage
 fi
 
-export featdir=$TMPDIR/dnn_feats/idlak/$lng/$acc
-mkdir -p $featdir
-
 ############################################
 ##### Step 1: acoustic data generation #####
 ############################################
 
 if [ $stage -le 1 ]; then
     echo "##### Step 1: acoustic data generation #####"
+    mkdir -p $featdir
 
     # Use kaldi to generate MFCC features for alignment
     for step in full; do
@@ -219,7 +219,7 @@ if [ $stage -le 1 ]; then
     for step in train dev; do
         rm -f $datadir/$step/feats.scp
         # Generate f0 features
-        steps/make_pitch.sh --pitch-config conf/pitch-48k.conf  $datadir/$step   $expdir/make_pitch/$step  $featdir
+        steps/make_pitch.sh --pitch-config conf/pitch-48k.conf  $datadir/$step $expdir/make_pitch/$step $featdir
         cp $datadir/$step/pitch_feats.scp $datadir/$step/feats.scp
         # Compute CMVN on pitch features, to estimate min_f0 (set as mean_f0 - 2*std_F0)
         steps/compute_cmvn_stats.sh  $datadir/$step  $expdir/compute_cmvn_pitch/$step  $featdir
@@ -265,25 +265,24 @@ if [ $stage -le 1 ]; then
     incr_stage
 fi
 
-dict=$datadir/local/dict
 
 ############################################
 #####      Step 2: label creation      #####
 ############################################
+dict=$datadir/local/dict
 
 if [ $stage -le 2 ]; then
     echo "##### Step 2: label creation #####"
     # We are using the idlak front-end for processing the text
     for step in train dev full; do
         # Normalise text and generate phoneme information
-        # idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
         if [ $runnorm = 1 ]; then
+            echo "Running normaliser, this is not recommended and takes a long time"
             $KALDI_ROOT/idlak-misc/pyidlaktxp/pyidlaktxp.py --verbose 3 --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
         else
             idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text.xml $datadir/$step/text_norm.xml
         fi
         # Generate full labels
-        #idlakcex --pretty --cex-arch=default --tpdb=$tpdb data/$step/text_norm.xml data/$step/text_full.xml
     done
 
     # Generate language models for alignment
@@ -297,16 +296,13 @@ if [ $stage -le 2 ]; then
     incr_stage
 fi
 
-lang=$datadir/lang
-
-
-
 #######################################
 #####   Step 3: Forced alignment  #####
 #######################################
-
-expa=$HERE/exp-align/$lng/$acc
+lang=$datadir/lang
+expa=$exp_aligndir
 train=$datadir/full
+
 
 if [ $stage -le 3 ]; then
     echo "##### Step 3: forced alignment #####"
@@ -495,7 +491,6 @@ function print_phone(vkey, vasd, vpd) {
 fi
 
 
-
 #######################################
 #####   Step 4: DNN training      #####
 #######################################
@@ -583,7 +578,6 @@ BEGIN{ nv=split(lst, v, ",");
     incr_stage
 fi
 
-
 #######################################
 #####   Step 5: Creating voice    #####
 #######################################
@@ -641,14 +635,6 @@ if [ $stage -le 5 ]; then
 fi
 
 
-# Original samples:
-#echo "Synthesizing vocoded training samples"
-#mkdir -p exp_dnn/orig2/cmp exp_dnn/orig2/wav
-#paste-feats --length-tolerance=1 scp:data/dev/pitch_feats.scp scp:data/dev/mcep_feats.scp scp:data/dev/bndap_feats.scp ark,t:- | awk -v dir=exp_dnn/orig2/cmp/ '($2 == "["){if (out) close(out); out=dir $1 ".cmp";}($2 != "["){if ($NF == "]") $NF=""; print $0 > out}'
-#for cmp in exp_dnn/orig2/cmp/*.cmp; do
-#    local/mlsa_synthesis_63_mlpg.sh --voice_thresh 0.5 --alpha $alpha --fftlen $fftlen --srate $srate --bndap_order $bndap_order --mcep_order $order $cmp exp_dnn/orig2/wav/`basename $cmp .cmp`.wav
-#done
-
 #######################################
 #####   Step 6: Synthesizing      #####
 #######################################
@@ -666,9 +652,9 @@ if [ $stage -le 6 ]; then
             echo "Warning : no test data in $testdatadir to synthesize"
         fi
     done
+
+    incr_stage
 fi
-
-
 
 
 case $lng in
@@ -691,8 +677,6 @@ case $lng in
         done
         ;;
 esac
-
-
 
 echo "
 

@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 # Swap fields in a file, based on fairly straightforward format:
 #  * in="n1;n2;n3;...;nk" is a description of input blocks sizes.
-#  * out="id1;id2;id3;...;idl" is a sequence of block ids, 0 representing the first 
+#  * out="id1;id2;id3;...;idl" is a sequence of block ids, 0 representing the first
 #    in the input list. Blocks ID can duplicated or deleted.
 
 import sys, argparse
@@ -9,7 +9,7 @@ import sys, argparse
 def process(optin, optout, streamin, streamout):
     block_in = [int(n) for n in optin.split(':')]
     block_out = [int(n) for n in optout.split(':')]
-    
+
     if not all(0 <= k < len(block_in) for k in block_out):
         print "ERROR: Bad out specification: %s" % optout
         exit(-1)
@@ -51,7 +51,6 @@ def main():
         streamout = open(args.output_file, 'w')
 
     process(args.inblock, args.outblock, streamin, streamout)
-    
+
 if __name__ == "__main__":
     main()
-    
