@@ -50,46 +50,65 @@ def mixed_excitation(f0s, bndaps, srate = 48000, fshift = 0.005, f0min = 70.,
         noise specific to different energy bands
 
         see. compute-aperiodic-feats.cc for details on the theory
-        
+
         f0s:        list of f0 values
         bndaps:     list of list of bandaps
         srate:      sample rate in Hz
         fshift:     frame shift in seconds
         f0min:      floor f0 to this value
         fftlen:     length of FFT to use (must be pow of 2)
-        uv_period:  shift in unvoiced region in seconds (defaults to half fshift)
+        uv_period:  shift in unvoiced region in seconds (defaults to double fshift)
         gauss:      use normally distributed noise
         seed:       seed for random number generator
     """
     if uv_period is None:
-        uv_period = fshift / 2.
+        uv_period = 2. * fshift
     sshift = int(srate * fshift) # frame shift in samples
     noframes = len(f0s)
     nosamples = noframes * sshift
-    
+
     random.seed(seed)
-    
+
     excitation = [0.] * nosamples
-    bands = get_band_info(len(bndaps[0]), srate, fshift)
+    hanning_totals = [0.] * nosamples
+    bndap_order = len(bndaps[0])
+    zero_bndaps = [0.] * bndap_order
+    bands = get_band_info(bndap_order, srate, fshift)
     period_pre = 0
-    for sidx, fidx, period, voiced in _pitch_periods(f0s, srate, sshift, f0min, uv_period):
-        pmag = float(period)
-        fhann = _pitch_sync_hanning(period_pre, period, fftlen)
+    for sidx, fidx, period, voiced in _pitch_periods(
+            f0s, srate, fshift, sshift, noframes, nosamples, f0min, uv_period):
 
         if voiced:
             fbndaps = bndaps[fidx]
-            fpulse = [0. for t in range(fftlen)] # periodic pulse
-            fpulse[fftlen//2] = math.sqrt(pmag)
-            fnoise = _gen_noise(pmag, period_pre, period, fftlen, gauss)
-            fexc = _excitation_mixing(fpulse, fnoise, fbndaps, srate, bands)
         else:
-            fexc = _gen_noise(pmag, period_pre, period, fftlen, gauss)
+            fbndaps = zero_bndaps
 
-        frame_excitation = [e*h for (e,h) in zip(fexc, fhann)]
+        # periodic pulse
+        pmag = math.sqrt(period)
+        fpulse = [0. for t in range(fftlen)]
+        fpulse[fftlen//2] = pmag
+
+        nmag = math.sqrt(period / max(1, (period_pre + period)))
+        fnoise = _gen_noise(nmag, period_pre, period, fftlen, gauss)
+
+        fexc = _excitation_mixing(fpulse, fnoise, fbndaps, period, srate, bands)
+        fhann = _pitch_sync_hanning(period_pre, period, fftlen)
+        frame_excitation = [e*h for (e,h) in zip(fexc, fhann)] # apply the hanning window
         _overlap_and_add(excitation, frame_excitation, sidx)
+        # keeping track of the hanning totals for later normalisation
+        _overlap_and_add(hanning_totals, fhann, sidx)
         period_pre = period
 
-    return excitation
+    # renorm based on the hanning window locations
+    for sidx, (e, h) in enumerate(zip(excitation, hanning_totals)):
+        if h > 0:
+            excitation[sidx] = e / h
+        else:
+            excitation[sidx] = e
+
+    # remove the offset introduced by building the excitation fft window
+    offset = fftlen // 2 - sshift
+    return excitation[offset:]
 
 
 def get_band_info(numbands, srate, fshift, **kwargs):
@@ -115,29 +134,28 @@ def get_band_info(numbands, srate, fshift, **kwargs):
     return list(zip(band_starts, band_centers, band_ends))
 
 
-def _pitch_periods(f0s, srate, sshift, f0min, uv_period):
+def _pitch_periods(f0s, srate, fshift, sshift, noframes, nosmp, f0min, uv_period):
     """ Generator to get frame index, pitch period, and voicing """
     periods = [ 1 / float(max(f0min, f0)) if f0 > 0.0 else uv_period for f0 in f0s ]
-    noframes = len(f0s)
-    nosmp = (noframes * sshift)
     fidx = 0 # Frame index
     sidx = 0 # Sample index
+    time = 0. # Time in seconds
     while fidx < noframes and sidx < nosmp:
         period_samples = int(srate * periods[fidx])
         yield (sidx, fidx, period_samples, f0s[fidx] > 0.0)
-        sidx += period_samples
-        while sidx > (fidx + 1) * sshift:
+        time += periods[fidx]
+        sidx = int(srate * time)
+        while time > (fidx + 1) * fshift:
             fidx += 1
 
 
-def _gen_noise(pmag, period_pre, period, fftlen, gauss):
+def _gen_noise(nmag, period_pre, period, fftlen, gauss):
     """ Generates the appropriate amount of noise at the correct energy """
     s = (fftlen // 2) - (period_pre // 2)
     e = (fftlen // 2 + fftlen % 2) + (period // 2)
     noise = [t > s and t < e for t in range(fftlen)]
-    nmag = pmag / (e - s)
     if gauss:
-        return [nmag * random.gauss(0,1) if n else 0. for n in noise]
+        return [random.gauss(0, nmag) if n else 0. for n in noise]
     else:
         return [nmag * random.random() if n else 0. for n in noise]
 
@@ -158,7 +176,7 @@ def _pitch_sync_hanning(period_pre, period, fftlen):
     return [_val(f) for f in range(fftlen)]
 
 
-def _excitation_mixing(fpulse, fnoise, fbndaps, srate, bands):
+def _excitation_mixing(fpulse, fnoise, fbndaps, fperiod, srate, bands):
     """ Mixing the periodic signal and noise according in a ratio
         defined by the bndaps in the FFT domain
     """
@@ -192,8 +210,11 @@ def _excitation_mixing(fpulse, fnoise, fbndaps, srate, bands):
 
     exc_fft = [p+n for (p,n) in zip(pulse_fft, noise_fft)]
     fexc_complex = pyIdlak_vocoder.PyVocoder_IFFT(exc_fft)
-    return [f.real / fftlen for f in fexc_complex]
-    
+    fexc = [f.real / fftlen for f in fexc_complex]
+    energy_norm = math.sqrt(fperiod / sum(e*e for e in fexc))
+
+    return [f / energy_norm for f in fexc]
+
 
 def _overlap_and_add(excitation, frame_excitation, startidx):
     """ Overlap and add the frame's excitation """
@@ -201,5 +222,3 @@ def _overlap_and_add(excitation, frame_excitation, startidx):
         if startidx + i >= len(excitation):
             break
         excitation[startidx + i] += e
-
-

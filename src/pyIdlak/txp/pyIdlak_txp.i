@@ -19,18 +19,7 @@
 
 %module pyIdlak_txp
 
-%include "std_string.i"
-%include <std_vector.i>
-%include <argcargv.i>
-
-namespace std {
-   %template(IntVector) vector<int>;
-   %template(DoubleVector) vector<double>;
-   %template(StringVector) vector<string>;
-   %template(ConstCharVector) vector<const char*>;
-};
-
-%apply (int ARGC, char **ARGV) { (int argc, char *argv[]) }
+%include "../pylib/pyIdlak_typemaps.i"
 
 %{
 #include "python-txp-api.h"

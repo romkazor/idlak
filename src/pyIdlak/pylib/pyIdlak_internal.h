@@ -25,15 +25,79 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <map>
 
 #include "util/simple-options.h"
+#include "feat/feature-functions.h"
+#include "idlakfeat/feature-aperiodic.h"
+#include "nnet/nnet-pdf-prior.h"
+
+#include "pyIdlak_types.h"
 #include "python-pylib-api.h"
 
+/* Additional Option Types */
+struct PyNnetForwardOptions {
+  std::string feature_transform = "";
+  bool reverse_transform = false;
+  bool no_softmax = false;
+  bool apply_log = false;
+  std::string use_gpu = "no";
+  std::string model_filename;
+
+  void Register(kaldi::OptionsItf *opts) {
+    opts->Register("feature-transform", &(feature_transform),
+                   "Feature transform in front of main network (in nnet format)");
+    opts->Register("reverse-transform", &(reverse_transform),
+                   "Feature transform applied in reverse on output");
+    opts->Register("no-softmax", &(no_softmax),
+                   "Removes the last component with Softmax, if found. The pre-softmax "
+                   "activations are the output of the network. Decoding them leads to "
+                   "the same lattices as if we had used 'log-posteriors'.");
+    opts->Register("apply-log", &(apply_log),
+                   "Transform NN output by log()");
+    opts->Register("use-gpu", &(use_gpu),
+                   "yes|no|optional, only has effect if compiled with CUDA");
+    opts->Register("model-filename", &(model_filename),
+                   "Model filename");
+  }
+};
+typedef struct PyNnetForwardOptions PyNnetForwardOptions;
+
+struct PyApplyCMVNOptions {
+  bool norm_vars = false;
+  bool norm_means = false;
+  bool reverse = false;
+  std::string skip_dims_str = "";
+
+  void Register(kaldi::OptionsItf *opts) {
+    opts->Register("norm-vars", &norm_vars, "If true, normalize variances.");
+    opts->Register("norm-means", &norm_means, "You can set this to false to turn off mean "
+                  "normalization.  Note, the same can be achieved by using 'fake' CMVN stats; "
+                  "see the --fake option to compute_cmvn_stats.sh");
+    opts->Register("skip-dims", &skip_dims_str, "Dimensions for which to skip "
+                  "normalization: colon-separated list of integers, e.g. 13:14:15)");
+    opts->Register("reverse", &reverse, "If true, apply CMVN in a reverse sense, "
+                  "so as to transform zero-mean, unit-variance input into data "
+                  "with the given mean and variance.");
+  }
+};
+typedef struct PyApplyCMVNOptions PyApplyCMVNOptions;
+
+
+// Make sure this stays in line with python-pylib-api.h and __init__.py
+// and python-pylib-api.cc
 struct PySimpleOptions {
   kaldi::SimpleOptions * po_;
-  enum IDLAK_OPT_TYPES opttype_;
-  void * opts_;
+  kaldi::AperiodicEnergyOptions * aprd_ = nullptr;
+  kaldi::nnet1::PdfPriorOptions * pdf_prior_ = nullptr;
+  kaldi::DeltaFeaturesOptions * add_deltas_ = nullptr;
+  PyNnetForwardOptions * nnet_fwd_ = nullptr;
+  PyApplyCMVNOptions * apply_cmvn_ = nullptr;
+  std::map<std::string, int> extra_int_;
+  std::map<std::string, double> extra_double_;
+  std::map<std::string, std::string> extra_str_;
 };
+
 
 struct PyIdlakBuffer {
   char * data_;

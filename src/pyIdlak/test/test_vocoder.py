@@ -26,7 +26,7 @@ import wave
 
 from os.path import join as pjoin
 
-here = os.path.dirname(__file__)
+here = os.path.abspath(os.path.dirname(__file__))
 
 sys.path.insert(0, pjoin(here, '..', '..'))
 import pyIdlak
@@ -156,7 +156,7 @@ class TestIdlakPythonVocoder(unittest.TestCase):
                                 delta = 1e-3, msg = "values are not the same")
 
 
-    
+
 
 
     def test_PySPTK_mlsadf(self):

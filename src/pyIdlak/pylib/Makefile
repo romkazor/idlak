@@ -3,7 +3,7 @@ include ../../kaldi.mk
 
 ifeq ($(PYIDLAK), true)
 
-OBJFILES = python-pylib-api.o pyIdlak_pylib_wrap.o
+OBJFILES = python-pylib-api.o pyIdlak_io.o pyIdlak_pylib_wrap.o
 
 LIBNAME = _pyIdlak_pylib
 
@@ -29,7 +29,7 @@ endif
 
 .PHONY: wrapper
 wrapper:
-	$(SWIG) -c++ -python -o pyIdlak_pylib_wrap.cc pyIdlak_pylib.i
+	$(SWIG) -c++ -python -o pyIdlak_pylib_wrap.cc -I../.. pyIdlak_pylib.i
 pyIdlak_pylib_wrap.o: wrapper
 
 sharedlib: $(STATICLIB)

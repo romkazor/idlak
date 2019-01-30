@@ -190,7 +190,7 @@ if [ $stage -le 2 ]; then
     # Generate language models for alignment
     mkdir -p $dict
     # Create dictionary and text files
-    python local/idlak_make_lang.py --mode 0 data/full/text_norm.xml data/full $dict
+    python3 local/idlak_make_lang.py --mode 0 data/full/text_norm.xml data/full $dict
     # Fix data directory, in case some recordings are missing
     utils/fix_data_dir.sh data/full
 
@@ -207,12 +207,12 @@ if [ $stage -le 3 ]; then
     echo "##### Step 3: forced alignment #####"
     rm -rf $dict/lexiconp.txt $lang
     utils/prepare_lang.sh --num-nonsil-states 5 --share-silence-phones true $dict "<OOV>" data/local/lang_tmp $lang
-    #utils/validate_lang.pl $lang
+    utils/validate_lang.pl $lang
 
     # Now running the normal kaldi recipe for forced alignment
     expa=exp-align
     train=data/full
-    #test=data/eval_mfcc
+    test=data/eval_mfcc
 
     rm -rf $train/split$nj
     split_data.sh --per-utt $train $nj
@@ -227,6 +227,8 @@ if [ $stage -le 3 ]; then
         $train data/lang $expa/tri1 $expa/tri1_ali || exit 1;
     steps/train_deltas.sh --cmd "$train_cmd" \
         5000 50000 $train $lang $expa/tri1_ali $expa/tri2 || exit 1;
+
+
 
     # Create quinphone alignments
     steps/align_si.sh  --nj $nj --cmd "$train_cmd" \
@@ -253,40 +255,40 @@ for step in full; do
     # some versions of gzip do not support { } expansion
     alifiles=""
     for n in $(seq 1 $nj); do
-      alifiles="$alifiles $ali/ali.$n.gz"
+        alifiles="$alifiles $ali/ali.$n.gz"
     done
 
     # Extract phone alignment
     ali-to-phones --per-frame $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:- \
-	| utils/int2sym.pl -f 2- $lang/phones.txt > $ali/phones.txt
+        | utils/int2sym.pl -f 2- $lang/phones.txt > $ali/phones.txt
     # Extract state alignment
     ali-to-hmmstate $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:$ali/states.tra
     # Extract word alignment
     linear-to-nbest ark:"gunzip -c $alifiles|" \
-	ark:"utils/sym2int.pl --map-oov 1669 -f 2- $lang/words.txt < data/$step/text |" '' '' ark:- \
-	| lattice-align-words $lang/phones/word_boundary.int $ali/final.mdl ark:- ark:- \
-	| nbest-to-ctm --frame-shift=$FRAMESHIFT --precision=3 ark:- - \
-	| utils/int2sym.pl -f 5 $lang/words.txt > $ali/wrdalign.dat
+        ark:"utils/sym2int.pl --map-oov 1669 -f 2- $lang/words.txt < data/$step/text |" '' '' ark:- \
+        | lattice-align-words $lang/phones/word_boundary.int $ali/final.mdl ark:- ark:- \
+        | nbest-to-ctm --frame-shift=$FRAMESHIFT --precision=3 ark:- - \
+        | utils/int2sym.pl -f 5 $lang/words.txt > $ali/wrdalign.dat
 
     # Regenerate text output from alignment
-    python local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat data/$step/text_align.xml $ali/states.tra
+    python3 local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat data/$step/text_align.xml $ali/states.tra
 
     # Generate corresponding quinphone full labels
     idlaktxp --pretty --tpdb=$tpdb data/$step/text_align.xml data/$step/text_anorm.xml
     idlakcex --pretty --cex-arch=default --tpdb=$tpdb data/$step/text_anorm.xml data/$step/text_afull.xml
-    python local/idlak_make_lang.py --mode 2 data/$step/text_afull.xml data/$step/cex.ark > data/$step/cex_output_dump
+    python3 local/idlak_make_lang.py --mode 2 data/$step/text_afull.xml data/$step/cex.ark  > data/$step/cex_output_dump
 
     # Merge alignment with output from idlak cex front-end => gives you a nice vector
     # NB: for triphone alignment:
-    # make-fullctx-ali-dnn  --phone-context=3 --mid-context=1 --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $ali/ali.{1..$nj}.gz|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
+    #     make-fullctx-ali-dnn  --phone-context=3 --mid-context=1 --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $ali/ali.{1..$nj}.gz|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
     make-fullctx-ali-dnn --max-sil-phone=15 $ali/final.mdl ark:"gunzip -c $alifiles|" ark,t:data/$step/cex.ark ark,t:data/$step/ali
-
 
     # UGLY convert alignment to features
     cat data/$step/ali \
-	| awk '{print $1, "["; $1=""; na = split($0, a, ";"); for (i = 1; i < na; i++) print a[i]; print "]"}' \
-	| copy-feats ark:- ark,scp:$featdir/in_feats_$step.ark,$featdir/in_feats_$step.scp
+    	| awk '{print $1, "["; $1=""; na = split($0, a, ";"); for (i = 1; i < na; i++) print a[i]; print "]"}' \
+    	| copy-feats ark:- ark,scp:$featdir/in_feats_$step.ark,$featdir/in_feats_$step.scp
 done
+
 
 # HACKY
 # Generate features for duration modelling

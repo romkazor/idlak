@@ -4,7 +4,8 @@ var_pitch=data/train/var_pitch.txt
 durdnndir=exp_dnn/tts_dnn_dur_3_delta_quin5/
 f0dnndir=exp_dnn/tts_dnn_f0_3_delta_quin5/
 acsdnndir=exp_dnn/tts_dnn_train_3_delta_quin5/
-spk=bdl
+windir=win/
+spk=slt
 lng=en
 acc=ga
 srate=16000
@@ -41,8 +42,14 @@ if [ ! $tpdbdir ]; then
 fi
 
 rm -rf $outputdir
-mkdir -p $outputdir/{dur,pitch,acoustic,lang}
+mkdir -p $outputdir/{dur,pitch,acoustic,lang,win}
 
+# convert the window files to ascii for pyIdlak
+for win in $windir/*.win; do
+    name=$(basename "$win" .win)
+    cp $win $outputdir/win/.
+    x2x +fa $win > $outputdir/win/$name.txt
+done
 
 for step in dur pitch acoustic; do
     case $step in
@@ -72,8 +79,14 @@ for step in dur pitch acoustic; do
             copy-feats $i $outputdir/$step/`basename $i`;
         fi
     done
+    # convert to ark files:
+    i=$dnndir/cmvn.scp
+    if [ -e "$i" ]; then
+        copy-feats scp:$i ark,t:$outputdir/$step/$(basename "$i" .scp).ark
+    fi
+
     # Copy other files (they should really be merged into a configuration file)
-    for i in $dnndir/{indelta_opts,delta_opts,cmvn_opts,incmvn_opts,cmvn.scp}; do
+    for i in $dnndir/{indelta_opts,delta_opts,cmvn_opts,incmvn_opts}; do
         if [ -e "$i" ]; then
             cp $i $outputdir/$step/`basename $i`;
         fi

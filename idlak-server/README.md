@@ -3,9 +3,46 @@
 
 This server runs an RESTful API based on Python Flask.
 
-When running the server for the first time it has to be run twice: first time to set up the database, and second to actually run it. On the second run a single user with Admin permissions is created. The login credentials of this user are noted in the logs.
+This is a Rest API that allows registered users receive processed speech by sending a request. The server only contains two databases for authorisation and information about voices. The voices themselves are used from idlak, therefore the server is not usable alone and idlak has to be installed.
 
-To add a voice to the database use script ```seed/addvoice.py```.
+### Install server
+
+To install the Rest server one must:
+
+-  Have python (preferably version >= 3.5) with pip installed
+-  And in the ```idlak-server``` directory
+   -  Run command ```source setup-server.sh``` to setup flask
+   -  Run command ```flask run``` to run the server
+      -  when the server is ran for the first time, the initial admin user will be created and it's details presented in format
+         ```<User userid:password:isadmin>```
+
+Before installing and running the server make sure that the settings provided in config are correct. If you are not debugging or testing the server set logging to 'INFO', no sensitive data will be logged.
+
+### Run server
+
+To run the already installed Rest server one must:
+-  In the ```idlak-server``` directory
+   -  Run command ```source venv\bin\activate```
+   -  Run command ```flask run``` to run on default host and port
+   -  OR run command ```flask run --host=0.0.0.0 --port=80``` to run on
+      specific host and port
+
+### Loading voices
+
+In order for the users to get speech of any voice, the database must know about the voices and their location. To set a voice up, the server must be installed and in the ```idlak-server``` directory a command has to be run:
+
+    ./seed/addvoice.py -g female -n Anastasia -i abr -d ../idlak-egs/tts_tangle_idlak/s2/voices/ru/ru/abr_pmdl
+
+the different information based on the voice must be provided: gender, name, id and tpdb directory To remove voice information from the server, a command in the ```idlak-server``` directory has to be run:
+
+    ./seed/removevoice.py -i abr
+
+where the id of the voice has to be provided
+
+Once the server has information of the voices, the user can access this information and get processed speech of these voices.
+
+### Deployment
+Follow [this link](http://flask.pocoo.org/docs/1.0/deploying/) for information on how to deploy a Flask application.
 
 
 # API Documentation
@@ -97,7 +134,7 @@ Permissions: ```admin```<br>
 Authorization Header: ```Bearer <access_token>```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```uid``` | ```userid``` | Optional | User id, generated randomly by default  |
@@ -145,7 +182,7 @@ Typical error response (```422 UNPROCESSABLE ENTITY```):
 
 Permissions: ```admin```<br>
 Authorization Header: ```Bearer <access_token>```<br>
-Response (```200 OK```): 
+Response (```200 OK```):
 ```json
 {
     "admin": true,
@@ -223,14 +260,14 @@ Typical error response (```404 NOT FOUND```):
 ## Voices
 **Get available voices**
 
-| [ GET ] | */voices* |
+| [ POST ] | */voices* |
 | - | - |
 
 Permissions: ```none```<br>
 Authorization Header: ```none```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```language``` | ```en``` | Optional | Language code in ISO 2 letter format |
@@ -295,7 +332,7 @@ Permissions: ```none```<br>
 Authorization Header: ```Bearer <access_token>```<br>
 Accepted content types: ```application/json```<br>
 Arguments:
-    
+
 | Argument | Example | Required  | Description |
 | -- | -- | -- | :-- |
 | ```voice_id``` | ```voiceid``` | Required | Voice ID |

@@ -30,4 +30,9 @@
 typedef struct PySimpleOptions PySimpleOptions;
 typedef struct PyIdlakBuffer PyIdlakBuffer;
 
+// These should be replaced with templates at some point
+typedef class PyIdlakSequentialBaseFloatMatrixReader PyIdlakSequentialBaseFloatMatrixReader;
+typedef class PyIdlakBaseFloatMatrixWriter PyIdlakBaseFloatMatrixWriter;
+
+
 #endif // KALDI_PYIDLAK_PYLIB_PYIDLAK_TYPES_H_

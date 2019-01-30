@@ -19,7 +19,6 @@ To install the Rest server one must:
 -  And in the ``idlak-server`` directory
 
    -  Run command ``source setup-server.sh`` to setup flask
-   -  Run command ``flask run`` to setup the database
    -  Run command ``flask run`` to run the server
 
       -  when the server is ran for the first time, the initial admin
@@ -27,15 +26,13 @@ To install the Rest server one must:
          ``<User userid:password:isadmin>``
 
 Before installing and running the server make sure that the settings
-provided in config are correct, especially the current user and speech
-path. If you are not debugging or testing the server set logging to
-'INFO', no sensitive data will be logged.
+provided in config are correct. If you are not debugging or testing
+the server set logging to 'INFO', no sensitive data will be logged.
 
 Run server
 ----------
 
-To run the already installed Rest server one must (if you haven't ran it
-after the installation):
+To run the already installed Rest server one must:
 
 -  In the ``idlak-server`` directory
 
@@ -68,6 +65,12 @@ where the id of the voice has to be provided
 
 Once the server has information of the voices, the user can access this
 information and get processed speech of these voices.
+
+
+Deployment
+----------
+Follow `this link <http://flask.pocoo.org/docs/1.0/deploying/>`_ for
+information on how to deploy a Flask application.
 
 
 API Documentation
@@ -234,7 +237,7 @@ Voices
 
 **Get available voices**
 
-    **[ GET ]** ‏‏‎ ‏‏‎ ‏‏‎ \| ‏‏‎ ‏‏‎ ‏‏‎ */voices*
+    **[ POST ]** ‏‏‎ ‏‏‎ ‏‏‎ \| ‏‏‎ ‏‏‎ ‏‏‎ */voices*
 
 Permissions: ``none``\  Authorization Header: ``none``\  Accepted
 content types: ``application/json``\  Arguments:
@@ -269,12 +272,6 @@ Response (``200 OK``):
 
 Typical error response (``204 NO CONTENT``):
 
-.. code:: json
-
-    {
-        "message": "No voices were found"
-    }
-
 --------------
 
 **Get voice details**
@@ -295,7 +292,7 @@ Permissions: ``none``\  Authorization Header: ``none``\  Response
           "...": "..."
     }
 
-Typical error response (``404 NO CONTENT``):
+Typical error response (``404 NOT FOUND``):
 
 .. code:: json
 
@@ -319,7 +316,7 @@ Permissions: ``none``\  Authorization Header:
 +====================+===============+============+==================================================+
 | ``voice_id``       | ``voiceid``   | Required   | Voice ID                                         |
 +--------------------+---------------+------------+--------------------------------------------------+
-| ``audio_format``   | ``mp3``       | Optional   | Audio file format - wav/ogg/mp3 (default: wav)   |
+| ``audio_format``   | ``mp3``       | Optional   | Audio file format - wav|ogg|mp3 (default: wav)   |
 +--------------------+---------------+------------+--------------------------------------------------+
 | ``text``           | ``Hello``     | Required   | Text input for speech synthesis                  |
 +--------------------+---------------+------------+--------------------------------------------------+
