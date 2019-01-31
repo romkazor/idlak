@@ -674,6 +674,7 @@ case $lng in
             else
                 sampletxt='This is a demo of D N N synthesis'
             fi
+            break
         done
         ;;
 esac
