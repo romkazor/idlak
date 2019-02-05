@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env python2
+=======
+#!/usr/bin/env python3
+>>>>>>> upstream/master
 # Swap fields in a file, based on fairly straightforward format:
 #  * in="n1;n2;n3;...;nk" is a description of input blocks sizes.
 #  * out="id1;id2;id3;...;idl" is a sequence of block ids, 0 representing the first
@@ -11,7 +15,7 @@ def process(optin, optout, streamin, streamout):
     block_out = [int(n) for n in optout.split(':')]
 
     if not all(0 <= k < len(block_in) for k in block_out):
-        print "ERROR: Bad out specification: %s" % optout
+        print("ERROR: Bad out specification: %s" % optout)
         exit(-1)
 
     for l in streamin:
@@ -19,7 +23,7 @@ def process(optin, optout, streamin, streamout):
         ll = l.strip().split()
         len_ll = len(ll)
         if sum(block_in) > len_ll:
-            print "WARNING: not enough input data to match block specification. Blocks will be truncated"
+            print("WARNING: not enough input data to match block specification. Blocks will be truncated")
         offset = 0
         inblocks = []
         # Split in input blocks

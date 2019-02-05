@@ -29,7 +29,7 @@
 
 std::vector<double> PyVocoder_get_aperiodic_band_starts(PySimpleOptions * pyopts) {
   std::vector<double> band_starts;
-  kaldi::AperiodicEnergyOptions *opts = static_cast<kaldi::AperiodicEnergyOptions*>(pyopts->opts_);
+  auto opts = pyopts->aprd_;
   kaldi::AperiodicEnergy ap_energy(*opts);
 
   int nobands = ap_energy.Dim();
@@ -42,7 +42,7 @@ std::vector<double> PyVocoder_get_aperiodic_band_starts(PySimpleOptions * pyopts
 
 std::vector<double> PyVocoder_get_aperiodic_band_centers(PySimpleOptions * pyopts) {
   std::vector<double> band_centers;
-  kaldi::AperiodicEnergyOptions *opts = static_cast<kaldi::AperiodicEnergyOptions*>(pyopts->opts_);
+  auto opts = pyopts->aprd_;
   kaldi::AperiodicEnergy ap_energy(*opts);
 
   int nobands = ap_energy.Dim();
@@ -55,7 +55,7 @@ std::vector<double> PyVocoder_get_aperiodic_band_centers(PySimpleOptions * pyopt
 
 std::vector<double> PyVocoder_get_aperiodic_band_ends(PySimpleOptions * pyopts) {
   std::vector<double> band_ends;
-  kaldi::AperiodicEnergyOptions *opts = static_cast<kaldi::AperiodicEnergyOptions*>(pyopts->opts_);
+  auto opts = pyopts->aprd_;
   kaldi::AperiodicEnergy ap_energy(*opts);
 
   int nobands = ap_energy.Dim();

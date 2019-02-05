@@ -17,7 +17,9 @@
 
 # Generated Nnet prototype, to be initialized by 'nnet-initialize'.
 
-import sys, math
+from __future__ import print_function
+import sys
+import math
 
 ###
 ### Parse options
@@ -82,7 +84,7 @@ if len(args) != 2 :
   parser.print_help()
   sys.exit(1)
 
-(feat_dim, num_leaves) = map(int,args);
+(feat_dim, num_leaves) = [int(i) for i in args];
 
 
 # Optionaly scale
@@ -112,9 +114,9 @@ softmax_affine_opts=""
 if None != o.param_stddev:     softmax_affine_opts += "<ParamStddev> %f " % o.param_stddev
 
 # The LSTM layers,
-print "<LstmProjected> <InputDim> %d <OutputDim> %d <CellDim> %s" % (feat_dim, o.proj_dim, o.cell_dim) + lstm_extra_opts
+print("<LstmProjected> <InputDim> %d <OutputDim> %d <CellDim> %s" % (feat_dim, o.proj_dim, o.cell_dim) + lstm_extra_opts)
 for l in range(o.num_layers - 1):
-  print "<LstmProjected> <InputDim> %d <OutputDim> %d <CellDim> %s" % (o.proj_dim, o.proj_dim, o.cell_dim) + lstm_extra_opts
+  print("<LstmProjected> <InputDim> %d <OutputDim> %d <CellDim> %s" % (o.proj_dim, o.proj_dim, o.cell_dim) + lstm_extra_opts)
 
 # Adding <Tanh> for more stability,
 #print "%s <InputDim> %d <OutputDim> %d %s" % (o.activation_type, o.proj_dim, o.proj_dim, o.activation_opts) # Non-linearity
