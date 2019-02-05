@@ -37,11 +37,7 @@ var_cmp=$voice_dir/lang/var_cmp.txt
 durdnndir=$voice_dir/dur
 f0dnndir=$voice_dir/pitch
 dnndir=$voice_dir/acoustic
-<<<<<<< HEAD
 cleanup=1
-=======
-cleanup=""
->>>>>>> upstream/master
 datadir=`mktemp -d`
 mkdir -p $datadir
 tpdb=`readlink -f $voice_dir/lang/`

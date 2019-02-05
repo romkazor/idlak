@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/usr/bin/env python2
-=======
 #!/usr/bin/env python3
->>>>>>> upstream/master
 # Swap fields in a file, based on fairly straightforward format:
 #  * in="n1;n2;n3;...;nk" is a description of input blocks sizes.
 #  * out="id1;id2;id3;...;idl" is a sequence of block ids, 0 representing the first
