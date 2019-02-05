@@ -1,16 +1,18 @@
-#! venv/bin/python3
+#! venv/bin/python
 # -*- coding: utf-8 -*-
 import sys
 import os
 import argparse
 sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2]))
-from app import app, db                 # noqa
+from app import create_app, db                 # noqa
 from app.models.voice import Voice      # noqa
-
 
 """ Example:
 ./addvoice.py -g female -n Anastasia -i abr -d
 /home/skaiste/Documents/Idlak/idlak/idlak-egs/tts_tangle_idlak/s2/voices/ru/ru/abr_pmdl
+
+#2:
+./seed/addvoice.py -g female -n Melanie -i alk -d /home/skaiste/Documents/Idlak/idlak/idlak-egs/tts_tangle_arctic/s2/slt_pmdl/
 """
 
 parser = argparse.ArgumentParser(description='Add a voice to the database.')
@@ -21,7 +23,7 @@ parser.add_argument('-d', help='path of the directory containing ' +
                                'voice configuration file')
 
 
-def addVoice():
+def addVoice(app):
     args = vars(parser.parse_args())
     errs = ""
     if args['i'] is None:
@@ -61,4 +63,5 @@ def addVoice():
 
 
 if __name__ == '__main__':
-    addVoice()
+    app = create_app('config.ini')
+    addVoice(app)

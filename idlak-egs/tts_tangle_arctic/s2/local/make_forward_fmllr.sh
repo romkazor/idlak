@@ -1,5 +1,10 @@
 #!/bin/bash
 single_opts=
+asciiout=
+if [ $1 == "--ascii" ]; then
+    asciiout=",t"
+    shift
+fi
 if [ $1 == "--single" ]; then
     single_opts=1
     shift
@@ -15,6 +20,8 @@ cmpdir=$out/cmp/
 wavdir=$out/wav/
 mkdir -p $cmpdir
 mkdir -p $wavdir
+
+[ -f ./path.sh ] && . ./path.sh;
 
 infeats_tst="ark:copy-feats scp:$tst/feats.scp ark:- |"
 
@@ -54,7 +61,7 @@ fi
 if [ -e $exp/cmvn_opts ]; then
     echo "Applying (reversed) per-speaker cmvn on output features"
     cmvn_opts=`cat < $exp/cmvn_opts`
-    postproc="$postproc | apply-cmvn --reverse $cmvn_opts --utt2spk=ark:$tst/utt2spk scp:${tst/lbldata/data}/cmvn.scp ark:- ark,t:-"
+    postproc="$postproc | apply-cmvn --reverse $cmvn_opts --utt2spk=ark:$tst/utt2spk ark:${tst/lbldata/data}/cmvn.ark ark:- ark,t:-"
 fi
 
 # optionally add global cmvn applied on output
@@ -66,7 +73,7 @@ if [ \( "$fmllr" == "" \) -a \( -e $exp/cmvn_out_glob.ark \) ]; then
     #postproc="$postproc | nnet-forward --no-softmax=true $exp/reverse_cmvn_out_glob.nnet ark:- ark,t:- "
 fi
 if [ "$single_opts" == "1" ]; then
-    postproc="$postproc | copy-feats ark:- ark,scp:$out/feats.ark,$out/feats.scp"
+    postproc="$postproc | copy-feats ark:- ark${asciiout},scp:$out/feats.ark,$out/feats.scp"
 else
     awkcmd="'"'($2 == "["){if (out) close(out); out=dir $1 ".cmp";}($2 != "["){if ($NF == "]") $NF=""; print $0 > out}'"'"
     postproc="$postproc | tee $out/feats.ark | awk -v dir=$cmpdir $awkcmd"

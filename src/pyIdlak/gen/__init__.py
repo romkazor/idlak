@@ -16,3 +16,7 @@
 
 # SWIG wrapped API
 from . import pyIdlak_gen as c_api
+from .cex import (CEXParser, cex_to_feat, load_cexfreqtable, save_cexfreqtable,
+                 feat_to_ark)
+
+from .nnet import NNet

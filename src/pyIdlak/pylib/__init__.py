@@ -20,6 +20,25 @@
 # SWIG wrapped API
 from . import pyIdlak_pylib as c_api
 
-from .pyIdlak_pylib import (NONE, AperiodicEnergyOptions)
+from .pyIdlak_pylib import (
+        NONE,
+        AperiodicEnergyOptions,
+        PdfPriorOptions,
+        NnetForwardOptions,
+        ApplyCMVNOptions,
+        DeltaFeaturesOptions,
+        PyReadKaldiDoubleMatrix,
+        PyKaldiMatrixBaseFloat_frmlist,
+        PyKaldiMatrixBaseFloat_tolist,
+        PyKaldiMatrixDouble_frmlist,
+        PyKaldiMatrixDouble_tolist
+    )
 
 from .pyoptions import PyOptions
+
+from .utils import (
+        no_pyIdlak_parse_arkfile,
+        compare_arks,
+        get_rspecifier_keys,
+        get_matrix_by_key,
+    )

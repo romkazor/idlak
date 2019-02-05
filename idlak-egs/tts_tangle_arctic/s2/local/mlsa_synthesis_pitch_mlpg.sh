@@ -8,6 +8,8 @@
 #   Blaise Potard, 2016
 #
 
+set -eo pipefail
+
 # Allow setshell
 #software=/idiap/resource/software
 #source $software/initfiles/shrc $software
@@ -34,7 +36,7 @@ fftlen=1024
 tmpdir=`mktemp -d`
 win=win
 
-[ -f path.sh ] && . ./path.sh; 
+[ -f path.sh ] && . ./path.sh;
 . parse_options.sh || exit 1;
 
 
@@ -65,6 +67,7 @@ sspec=$tmpdir/$base.spec
 
 rm -f $var $cmp $uv $vmcep $vf0 $vbap $mpdf $fpdf $bpdf $mcep $f0 $bap $apf $sspec
 
+mkdir -p $tmpdir
 
 #mcep_order=39
 # Assuming: F0 - MCEP - BNDAP
@@ -99,21 +102,21 @@ else
 fi
 outblocks=0:1:2:3:5:7:4:6:8
 
-local/swap_file.py -i $inblocks -o $outblocks $cmp_file $cmp
+python3 local/swap_file.py -i $inblocks -o $outblocks $cmp_file $cmp
 
 if [ "$var_file" != "" ]; then
     if [ $delta_mult -eq 2 ]; then
-	mcep_win="-d $win/mcep_d1.win"
-	f0_win="-d $win/logF0_d1.win"
-	bndap_win="-d $win/bndap_d1.win"
+        mcep_win="-d $win/mcep_d1.win"
+        f0_win="-d $win/logF0_d1.win"
+        bndap_win="-d $win/bndap_d1.win"
     elif [ $delta_mult -eq 3 ]; then
-	mcep_win="-d $win/mcep_d1.win -d $win/mcep_d2.win"
-	f0_win="-d $win/logF0_d1.win -d $win/logF0_d2.win"
-	bndap_win="-d $win/bndap_d1.win -d $win/bndap_d2.win"
+        mcep_win="-d $win/mcep_d1.win -d $win/mcep_d2.win"
+        f0_win="-d $win/logF0_d1.win -d $win/logF0_d2.win"
+        bndap_win="-d $win/bndap_d1.win -d $win/bndap_d2.win"
     else
-	mcep_win=""
-	f0_win=""
-	bndap_win=""
+        mcep_win=""
+        f0_win=""
+        bndap_win=""
     fi
     echo "Extracting variances..."
     cat $var_file | awk '{printf "%f ", $2}' \
@@ -127,27 +130,63 @@ if [ "$var_file" != "" ]; then
     cat $var | cut -d " " -f $bndap_voffset-$(( $bndap_voffset + $bndap_len - 1 )) > $vbap
 
     echo "Creating pdfs..."
-    cat $cmp | cut -d " " -f $mcep_offset-$(( $mcep_offset + $mcep_len - 1 )) | awk -v var="`cat $vmcep`" '{print $0, var}' | x2x +a +f > $mpdf
-    cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | awk -v var="`cat $vf0`" '{print $0, var}' | x2x +a +f > $fpdf
-    cat $cmp | cut -d " " -f $bndap_offset-$(( $bndap_offset + $bndap_len - 1 )) | awk -v var="`cat $vbap`" '{print $0, var}' | x2x +a +f > $bpdf
-    
+    noframes=$(wc -l $cmp | cut -f 1 -d " ")
+
+    # bit hacky to put 0 variance at start and end
+    cat $cmp | cut -d " " -f $mcep_offset-$(( $mcep_offset + $mcep_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$mcep_len -v var="$(cat $vmcep)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $mpdf.txt | x2x +a +f > $mpdf
+
+    cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$f0_len -v var="$(cat $vf0)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $fpdf.txt | x2x +a +f > $fpdf
+
+    cat $cmp | cut -d " " -f $bndap_offset-$(( $bndap_offset + $bndap_len - 1 )) | \
+        awk -v noframes=$noframes -v total_order=$bndap_len -v var="$(cat $vbap)" '{
+            if ( NR == 1 || NR == noframes ) {
+                printf $0
+                for (i = 0; i < total_order; i++)
+                    printf " 0"
+                printf "\n"
+            } else {
+                print $0, var
+            }
+        }' | tee $bpdf.txt | x2x +a +f > $bpdf
+
     echo "Running mlpg..."
     echo "mcep smoothing"
     mlpg -i 0 -m $mcep_order $mcep_win $mpdf | x2x +f +a$(( $mcep_order + 1 )) > $mcep
     if [ "$mlpgf0done" != true ]; then
         echo "f0 smoothing"
-        mlpg -i 0 -m $(( $f0_order - 1 )) $f0_win $fpdf > ${f0}_raw
+        mlpg -i 0 -l $f0_order $f0_win $fpdf > ${f0}_raw
     else
         cat $cmp | cut -d " " -f $f0_offset-$(( $f0_offset + $f0_len - 1 )) | x2x +a +f > ${f0}_raw
     fi
     echo "bndap smoothing"
-    mlpg -i 0 -m $(( $bndap_order - 1 )) $bndap_win $bpdf | x2x +f +a$bndap_order | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
+    mlpg -i 0 -l $bndap_order $bndap_win $bpdf | x2x +f +a$bndap_order > ${bap}_raw
+    cat ${bap}_raw | awk '{for (i = 1; i <= NF; i++) if ($i >= -0.5) printf "0.0 " ; else printf "%f ", 20 * ($i + 0.5) / log(10); printf "\n"}' > $bap
 
     #cat $cmp | cut -d " " -f $(($f0_offset + 1))-$(($f0_offset + 1)) > $uv
     cat ${f0}_raw | x2x +f +a$f0_order | awk -v thresh=$voice_thresh '{if ($1 > thresh) print $2; else print 0.0}' > $f0
     paste $f0 $bap | awk -v FS='\t' -v n=$bndap_order 'BEGIN{zero="0"; for (i = 1; i < n; i++) zero = zero " 0"}{if ($1 > 0.0) print $2; else print zero}' > $bap.2
     mv $bap.2 $bap
-    
+
     # Do not do mlpg on MCEP
     #cat $cmp | cut -d " " -f $mcep_offset-$(($mcep_offset + $mcep_order)) > $mcep
 else
@@ -175,7 +214,7 @@ if [ "$synth" = "cere" ]; then
     if [ "$srate" = "48000" ]; then
         mlopts="$mlopts -B 8,15,22,30,38,47,58,69,81,95,110,127,147,169,194,224,259,301,353,416,498,606,757,980,1344"
     fi
-    cmd="python $HOME/cereproc/trunk/apps/dsplab/mlsa.py $mlopts -C -a $alpha -m $order -s $srate -f $fftlen -b $bndap_order -i $tmpdir -o $tmpdir $base"
+    cmd="python3 $HOME/cereproc/trunk/apps/dsplab/mlsa.py $mlopts -C -a $alpha -m $order -s $srate -f $fftlen -b $bndap_order -i $tmpdir -o $tmpdir $base"
     echo $cmd
     $cmd
     cp $tmpdir/$base.wav $out_wav
@@ -187,7 +226,8 @@ elif [ "$synth" = "excitation" ]; then
     # We have to drop the first few F0 frames to match SPTK behaviour
     #cat $f0 | awk -v srate=$srate '(NR > 2){if ($1 > 0) print srate / $1; else print 0.0}' | x2x +af \
     #    | excite -p $psize \
-    python local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
+    python3 local/excitation.py -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float
+    x2x +fa $resid.float > $resid
     cat $resid.float | mlsadf -P 5 -m $order -a $alpha -p $psize $mcep.float.stable | x2x -o +fs > $tmpdir/data.mcep.syn
     sox --norm -t raw -c 1 -r $srate -s -b 16 $tmpdir/data.mcep.syn $out_wav
 elif [ "$synth" = "convolve" ]; then
@@ -195,7 +235,7 @@ elif [ "$synth" = "convolve" ]; then
     psize=`echo "$period * $srate / 1000" | bc`
     isize=`echo "$period * $srate / 5000" | bc`
     echo "Excitation"
-    python local/excitation.py -G 0.8 -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float #$bap
+    python3 local/excitation.py -G 0.8 -s $srate -f $fftlen -b $bndap_order $f0 $bap $resid.float #$bap
     # Generate mcep spectogram; note that phase has been lost so output waveform will look very different
     echo "Spectrum $fftlen"
     # Rather slow process: we have to generate amplitude and phase separately
@@ -204,7 +244,7 @@ elif [ "$synth" = "convolve" ]; then
     # Combine norm and angle
     merge -s 1 -l 1 -L 1 +f $mcep.sp.arg.float < $mcep.sp.norm.float > $mcep.sp
     echo "Convolution $mcep.sp"
-    python local/convolve.py -m 4.0 -s -l $fftlen -p $psize -i $isize $resid.float $mcep.sp $out_wav
+    python3 local/convolve.py -m 4.0 -s -l $fftlen -p $psize -i $isize $resid.float $mcep.sp $out_wav
 elif [ "$synth" = "WORLD" ]; then
     x2x +ad $bap > $bap.double
     x2x +af $mcep > $mcep.float
