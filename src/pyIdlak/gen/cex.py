@@ -245,7 +245,7 @@ class CEXParser:
                         val = conversion.mapping[cex]
                     except KeyError:
                         msg = "Bad unknown value '{0}' for context feature '{1}' in context string: ".format(cex, cexid)
-                        msg += ' '.join(phone_cex)
+                        msg += ' '.join(map(str, phone_cex))
                         self.log.error(msg)
                         val = 0
                 else:
