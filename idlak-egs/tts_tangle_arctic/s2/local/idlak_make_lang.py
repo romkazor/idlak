@@ -63,7 +63,7 @@ def forward_context(input_fname, input_freqtable_fname, cexoutput_filename, rnam
     # Load frequency table
     freqtables = cex.load_cexfreqtable(input_freqtable_fname)
     xmlparser = etree.XMLParser(encoding = 'utf8')
-    inputfile = open(input_fname, 'r')
+    inputfile = open(input_fname, 'rb')
     xml = etree.parse(inputfile, parser = xmlparser)
     cex_parser = cex.CEXParser(xml)
     cex_parser.default_name = rname
