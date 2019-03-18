@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# Copyright 2019 Cereproc Ltd. (author: Caoimhín Laoide-Kemp)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# THIS CODE IS PROVIDED *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+# WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+# MERCHANTABLITY OR NON-INFRINGEMENT.
+# See the Apache 2 License for the specific language governing permissions and
+# limitations under the License.
+
+import urllib.request
+import re
+import os
+
+def download_readme(url,filename):
+    urllib.request.urlretrieve(url,filename)
+    return
+
+def read_file(filename):
+    f = open(filename,"r")
+    return f.read()
+
+def find_speakers(contents):
+    pattern = re.compile("<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>")
+
+    for match in re.finditer(pattern,contents):
+        print("%(Language)-12s%(Accent)-12s%(Code)-12s%(Notes)-12s"%{"Language":match.group(1),"Accent":match.group(2),"Code":match.group(3),"Notes":match.group(4)})
+
+    return
+
+def delete_file(filename):
+    os.remove(filename)
+    return
+
+if __name__ == "__main__":
+    url = "https://github.com/Idlak/Living-Audio-Dataset/blob/master/README.md"
+    filename = "downloaded_readme.md"
+    download_readme(url,filename)
+    contents = read_file(filename)
+    find_speakers(contents)
+    delete_file(filename)
