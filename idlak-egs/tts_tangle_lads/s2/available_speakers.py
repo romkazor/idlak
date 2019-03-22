@@ -18,30 +18,28 @@
 
 import urllib.request
 import re
-import os
 
 def get_readme(url):
     with urllib.request.urlopen(url) as response:
-        contents = response.read().decode('utf-8')
-    return contents
+        return response.read().decode('utf-8')
 
-def find_speakers(contents):
+def find_speakers(readme_contents):
     pattern = re.compile("<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
                          "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
                          "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>")
 
-    for match in re.finditer(pattern,contents):
-        print("%(S)-10s%(L)-20s%(A)-25s%(G)-10s%(D)-25s%(R)-20s" \
-                %{"S":match.group(1),"L":match.group(2),"A":match.group(3), \
-                "G":match.group(4),"D":match.group(5),"R":match.group(3)})
+    speakers = [[match.group(1),match.group(2),match.group(3), \
+                 match.group(4), match.group(5),match.group(6)] \
+                 for match in re.finditer(pattern,readme_contents)]
 
-    return
-
-def delete_file(filename):
-    os.remove(filename)
-    return
+    return speakers
 
 if __name__ == "__main__":
     url = "https://github.com/Idlak/Living-Audio-Dataset/blob/master/README.md"
-    contents = get_readme(url)
-    find_speakers(contents)
+    readme_contents = get_readme(url)
+    speakers = find_speakers(readme_contents)
+    for speaker in speakers:
+        print("%(S)-10s%(L)-20s%(A)-25s%(G)-10s%(D)-25s%(R)-20s" \
+              %{"S":speaker[0],"L":speaker[1],"A":speaker[2], \
+                "G":speaker[3],"D":speaker[4],"R":speaker[5]})
+
