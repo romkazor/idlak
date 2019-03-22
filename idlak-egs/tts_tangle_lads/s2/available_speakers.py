@@ -20,13 +20,10 @@ import urllib.request
 import re
 import os
 
-def download_readme(url,filename):
-    urllib.request.urlretrieve(url,filename)
-    return
-
-def read_file(filename):
-    f = open(filename,"r")
-    return f.read()
+def get_readme(url):
+    with urllib.request.urlopen(url) as response:
+        contents = response.read().decode('utf-8')
+    return contents
 
 def find_speakers(contents):
     pattern = re.compile("<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
@@ -46,8 +43,5 @@ def delete_file(filename):
 
 if __name__ == "__main__":
     url = "https://github.com/Idlak/Living-Audio-Dataset/blob/master/README.md"
-    filename = "downloaded_readme.md"
-    download_readme(url,filename)
-    contents = read_file(filename)
+    contents = get_readme(url)
     find_speakers(contents)
-    delete_file(filename)
