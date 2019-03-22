@@ -29,10 +29,14 @@ def read_file(filename):
     return f.read()
 
 def find_speakers(contents):
-    pattern = re.compile("<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>")
+    pattern = re.compile("<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
+                         "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
+                         "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>")
 
     for match in re.finditer(pattern,contents):
-        print("%(Language)-12s%(Accent)-12s%(Code)-12s%(Notes)-12s"%{"Language":match.group(1),"Accent":match.group(2),"Code":match.group(3),"Notes":match.group(4)})
+        print("%(S)-10s%(L)-20s%(A)-25s%(G)-10s%(D)-25s%(R)-20s" \
+                %{"S":match.group(1),"L":match.group(2),"A":match.group(3), \
+                "G":match.group(4),"D":match.group(5),"R":match.group(3)})
 
     return
 
