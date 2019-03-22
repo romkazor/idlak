@@ -28,11 +28,9 @@ def find_speakers(readme_contents):
                          "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>\n"
                          "<t[dh].*>(.*)</t[dh]>\n<t[dh].*>(.*)</t[dh]>")
 
-    speakers = [[match.group(1),match.group(2),match.group(3), \
-                 match.group(4), match.group(5),match.group(6)] \
-                 for match in re.finditer(pattern,readme_contents)]
-
-    return speakers
+    return [[match.group(1),match.group(2),match.group(3), \
+             match.group(4),match.group(5),match.group(6)] \
+             for match in re.finditer(pattern,readme_contents)]
 
 if __name__ == "__main__":
     url = "https://github.com/Idlak/Living-Audio-Dataset/blob/master/README.md"
