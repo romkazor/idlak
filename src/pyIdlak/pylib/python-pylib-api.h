@@ -24,15 +24,20 @@
 
 #include "pyIdlak_types.h"
 
-// Add to this as needed
+// Add to this as needed (remember to copy into __init__.py)
 enum IDLAK_OPT_TYPES {
   NONE = 0,
-  AperiodicEnergyOptions = 1
+  AperiodicEnergyOptions = 1,
+  PdfPriorOptions = 2,
+  NnetForwardOptions = 3,
+  ApplyCMVNOptions = 4,
+  DeltaFeaturesOptions = 5
 };
 
 
-PySimpleOptions * PySimpleOptions_new(enum IDLAK_OPT_TYPES opttype);
+PySimpleOptions * PySimpleOptions_new(enum IDLAK_OPT_TYPES opttype = NONE);
 void PySimpleOptions_delete(PySimpleOptions *  pyopts);
+void PySimpleOptions_register(PySimpleOptions * pyopts, enum IDLAK_OPT_TYPES opttype);
 
 std::vector<std::string> PySimpleOptions_option_names(PySimpleOptions * pyopts);
 const char * PySimpleOptions_option_pytype(PySimpleOptions * pyopts, const char * key);
@@ -48,5 +53,12 @@ bool PySimpleOptions_set_str(PySimpleOptions * pyopts, const std::string &key, c
 PyIdlakBuffer * PyIdlakBuffer_newfromstr(const char * data);
 void PyIdlakBuffer_delete(PyIdlakBuffer * pybuf);
 const char * PyIdlakBuffer_get(PyIdlakBuffer * pybuf);
+
+// PyIdlakSequentialBaseFloatMatrixReader * PyIdlakSequentialBaseFloatMatrixReader_new(const std::string &rspecifier);
+// void PyIdlakSequentialBaseFloatMatrixReader_delete(PyIdlakSequentialBaseFloatMatrixReader * reader);
+//
+// PyIdlakBaseFloatMatrixWriter * PyIdlakBaseFloatMatrixWriter_new(const std::string &wspecifier);
+// void PyIdlakBaseFloatMatrixWriter_delete(PyIdlakBaseFloatMatrixWriter * writer);
+//
 
 #endif // KALDI_PYIDLAK_PYLIB_PYTHON_PYLIB_API_H_

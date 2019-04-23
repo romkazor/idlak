@@ -6,6 +6,7 @@
 !/src/doc/*
 !/src/*/Makefile
 !/src/*/README
+!/src/configure
 
 # Compiled Object files and python ciles
 *.slo
@@ -79,12 +80,11 @@ GSYMS
 /src/kaldi.mk.tmp
 /src/kaldi.mk.bak
 
-
 # /egs/ & /idlak-egs/
-/egs/*/s*/mfcc
-/egs/*/s*/plp
-/egs/*/s*/exp
-/egs/*/s*/data
+/egs/*/*/mfcc
+/egs/*/*/plp
+/egs/*/*/exp
+/egs/*/*/data
 /idlak-egs/*/s*/mfcc
 /idlak-egs/*/s*/plp
 /idlak-egs/*/s*/exp
@@ -94,11 +94,10 @@ GSYMS
 /idlak-egs/*/s*/exp-align
 /idlak-egs/*/s*/f0data
 /idlak-egs/*/s*/durdata
-/idlak-egs/*/s*/exp_dnn
+/idlak-egs/*/s*/exp-dnn
 /idlak-egs/*/s*/lbldata
 /idlak-egs/*/s*/lbldurdata
 /idlak-egs/*/s*/lblf0data
-/idlak-egs/*/s*/*_pmdl
 /idlak-egs/*/s*/voices
 /idlak-egs/*/s*/testout
 
@@ -106,14 +105,17 @@ GSYMS
 !/src/pyIdlak/*
 !/src/pyIdlak/*/*
 !/src/pyIdlak/*/*/*
+/src/pyIdlak/gen/pyIdlak_gen_wrap.cc
+/src/pyIdlak/gen/pyIdlak_gen.py
+/src/pyIdlak/nnet-forward/pyIdlak-nnet-forward_wrap.cc
+/src/pyIdlak/nnet-forward/pyIdlak-nnet-forward.py
 /src/pyIdlak/pylib/pyIdlak_pylib_wrap.cc
 /src/pyIdlak/pylib/pyIdlak_pylib.py
+/src/pyIdlak/pylib/pyIdlak_typemaps_wrap.cc
 /src/pyIdlak/txp/pyIdlak_txp_wrap.cc
 /src/pyIdlak/txp/pyIdlak_txp.py
 /src/pyIdlak/vocoder/pyIdlak_vocoder_wrap.cc
 /src/pyIdlak/vocoder/pyIdlak_vocoder.py
-/src/pyIdlak/gen/pyIdlak_gen_wrap.cc
-/src/pyIdlak/gen/pyIdlak_gen.py
 /src/pyIdlak/__pycache__
 /src/pyIdlak/*/__pycache__
 /src/pyIdlak/*.so
@@ -208,3 +210,6 @@ GSYMS
 /tools/opengrm-ngram-1.3.4/
 
 /kaldiwin_vs*
+/tools/cub-1.8.0.zip
+/tools/cub-1.8.0/
+/tools/cub

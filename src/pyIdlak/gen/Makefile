@@ -3,13 +3,17 @@ include ../../kaldi.mk
 
 ifeq ($(PYIDLAK), true)
 
-OBJFILES = python-gen-api.o pyIdlak_gen_wrap.o
+OBJFILES = pyIdlak_nnet_forward.o pyIdlak_apply_cmvn.o pyIdlak_add_deltas.o pyIdlak_gen_wrap.o
 
 LIBNAME = _pyIdlak_gen
 
+LDFLAGS += $(CUDA_LDFLAGS)
+LDLIBS += $(CUDA_LDLIBS)
+
 ADDLIBS = ../pylib/_pyIdlak_pylib.a  ../../idlakfeat/idlak-feat.a ../../feat/kaldi-feat.a ../../transform/kaldi-transform.a \
+          ../../nnet/kaldi-nnet.a ../../cudamatrix/kaldi-cudamatrix.a ../../lat/kaldi-lat.a \
           ../../gmm/kaldi-gmm.a ../../tree/kaldi-tree.a ../../hmm/kaldi-hmm.a \
-          ../../util/kaldi-util.a ../../matrix/kaldi-matrix.a ../../base/kaldi-base.a \
+          ../../util/kaldi-util.a ../../matrix/kaldi-matrix.a ../../base/kaldi-base.a
 
 EXTRA_CXXFLAGS = -fPIC -I$(PYTHONDEVINC) -I../..
 EXTRA_LDLIBS =

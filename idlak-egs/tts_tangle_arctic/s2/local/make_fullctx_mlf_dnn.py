@@ -1,3 +1,4 @@
+import math
 from xml.etree import ElementTree as ET
 import sys, re
 
@@ -9,7 +10,9 @@ def parse_mlf(monofile):
     # Skip MLF header
     fp.readline()
     for l in fp.readlines():
-        if l[0] == '"':
+        if l.strip() == '.':
+            id = None
+        elif l[0] == '"':
             id = l.strip()[1:-5]
             out[id] = []
         else:
@@ -41,8 +44,9 @@ def parse_fullctx(fullctxfile):
     return out
 
 def fuzzy_position(fuzzy_factor, position, duration):
-    real_position = (position + 0.5) / duration
-    return int(round(real_position / fuzzy_factor))
+    real_position = position / duration
+    fuzzy_pos =  math.ceil(real_position / fuzzy_factor)
+    return fuzzy_pos
 
 def make_fullctx_mlf_dnn(mlffile, fullctx, outputfile, framerate_htk = 50000, phone_fuzz_factor = 0.1, state_fuzz_factor = 0.2, extra_feats=""):
     monos = parse_mlf(mlffile)
@@ -107,7 +111,7 @@ def main():
     opts, args = parser.parse_args()
     if len(args) == 3:
         make_fullctx_mlf_dnn(args[0], args[1], args[2], extra_feats=opts.extra_feats)
-    else: 
+    else:
         parser.error('Mandatory arguments missing or excessive number of arguments')
 
 if __name__ == '__main__':
