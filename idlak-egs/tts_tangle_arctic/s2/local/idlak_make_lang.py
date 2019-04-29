@@ -76,7 +76,7 @@ def forward_context(input_fname, input_freqtable_fname, cexoutput_filename, rnam
 
 def make_output_kaldidnn_cex(logger, input_filename, output_filename, cexoutput_filename, rname = "alice"):
     xmlparser = etree.XMLParser(encoding = 'utf8')
-    inputfile = open(input_filename, 'r')
+    inputfile = open(input_filename, 'rb')
     xml = etree.parse(inputfile, parser = xmlparser)
     cex_parser = cex.CEXParser(xml)
     cex_parser.default_name = rname
@@ -228,7 +228,7 @@ def load_labs(labfile, statefile = None):
 def load_words(wordfile):
     out = {}
     cur_times = {}
-    for l in open(wordfile).readlines():
+    for l in open(wordfile,encoding="utf-8").readlines():
         ll = l.strip().split()
         key = ll[0]
         if key not in out:
