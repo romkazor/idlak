@@ -46,8 +46,8 @@ class treenode:
         if not self.feat:
             return '(id=' + str(self.id) + ' val=' + self.val + ')'
         else:
-            return '(id=' + str(self.id) + ' if ' + self.feat + '=' + self.isa + ' ' + self.yesnode.__str__() + self.nonode.__str__() + ')' 
-    
+            return '(id=' + str(self.id) + ' if ' + self.feat + '=' + self.isa + ' ' + self.yesnode.__str__() + self.nonode.__str__() + ')'
+
     def to_string(self):
         if not self.feat:
             return '(' + self.val + ')'
@@ -115,18 +115,18 @@ def prune_tree(tree, nodelist, fp):
     sorted_nodelist.sort(sort_node_id)   #Sort by id this time
 
     i = 0
-    while i < len(sorted_nodelist):      #Remove obsolete nodes and update ids in nodelist 
+    while i < len(sorted_nodelist):      #Remove obsolete nodes and update ids in nodelist
         if sorted_nodelist[i].obsolete:
             sorted_nodelist.remove(sorted_nodelist[i])
             if i != len(sorted_nodelist):
-                for j in xrange(i, len(sorted_nodelist)):
+                for j in range(i, len(sorted_nodelist)):
                     sorted_nodelist[j].id = sorted_nodelist[j].id - 1
         else:
             i = i + 1
 
     return sorted_nodelist
 
-def sort_branch(a, b):     
+def sort_branch(a, b):
     """
     @param a, b: node pair to be sorted by string representation length
     @type treenode, treenode
@@ -161,27 +161,27 @@ def reorder(nodelist):
     non_terms = []
 
     #Move the root to the start of the list
-    for i in xrange(len(nodelist)):
+    for i in range(len(nodelist)):
         if nodelist[i].parent == None:
             root = nodelist.pop(i)
             nodelist.insert(0, root)
             break
 
     #Update the ids
-    for i in xrange(len(nodelist)):
+    for i in range(len(nodelist)):
         nodelist[i].id = i
 
     id_map = {}
     new_id = 0
 
     #Create the id mapping for the terminals
-    for i in xrange(len(nodelist)):
+    for i in range(len(nodelist)):
         if not nodelist[i].feat:
             id_map[i] = new_id
             new_id = new_id + 1
 
     #Create the id mapping for the non terminals
-    for i in xrange(len(nodelist)):
+    for i in range(len(nodelist)):
         if nodelist[i].feat:
             id_map[i] = new_id
             new_id = new_id + 1
@@ -191,7 +191,7 @@ def reorder(nodelist):
         n.id = id_map[n.id]
 
     #Create the lists of terminals and non terminals
-    for i in xrange(len(nodelist)):
+    for i in range(len(nodelist)):
         if nodelist[i].feat:
             fl = [nodelist[i].feat]      #field list
             fl.append(nodelist[i].isa.encode('utf8'))

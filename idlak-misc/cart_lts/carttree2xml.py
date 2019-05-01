@@ -17,8 +17,8 @@ def load_trees(indir, outfile):
             ltr="0"
         tree, nodelist = treenode.parse(treenode.mklist(treenode.tokenise_tree(t))[0], [])
         fplog.write("Letter: %s\n" % (ltr.encode('utf8')))
-        
-        sorted_nodelist = treenode.prune_tree(tree, nodelist, fplog) 
+
+        sorted_nodelist = treenode.prune_tree(tree, nodelist, fplog)
         terms, non_terms = treenode.reorder(sorted_nodelist)
 
         fp.write("\t<tree ltr='%s' rootnode='N%d' terminal='%d' nonterminal='%d'>\n" %
