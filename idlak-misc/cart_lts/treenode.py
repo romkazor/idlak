@@ -15,6 +15,8 @@
 # -*- coding: utf-8 -*-
 
 import os.path, os, glob, re, platform
+import sys
+import functools
 
 ###################################################################
 #                     Class definitions                           #
@@ -70,7 +72,7 @@ def prune_tree(tree, nodelist, fp):
         n.string_rep = n.to_string()
         sorted_nodelist.append(n)
         n.set_daughters()
-        sorted_nodelist.sort(sort_branch)
+        sorted_nodelist.sort(key = functools.cmp_to_key(sort_branch))
     last_n = sorted_nodelist[0]
 
     for n in sorted_nodelist[1:]:
@@ -112,7 +114,7 @@ def prune_tree(tree, nodelist, fp):
     fp.write("Initial nodes: %d\nNodes after reduction %d\nReduction: %0.2f%%\n\n" % (obsolete + valid, valid, float(obsolete) / (float(obsolete) + float(valid)) * 100))
 
     #Recompute id distribution
-    sorted_nodelist.sort(sort_node_id)   #Sort by id this time
+    sorted_nodelist.sort(key = functools.cmp_to_key(sort_node_id))
 
     i = 0
     while i < len(sorted_nodelist):      #Remove obsolete nodes and update ids in nodelist
@@ -194,12 +196,12 @@ def reorder(nodelist):
     for i in range(len(nodelist)):
         if nodelist[i].feat:
             fl = [nodelist[i].feat]      #field list
-            fl.append(nodelist[i].isa.encode('utf8'))
+            fl.append(str(nodelist[i].isa))
             fl.append(nodelist[i].yesnode.id)
             fl.append(nodelist[i].nonode.id)
             non_terms.append(fl)
         else:
-            terms.append([nodelist[i].val.encode('utf8')])
+            terms.append([str(nodelist[i].val)])
 
     return terms, non_terms
 
@@ -211,7 +213,8 @@ def parse(treelist, nodelist):
     if len(treelist) == 3:
         yesnode, nodelist = parse(treelist[1], nodelist)
         nonode, nodelist = parse(treelist[2], nodelist)
-        node = treenode(treelist[0][0], treelist[0][2].decode('utf8'),
+        treelist[0][2] = str(treelist[0][2])
+        node = treenode(treelist[0][0], treelist[0][2],
                         yesnode, nonode, None, len(nodelist))
     else:
         node = treenode(None, None, None, None, treelist[0][-1], len(nodelist))

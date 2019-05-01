@@ -24,34 +24,34 @@ def check_lexicon(lexicon, phoneset, sylmax):
             continue
         if len(grapheme.split()) > 1:
             # TODO check using tokenisation rules instead
-            errprint(f"ERROR: '{grapheme}': graphemes cannot contain more than one token")
+            errprint("ERROR: '{}': graphemes cannot contain more than one token".format(grapheme))
             valid = False
             continue
 
         pron = lex.attrib.get('pron')
         if not pron:
-            errprint(f"ERROR: '{grapheme}': requires pronuncation")
+            errprint("ERROR: '{}': requires pronuncation".format(grapheme))
             valid = False
             continue
         if not pc.check_pron(pron):
-            errprint(f"ERROR: '{grapheme}': pronuncation is invalid")
+            errprint("ERROR: '{}': pronuncation is invalid".format(grapheme))
             valid = False
             continue
 
         entry = lex.attrib.get('entry', '').strip()
         if not entry:
-            errprint(f"ERROR: '{grapheme}': requires entry")
+            errprint("ERROR: '{}': requires entry".format(grapheme))
             valid = False
             continue
 
         default = lex.attrib.get('default', '').strip()
         if not default:
-            errprint(f"ERROR: '{grapheme}': requires default")
+            errprint("ERROR: '{}': requires default".format(grapheme))
             valid = False
             continue
 
         if default.lower() not in ['true', 'false']:
-            errprint(f"ERROR: '{grapheme}': default must be 'true' or 'false' not '{default}'")
+            errprint("ERROR: '{}': default must be 'true' or 'false' not '{}'".format(grapheme, default))
             valid = False
             continue
         default = (default.lower() == 'true')
@@ -59,7 +59,7 @@ def check_lexicon(lexicon, phoneset, sylmax):
         for prev in lex_dict[grapheme]:
             p, e, d = prev
             if p == pron and e == entry:
-                errprint(f"ERROR: '{grapheme}' : '{entry}' : duplicate entry")
+                errprint("ERROR: '{}' : '{}' : duplicate entry".format(grapheme, entry))
                 valid = False
 
         lex_dict[grapheme].append((pron, entry, default))
@@ -67,10 +67,10 @@ def check_lexicon(lexicon, phoneset, sylmax):
 
     for grapheme, (lex) in lex_dict.items():
         if len(lex) > 1 and sum(map(lambda l: l[2], lex)) > 1:
-            errprint(f"ERROR: '{grapheme}' : has multiple default entries")
+            errprint("ERROR: '{}' : has multiple default entries".format(grapheme))
             valid = False
         if not any(map(lambda l: l[2], lex)):
-            errprint(f"ERROR: '{grapheme}' : has no default entry")
+            errprint("ERROR: '{}' : has no default entry".format(grapheme))
             valid = False
 
     return valid
@@ -90,16 +90,15 @@ class PronCheck:
         for p in pron:
             m = self._regex_phone.match(p)
             if m is None:
-                errprint(f"ERROR: '{p}' is not a valid phone")
+                errprint("ERROR: '{p}' is not a valid phone".format(p))
                 return False
             if m.group('stress'):
                 if not m.group('phoneme') in self.nuclei:
-                    errprint(f"ERROR: '{p}' should not have stress")
+                    errprint("ERROR: '{p}' should not have stress".format(p))
                     return False
             elif m.group('phoneme') in self.nuclei:
-                errprint(f"ERROR: '{p}' missing stress")
+                errprint("ERROR: '{p}' missing stress".format(p))
                 return False
-
         return True
 
 

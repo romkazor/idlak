@@ -11,5 +11,6 @@ args = parser.parse_args()
 # assumes the lexicon is correctly formatted
 for event, lex in etree.iterparse(args.lexicon, events=("end",), tag='lex'):
     grapheme = lex.text.strip()
-    pron = lex.attrib.get('pron')
-    args.output.write(f"{grapheme} {pron}\n")
+    pron = lex.attrib.get('pron').strip().replace(' ', '_')
+
+    args.output.write("{} {}\n".format(grapheme, pron))
