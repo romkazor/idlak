@@ -1,17 +1,17 @@
 #!/bin/bash
 # Takes a lexicon a generates letter-to-sound rules
 
-set -eo pipefail
+set -euo pipefail
 
 # Usage message
-usage="\nUsage: "$0" -i <input lexicon>
+usage="\nUsage: "$0" -p <phoneset> -s <sylmax> -l <lexicon>
 
   Optional flags and parameters:
-    -h: show usage
+    -h: show usage and exits
     -o: output file
-      default = ccart-default.xml
-    -p: path to storage directory
-      default = tmp
+        default = ./ccart-default.xml
+    -T: path to storage directory
+        default = ./tmp
 
   The following Phonetisaurus arguments can be set as environment variables:
     delim: delimiter between lexicon attributes
@@ -19,22 +19,25 @@ usage="\nUsage: "$0" -i <input lexicon>
     s2_char_delim: delimiter between phones
       default = \"_\"\n"
 
-# Flag to detect if input directory has been set
-iflag=false
-
 # Some default values for parameters
-output="ccart-default.xml"
-cartpath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-cart2toolspath="$cartpath/../../tools"
-storagedirectory="tmp"
+phoneset=
+sylmax=
+lexicon=
+output="$(pwd)/ccart-default.xml"
+tmpdir="$(pwd)/tmp"
 
 # Argument handling
-while getopts "i:o:hp:" opt
+while getopts "hp:s:l:o:" opt
 do
     case $opt in
-        i)
+        p)
+            phoneset=$OPTARG
+            ;;
+        s)
+            sylmax=$OPTARG
+            ;;
+        l)
             lexicon=$OPTARG
-            iflag=true
             ;;
         o)
             output=$OPTARG
@@ -43,8 +46,8 @@ do
             echo -e "$usage"
             exit 0
             ;;
-        p)
-            storagedirectory="$OPTARG"
+        T)
+            tmpdir="$OPTARG"
             ;;
         \?)
             echo "Invalid option: -"$OPTARG"" >&2
@@ -54,44 +57,34 @@ do
     esac
 done
 
-# Error if no input file
-if ! $iflag
-then
-    echo -e "$usage" >&2
+if [ -z  $lexicon ] ; then
+    echo "ERROR: Lexicon must be provided"
+    exit 1
+fi
+if [ -z  $phoneset ] ; then
+    echo "ERROR: Phoneset must be provided"
+    exit 1
+fi
+if [ -z  $sylmax ] ; then
+    echo "ERROR: Sylmax must be provided"
     exit 1
 fi
 
-# Check input file format
-if [[ ${lexicon: -4} != ".lex" ]]
-    then
-        echo "Input lexicon must be a .lex file"
-        exit 1
-fi
+HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cart2toolspath="$HERE/../../tools"
+validatorspath="$HERE/../validators"
+phonetisaurus_align="$cart2toolspath/Phonetisaurus/phonetisaurus-align"
 
-# Phonetisaurus enviornment variables
-if [ ${#delim} -eq 0 ]
-    then
-        delim=" "
-fi
+# check the lexicon is valid
+python3 $validatorspath/check_lexicon.py -l $lexicon -p $phoneset -s $sylmax
 
-if [ ${#s2_char_delim} -eq 0 ]
-    then
-        s2_char_delim="_"
-fi
+bname=$( basename ${lexicon} .xml )
+archname=${bname#lexicon-}
 
-align="${lexicon::-4}"".align"
-converted="converted.lex"
-
-mkdir -p "$storagedirectory"
-
-echo "#####Converting lexicon#####"
-cat "$lexicon" | cut -d " " -f 1-2 > "$storagedirectory"/converted.lex
-
-cd "$cart2toolspath"
-
-echo "#####Installing Phonetisaurus#####"
-if [ ! -f "Phonetisaurus/phonetisaurus-align" ]
-then
+# Install phonetisaurus if needed
+if [ ! -f $phonetisaurus_align ]; then
+    echo "##### installing Phonetisaurus #####"
+    cd $cart2toolspath
     git clone https://github.com/AdolfVonKleist/Phonetisaurus.git
     cd Phonetisaurus
     git checkout 64719ca40c17cb70d810fffadac52c97984ca539 . || exit 1
@@ -101,36 +94,42 @@ then
         --prefix=`pwd`
     make -j4
     make install
-    cd ..
-else
-    echo "Phonetisaurus already installed"
+    cd -
 fi
 
-echo "#####Creating alignment file#####"
-cd Phonetisaurus
-./phonetisaurus-align \
---input="$cartpath""/""$storagedirectory""/""$converted" \
---ofile="$cartpath""/""$storagedirectory""/""$align" \
---delim="$delim" \
---s2_char_delim="$s2_char_delim"
+
+mkdir -p $tmpdir
+touch $output # checks can create the output
+
+echo "##### converting lexicon #####"
+convertedlex=$tmpdir/converted-${archname}.lex
+python3 $HERE/lexicon2lex.py $lexicon $convertedlex
+
+echo "##### creating Phonetisaurus alignment file #####"
+
+# Phonetisaurus enviornment variables
+: "${delim:=" "}"
+: "${s2_char_delim:=_}"
+
+alignment=$tmpdir/converted-${archname}.align
+
+$phonetisaurus_align --input=$convertedlex --ofile=$alignment --delim="$delim" --s2_char_delim="$s2_char_delim"
 # Add more Phonetisaurus arguments here if needed
 # Run ./phonetisaurus-align -help in idlak/tools/Phonetisaurus for more options
 
-echo "#####Generating cart files#####"
-cd "$cartpath""/""$storagedirectory"
-pwd
-python ../phonet2cart.py "$align"
+echo "##### generating cart files #####"
+python3 $HERE/phonet2cart.py -o $tmpdir $alignment
 
-echo "#####Running wagon#####"
-for f in *.cart
-do
-    ID=${f::-5}
-    mkdir -p cart/"$ID"
-    wagon -desc wagon_description.dat -data "$f" -o cart/"$ID"/tree.dat
+echo "##### running wagon #####"
+wagondir=$tmpdir/cart
+for f in $tmpdir/*.cart ; do
+    ID=$( basename $f .cart )
+    mkdir -p $wagondir/$ID
+    wagon -desc $tmpdir/wagon_description.dat -data $f -o $wagondir/$ID/tree.dat
 done
 
-echo "#####Generating lts rules#####"
-python ../carttree2xml.py cart "$output"
-mv "$output" ..
+echo "##### generating LTS rules #####"
 
-echo "#####Done#####"
+python3 $HERE/carttree2xml.py -d $tmpdir/$( basename $output .xml )_diagnostics.dat $wagondir $output
+
+echo "##### done #####"
