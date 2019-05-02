@@ -85,7 +85,7 @@ converted="converted.lex"
 mkdir -p "$storagedirectory"
 
 echo "#####Converting lexicon#####"
-cat "$lexicon" | cut -d " " -f 1-2 > "$storagedirectory"/converted.lex
+cat "$lexicon" | cut -d "	" -f 1-2 > "$storagedirectory"/converted.lex
 
 cd "$cart2toolspath"
 
