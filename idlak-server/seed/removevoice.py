@@ -4,7 +4,7 @@ import sys
 import os
 import argparse
 sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2]))
-from app import app, db                 # noqa
+from app import create_app, db                 # noqa
 from app.models.voice import Voice      # noqa
 
 parser = argparse.ArgumentParser(description='Remove a voice ' +
@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description='Remove a voice ' +
 parser.add_argument('-i', help='id of the voice')
 
 
-def removeVoice():
+def removeVoice(app):
     args = vars(parser.parse_args())
     errs = ""
     if args['i'] is None:
@@ -25,6 +25,9 @@ def removeVoice():
 
     voice_id = args['i']
     voice = Voice.query.filter_by(id=voice_id).first()
+    if voice is None:
+        print('Voice was not found')
+        return
     voice.delete()
 
     print("Voice has been deleted:\n{{\n"
@@ -39,4 +42,5 @@ def removeVoice():
 
 
 if __name__ == '__main__':
-    removeVoice()
+    app = create_app('config.ini')
+    removeVoice(app)

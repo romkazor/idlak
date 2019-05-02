@@ -1,5 +1,9 @@
+#!/usr/bin/env python3
+
+import os
 import re
 import argparse
+import collections
 
 def make_cart_entries(line, phone_groups, entry_dict, stress_list, wl=8):
     # Splits line up into grapheme/phone pairs
@@ -10,9 +14,7 @@ def make_cart_entries(line, phone_groups, entry_dict, stress_list, wl=8):
     letters = re.subn("}[^ ]+", "", line)[0].replace("|"," ").replace("_","").split()
     word = ['#'] * wl + letters + ['#'] * wl
     if "'" not in word:
-
         offset = 0
-
         for group in groups:
             # Splits grapheme/phone pairs into their two parts
             lg = group.split("}")
@@ -34,7 +36,7 @@ def make_cart_entries(line, phone_groups, entry_dict, stress_list, wl=8):
             stress = "0 "
             vowel = False
 
-            # Determine if phone group contains a vowel, and remove stress to 
+            # Determine if phone group contains a vowel, and remove stress to
             # be processed separately
             # Stress is only removed for the last vowel in the phone group
             for index,phone in reversed(list(enumerate(phones))):
@@ -60,46 +62,45 @@ def make_cart_entries(line, phone_groups, entry_dict, stress_list, wl=8):
                     output = "_".join(phones)
                 stress_output = stress + " ".join(word[offset:offset + wl * 2 + 1])
                 output_line = " ".join([output] + word[offset:offset + wl * 2 + 1])
-                if not entry_dict.has_key(grapheme):
-                    entry_dict[grapheme] = [output_line]
-                else:
-                    entry_dict[grapheme].append(output_line)
+                entry_dict[grapheme].append(output_line)
                 if vowel:
                     stress_list.append(stress_output)
                 offset += 1
 
-def parse_arguments():
+def main():
     arg_parser = argparse.ArgumentParser(
             description="Necessary arguments")
-    arg_parser.add_argument(
-            "Alignment file",
-            type=str,
-            help="Please provide alignment file as an argument")
-    args = vars(arg_parser.parse_args())
-    return args
+    arg_parser.add_argument("-o", "--outdir", default = os.getcwd(),
+                            help = "output directory")
+    arg_parser.add_argument("alignment_file",
+                            type = argparse.FileType('r', encoding='utf-8'),
+                            help = "Alignment file from Phonetisaurus")
+    args = arg_parser.parse_args()
 
-if __name__=="__main__":
-    align_file = parse_arguments()["Alignment file"]
-    entry = {}
+    align_file = args.alignment_file
+    outdir = args.outdir
+
+    os.makedirs(outdir, exist_ok = True)
+
+    entry = collections.defaultdict(list)
     stress = []
     phone_groups = set()
-
-    for line in open(align_file):
+    for line in align_file:
         make_cart_entries(line, phone_groups, entry, stress)
 
     # Create and write .cart file for each letter
     for letter in entry.keys():
-        if letter != "'": 
-            with open(letter + ".cart","w") as lf:
+        if letter != "'":
+            with open(os.path.join(outdir, letter + ".cart"), "w", encoding = 'utf-8') as lf:
                 lf.write("\n".join(entry[letter]))
 
     # Create and write stress.cart
-    with open("stress.cart","w") as sf:
+    with open(os.path.join(outdir, "stress.cart"), "w", encoding='utf-8') as sf:
         for stress_entry in stress:
             sf.write(stress_entry+"\n")
 
     # Create and write wagon file
-    with open("wagon_description.dat","w") as wf:
+    with open(os.path.join(outdir, "wagon_description.dat"), "w", encoding = 'utf-8') as wf:
         wf.write("(\n( phone\n0\n1\n2\n")
         for phone_group in phone_groups:
             if phone_group != "0":
@@ -118,3 +119,6 @@ if __name__=="__main__":
                     wf.write(letter + "\n")
             wf.write(")\n")
         wf.write(")")
+
+if __name__=="__main__":
+    main()
