@@ -1,0 +1,165 @@
+Letter: a
+Initial nodes: 47
+Nodes after reduction 29
+Reduction: 38.30%
+
+Letter: b
+Initial nodes: 5
+Nodes after reduction 5
+Reduction: 0.00%
+
+Letter: c
+Initial nodes: 17
+Nodes after reduction 12
+Reduction: 29.41%
+
+Letter: d
+Initial nodes: 11
+Nodes after reduction 8
+Reduction: 27.27%
+
+Letter: e
+Initial nodes: 13
+Nodes after reduction 9
+Reduction: 30.77%
+
+Letter: f
+Initial nodes: 15
+Nodes after reduction 10
+Reduction: 33.33%
+
+Letter: g
+Initial nodes: 15
+Nodes after reduction 11
+Reduction: 26.67%
+
+Letter: h
+Initial nodes: 53
+Nodes after reduction 36
+Reduction: 32.08%
+
+Letter: i
+Initial nodes: 33
+Nodes after reduction 20
+Reduction: 39.39%
+
+Letter: j
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: k
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: l
+Initial nodes: 15
+Nodes after reduction 10
+Reduction: 33.33%
+
+Letter: m
+Initial nodes: 17
+Nodes after reduction 11
+Reduction: 35.29%
+
+Letter: n
+Initial nodes: 17
+Nodes after reduction 11
+Reduction: 35.29%
+
+Letter: o
+Initial nodes: 23
+Nodes after reduction 18
+Reduction: 21.74%
+
+Letter: p
+Initial nodes: 13
+Nodes after reduction 9
+Reduction: 30.77%
+
+Letter: q
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: r
+Initial nodes: 13
+Nodes after reduction 9
+Reduction: 30.77%
+
+Letter: s
+Initial nodes: 17
+Nodes after reduction 11
+Reduction: 35.29%
+
+Letter: 0
+Initial nodes: 77
+Nodes after reduction 40
+Reduction: 48.05%
+
+Letter: t
+Initial nodes: 9
+Nodes after reduction 7
+Reduction: 22.22%
+
+Letter: u
+Initial nodes: 5
+Nodes after reduction 4
+Reduction: 20.00%
+
+Letter: v
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: w
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: x
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: y
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: z
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: á
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: é
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: í
+Initial nodes: 3
+Nodes after reduction 3
+Reduction: 0.00%
+
+Letter: ó
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: ú
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
+Letter: ü
+Initial nodes: 1
+Nodes after reduction 1
+Reduction: 0.00%
+
