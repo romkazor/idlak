@@ -51,8 +51,9 @@ def get_txp_input(idlak_database, temp_folder):
     subprocess.call('mkdir {}'.format(temp_folder), shell=True)
     tree = etree.parse(idlak_database)
     characters = re.compile(r'[^{}\d\s.\"\'\-\,\:\;]+'.format(args.language_letters[0]), re.U)
+    print ("regex pattern", characters.pattern)
     for child in tree.getroot():
-        string = re.sub(characters, ' ', re.sub(r'[<>]', '', child[0].text))
+        string = re.sub(characters, ' ', re.sub(r'[<>]', '', child[1].text))
         new_string = re.sub(r'[\n\r]', ' ', string)
 
         final_string = '<parent>\n' + new_string.replace(u"\u00A0", " ") + '</parent>'
@@ -77,7 +78,9 @@ def get_txp_output(txp_input, idlak_location, language, dialect, temp_folder):
         for file in files:
             count += 1
             file_path = os.path.abspath(os.path.join(subdir, file))
-            if os.path.getsize(file_path) < 100000:
+            print(file_path)
+            print(os.path.getsize(file_path))
+            if os.path.getsize(file_path) < 300000:
                 print("\n\n{} Getting phone-sequence... \n".format(count))
                 current_loc = os.getcwd()
                 cmd1 = 'cd {}/src/idlaktxpbin'.format(idlak_location)
