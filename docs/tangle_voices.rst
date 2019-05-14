@@ -31,9 +31,13 @@ is created once the script is finished. Briefly the process is as follows:
 
 Numbering matches the steps in the run.sh for the Idlak examples.
 
-There are some tools for synthesing using the Tangle voices. Firstly there is a command
+There are some tools for synthesising using the Tangle voices. Firstly there is a command
 line program (instructions are given once the script has finished running) and then
 there is a RESTful server, see :ref:`rest-server`
+
+So far Tangle has been setup to run with three example datasets: The Living Audio Datatset
+which is a sister project. Then the standard Artic and LJ speech corpora. Whenever
+possible the run scripts in the examples download the audio and text automatically.
 
 If you are using Tangle in your research please reference the following paper::
 
@@ -91,7 +95,7 @@ When decompressed the audio should be in a folder called ``<srate>_orig``
 
 Currently Idlak audio is hosted at https://archive.org/ , however, any
 other hosting service would be fine, as long as the example script is
-able to run. A file containting only the URL for the audio is then added to::
+able to run. A file containing only the URL for the audio is then added to::
 
     idlak_resources/<lng>/<acc>/<spk>/audiourl
 
@@ -140,12 +144,18 @@ Final Steps
 The last few things to finish up:
 
 #. Add some test data in utf-8 encoded xml format to ``idlak-data/<lng>/testdata`` directory
-#. Add a sample sentence to the end of ``idlak-egs/tts_tangle_idlak/run.sh``
+#. Add a sample sentence to the end of ``idlak-egs/tts_tangle_lads/s2/local/tangle_train.sh``
 
 
 **************************
 Notes on specific examples
 **************************
+
+Living Audio Dataset
+====================
+
+The
+
 
 Arctic voices
 =============
