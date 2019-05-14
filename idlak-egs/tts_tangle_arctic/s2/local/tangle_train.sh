@@ -373,12 +373,12 @@ if [ $stage -le 3 ]; then
             | utils/int2sym.pl -f 5 $lang/words.txt > $ali/wrdalign.dat
 
         # Regenerate text output from alignment
-        python local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat $datadir/$step/text_align.xml $ali/states.tra
+        python3 local/idlak_make_lang.py --mode 1 "2:0.03,3:0.2" "4" $ali/phones.txt $ali/wrdalign.dat $datadir/$step/text_align.xml $ali/states.tra
 
         # Generate corresponding quinphone full labels
         idlaktxp --pretty --general-lang=$lng --general-acc=$acc --tpdb=$tpdb $datadir/$step/text_align.xml $datadir/$step/text_anorm.xml
         idlakcex --pretty --general-lang=$lng --general-acc=$acc --cex-arch=default --tpdb=$tpdb $datadir/$step/text_anorm.xml $datadir/$step/text_afull.xml
-        python local/idlak_make_lang.py --mode 2 $datadir/$step/text_afull.xml $datadir/$step/cex.ark > $datadir/$step/cex_output_dump
+        python3 local/idlak_make_lang.py --mode 2 $datadir/$step/text_afull.xml $datadir/$step/cex.ark > $datadir/$step/cex_output_dump
 
         # Merge alignment with output from idlak cex front-end => gives you a nice vector
         # NB: for triphone alignment:
