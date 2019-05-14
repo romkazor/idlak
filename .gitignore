@@ -101,6 +101,11 @@ GSYMS
 /idlak-egs/*/s*/voices
 /idlak-egs/*/s*/testout
 
+# Idlak scripts default values
+/idlak-misc/cart_lts/tmp/
+/idlak-misc/cart_lts/ccart-default.xml
+
+
 # Idlak python wrapper
 !/src/pyIdlak/*
 !/src/pyIdlak/*/*
@@ -161,6 +166,7 @@ GSYMS
 /tools/libsndfile-1.0.25/
 /tools/pa_stable_v19_20111121.tgz
 /tools/portaudio/
+/tools/Phonetisaurus/
 /tools/sctk-2.4.0-20091110-0958.tar.bz2
 /tools/sctk-2.4.0/
 /tools/sctk-2.4.10-20151007-1312Z.tar.bz2
