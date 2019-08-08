@@ -87,7 +87,8 @@ static const char * _get_str_field(std::string work, char sep, int pos) {
         }
         if (next == std::string::npos) return NULL;
     }
-    return work.substr(std::min(n, next), abs(next - n)).c_str();
+    size_t len = next > n ? next - n : n - next;
+    return work.substr(std::min(n, next), len).c_str();
 }
 
 bool TxpXmlData::Parse(const std::string &tpdb) {
