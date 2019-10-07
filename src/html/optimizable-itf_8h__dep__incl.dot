@@ -1,8 +1,0 @@
-digraph "itf/optimizable-itf.h"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node43 [label="itf/optimizable-itf.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node43 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node44 [label="transform/regtree-fmllr\l-diag-gmm.cc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$regtree-fmllr-diag-gmm_8cc.html"];
-}

@@ -1,9 +1,0 @@
-digraph "Classes and functions for creating FSTs from HMMs"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir=LR;
-  Node1 [label="Classes and functions\l related to HMM topology\l and transition modeling",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__hmm__group.html"];
-  Node0 [label="Classes and functions\l for creating FSTs from HMMs",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1->Node0 [shape=plaintext, dir="back", style="solid"];
-}

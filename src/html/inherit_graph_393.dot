@@ -1,7 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="ModelUpdateConsolidator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1nnet3_1_1ModelUpdateConsolidator.html",tooltip="This class is responsible for consolidating the model-update part of backprop commands, for components in (e.g.) recurrent networks that need to have many separate backprop commands, into more efficient single commands operating on consolidated data in larger matrices. "];
-}

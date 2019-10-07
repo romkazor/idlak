@@ -1,7 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="NaturalLess\< CompactLattice\lWeightTpl\< LatticeWeightTpl\l\< FloatType \>, IntType \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classfst_1_1NaturalLess_3_01CompactLatticeWeightTpl_3_01LatticeWeightTpl_3_01FloatType_01_4_00_01IntType_01_4_01_4.html"];
-}

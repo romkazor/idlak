@@ -1,9 +1,0 @@
-digraph "Miscellaneous matrix/vector library functions and classes"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir=LR;
-  Node0 [label="Miscellaneous matrix\l/vector library functions\l and classes",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 [label="%Matrix and vector\l classes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__matrix__group.html",tooltip="For an overview of the matrix library, see The Kaldi Matrix library. "];
-  Node1->Node0 [shape=plaintext, dir="back", style="solid"];
-}

@@ -1,7 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="ArbitraryResample",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classkaldi_1_1ArbitraryResample.html",tooltip="Class ArbitraryResample allows you to resample a signal (assumed zero outside the sample region..."];
-}
