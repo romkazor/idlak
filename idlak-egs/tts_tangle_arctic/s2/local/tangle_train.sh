@@ -168,7 +168,7 @@ if [ $stage -le 0 ]; then
         # Generate transcriptions
         cd $HERE
         for step in train dev full; do
-            python local/idlak_extract_utterances.py -i $label_dir/text.xml -s $datadir/$step/$spk/wav.scp -o $datadir/$step/$spk/text.xml
+            python3 local/idlak_extract_utterances.py -i $label_dir/text.xml -s $datadir/$step/$spk/wav.scp -o $datadir/$step/$spk/text.xml
         done
 
         # Combine transcriptions
