@@ -81,13 +81,28 @@ def align_words_to_pron(utt):
 
 
 def fix_entry(word, pron):
+        
+    # put 0 on missing stress characters
+    def _fix_missing_stress(pron):
+        stress_characters = ['@', 'a', 'a@', 'e', 'i', 'o', 'u']
+        phones = pron.split()
+        pron = []
+        for p in phones:
+            if p in stress_characters:
+                p += '0'
+            pron.append(p)
+        pron = ' '.join(pron)
+        return pron
+
     if '-' in word:
         return None, None
-    word = unicodedata.normalize('NFD', word) # make sure words are fully decomposed
+
+    word = unicodedata.normalize('NFC', word) # make sure words are fully decomposed
+    pron = _fix_missing_stress(pron)
+
     stress_count = pron.count('1')
     unstress_count = pron.count('0')
     if stress_count == 1:
-        # all good
         return word, pron
     if unstress_count == 1:
         # switched the only unstressed with a stressed vowel

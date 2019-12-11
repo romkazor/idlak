@@ -84,6 +84,7 @@ for spk in $spks; do
     
     if [ ! -e $lexfile ] ; then 
         mkdir -p $tpdb/$lng/$acc/$spk
+        echo "making lexicon speaker specific lexicon"
         python3 make_lexicon.py $corpusdir/${spk_upper} $lexfile
     fi 
 done
