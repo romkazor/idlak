@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf8'?>
+<phonesetup>
+  <phone name="a">
+    <description word_example="cap" pron_example="k_a_p" ipa="a"/>
+  </phone>
+  <phone name="@">
+    <description word_example="măr" pron_example="m_@_r" ipa="ə"/>
+  </phone>
+  <phone name="a@">
+    <description word_example="fân" pron_example="f_a@_n" ipa="ɨ"/>
+  </phone>
+  <phone name="b">
+    <description word_example="bar" pron_example="b_a_r" ipa="b"/>
+  </phone>
+  <phone name="k">
+    <description word_example="cal" pron_example="k_a_l" ipa="k"/>
+  </phone>
+  <phone name="ch">
+    <description word_example="ceas" pron_example="ch_e@_a_s" ipa="tʃ"/>
+  </phone>
+  <phone name="d">
+    <description word_example="ador" pron_example="a_d_o_r" ipa="d"/>
+  </phone>
+  <phone name="e">
+    <description word_example="fel" pron_example="f_e_l" ipa="ɛ"/>
+  </phone>
+  <phone name="e@">
+    <description word_example="deasă" pron_example="d_e@_a_s_@" ipa="ɛə"/>
+  </phone>
+  <phone name="f">
+    <description word_example="efect" pron_example="e_f_e_c_t" ipa="f"/>
+  </phone>
+  <phone name="g">
+    <description word_example="gât" pron_example="g_a@_t" ipa="ɡ"/>
+  </phone>
+  <phone name="dz">
+    <description word_example="geam" pron_example="dz_e@_a_m" ipa="dʒ"/>
+  </phone>
+  <phone name="h">
+    <description word_example="ham" pron_example="h_a_m" ipa="h"/>
+  </phone>
+  <phone name="i">
+    <description word_example="vin" pron_example="v_i_n" ipa="i"/>
+  </phone>
+  <phone name="ij">
+    <description word_example="câini" pron_example="k_a@_j_n_ij" ipa="ij"/>
+  </phone>
+  <phone name="j">
+    <description word_example="doi" pron_example="d_o_j" ipa="j"/>
+  </phone>
+  <phone name="zh">
+    <description word_example="joi" pron_example="zh_o_j" ipa="ʒ"/>
+  </phone>
+  <phone name="l">
+    <description word_example="luna" pron_example="l_u_n_a" ipa="l"/>
+  </phone>
+  <phone name="m">
+    <description word_example="masă" pron_example="m_a_s_@" ipa="m"/>
+  </phone>
+  <phone name="n">
+    <description word_example="nas" pron_example="n_a_s" ipa="n"/>
+  </phone>
+  <phone name="o">
+    <description word_example="loc" pron_example="l_o_c" ipa="o̞"/>
+  </phone>
+  <phone name="o@">
+    <description word_example="floare" pron_example="f_l_o@_a_r_e" ipa="ɔə"/>
+  </phone>
+  <phone name="p">
+    <description word_example="apt" pron_example="a_p_t" ipa="p"/>
+  </phone>
+  <phone name="r">
+    <description word_example="rană" pron_example="r_a_n_@" ipa="r"/>
+  </phone>
+  <phone name="s">
+    <description word_example="sare" pron_example="s_a_r_e" ipa="s"/>
+  </phone>
+  <phone name="sh">
+    <description word_example="şa" pron_example="sh_a" ipa="ʃ"/>
+  </phone>
+  <phone name="t">
+    <description word_example="tata" pron_example="t_a_t_a" ipa="t"/>
+  </phone>
+  <phone name="ts">
+    <description word_example="soţ" pron_example="s_o_ts" ipa="ʦ"/>
+  </phone>
+  <phone name="u">
+    <description word_example="muncă" pron_example="m_u_n_k_@" ipa="u"/>
+  </phone>
+  <phone name="w">
+    <description word_example="sau" pron_example="s_a_w" ipa="w"/>
+  </phone>
+  <phone name="v">
+    <description word_example="vot" pron_example="v_o_t" ipa="v"/>
+  </phone>
+  <phone name="z">
+    <description word_example="zi" pron_example="z_ij" ipa="z"/>
+  </phone>
+  <phone name="@@">
+    <description word_example="nurse" pron_example="n_@@_s" ipa="ɜ"/>
+  </phone>
+  <phone name="aa">
+    <description word_example="palm" pron_example="p_aa_m" ipa="ɑ"/>
+  </phone>
+  <phone name="dh">
+    <description word_example="then" pron_example="dh_e_n" ipa="ð"/>
+  </phone>
+  <phone name="ix">
+    <description word_example="kit" pron_example="k_i_t" ipa="ɪ"/>
+  </phone>
+  <phone name="i@">
+    <description word_example="near" pron_example="n_i@_R" ipa="ɪə"/>
+  </phone>
+  <phone name="ng">
+    <description word_example="song" pron_example="s_o_ng" ipa="ŋ"/>
+  </phone>
+  <phone name="oo">
+    <description word_example="thought" pron_example="th_oo_t" ipa="ɔ"/>
+  </phone>
+  <phone name="rx">
+    <description word_example="ray" pron_example="r_ei" ipa="ɹ"/>
+  </phone>
+  <phone name="th">
+    <description word_example="thin" pron_example="th_i_n" ipa="θ"/>
+  </phone>
+  <phone name="ux">
+    <description word_example="foot" pron_example="f_u_t" ipa="ʊ"/>
+  </phone>
+  <phone name="u@">
+    <description word_example="cure" pron_example="k_y_u@_r" ipa="ʊə"/>
+  </phone>
+  <phone name="uh">
+    <description word_example="strut" pron_example="s_t_r_uh_t" ipa="ʌ"/>
+  </phone>
+  <phone name="_">
+    <description word_example="-" pron_example="-" ipa=""/>
+  </phone>
+</phonesetup>
