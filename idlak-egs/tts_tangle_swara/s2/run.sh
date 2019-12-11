@@ -38,6 +38,7 @@ for spk in $spks; do
     spkrawaudio=$HERE/rawaudio/$lng/$acc/$spk
     label_dir=$HERE/labels/$lng/$acc/$spk
     arch=$corpusdir/${spk_upper}.zip
+    lexfile=$tpdb/$lng/$acc/$spk/lexicon-default.xml
 
     # Download the corpus
     if [ ! -d "$corpusdir/$spk_upper" ] ; then 
@@ -79,6 +80,12 @@ for spk in $spks; do
         done
         echo "</recording_script>" >> $scriptfn
     fi
+
+    
+    if [ ! -e $lexfile ] ; then 
+        mkdir -p $tpdb/$lng/$acc/$spk
+        python3 make_lexicon.py $corpusdir/${spk_upper} $lexfile
+    fi 
 done
 
 trainargs="--lng $lng --acc $acc --spks $spks"

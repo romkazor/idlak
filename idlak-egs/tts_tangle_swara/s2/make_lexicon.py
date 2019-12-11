@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Script for generating a lexicon from the speakers corpus
+
 import argparse
 import collections
 import glob
@@ -7,8 +9,7 @@ from lxml import etree
 import os
 import re
 import sys
-
-from pprint import pprint
+import unicodedata
 
 # load the utterances and their text
 def utterances(speaker_dir):
@@ -79,6 +80,36 @@ def align_words_to_pron(utt):
     return True
 
 
+def fix_entry(word, pron):
+    if '-' in word:
+        return None, None
+    word = unicodedata.normalize('NFD', word) # make sure words are fully decomposed
+    stress_count = pron.count('1')
+    unstress_count = pron.count('0')
+    if stress_count == 1:
+        # all good
+        return word, pron
+    if unstress_count == 1:
+        # switched the only unstressed with a stressed vowel
+        pron = pron.replace('0','1')
+        return  word, pron
+
+    # cant fix the stress
+    return None, None
+
+
+def make_lexicon_xml(lexicon):
+    lexicon_xml = etree.Element('lexicon')
+    for grapheme in sorted(lexicon.keys()):
+        for pron_idx, pron in enumerate(lexicon[grapheme]):
+            lex = etree.SubElement(lexicon_xml, 'lex')
+            lex.set('pron', pron)
+            lex.set('entry', 'full' if (pron_idx == 0) else f"variant_{pron_idx}")
+            lex.set('default', 'true' if (pron_idx == 0) else 'false')
+            lex.text = grapheme
+    return lexicon_xml
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "count", default = 0)
@@ -86,7 +117,7 @@ def main():
     parser.add_argument("output", type = argparse.FileType('wb'), help = "output lexicon")
     args = parser.parse_args()
 
-    lexicon = {}
+    lexicon = collections.defaultdict(set)
     
     for utt in utterances(args.speaker_dir):
         if args.verbose:
@@ -94,7 +125,20 @@ def main():
         load_pronunciations(utt)
         if not align_words_to_pron(utt):
             print(f"WARN could not align words to pronunciations for: {utt['name']}")
-        
+            continue
+        if args.verbose:
+            print(f"INFO adding {len(utt['lex'])} words to lexicon")
+        for w, p in utt['lex'].items():
+            word, pron = fix_entry(w, p)
+            if pron is not None:
+                lexicon[word].add(pron)
+
+    lexicon_xml = make_lexicon_xml(lexicon)
+    args.output.write(
+        etree.tostring(lexicon_xml, encoding='utf8', pretty_print=True, xml_declaration=True)
+    )
+    args.output.write(b'\n')
+    
 
 
 

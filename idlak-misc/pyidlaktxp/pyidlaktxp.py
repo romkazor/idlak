@@ -39,6 +39,8 @@ def main():
 
     args.add_argument("--cex", action='store_true',
             help = "Add linguistic context extraction features for TTS synthesis")
+    args.add_argument("--no-norm", action='store_true',
+            help = "do not run the normaliser")
 
     args.parse_args()
 
@@ -57,14 +59,15 @@ def main():
     modules = []
     modules.append(txp.modules.Tokenise(args))
     modules.append(txp.modules.PosTag(args))
-    modules.append(txp.modules.Normalise(args))
+    # if not args.get('no_norm'):
+    #     modules.append(txp.modules.Normalise(args))
     modules.append(txp.modules.Pauses(args))
     modules.append(txp.modules.Phrasing(args))
     modules.append(txp.modules.Pronounce(args))
-    modules.append(txp.modules.PostLex(args))
-    modules.append(txp.modules.Syllabify(args))
-    if args.get('cex'):
-        modules.append(txp.modules.ContextExtraction(args))
+    # modules.append(txp.modules.PostLex(args))
+    # modules.append(txp.modules.Syllabify(args))
+    # if args.get('cex'):
+        # modules.append(txp.modules.ContextExtraction(args))
 
     # Create an Idlak XML document
     if filein == '-':
