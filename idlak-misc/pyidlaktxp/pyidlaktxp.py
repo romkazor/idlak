@@ -36,7 +36,6 @@ def main():
 
     # Create an Idlak option parser & parse the command line
     args = txp.TxpArgumentParser(usage = USAGE)
-
     args.add_argument("--cex", action='store_true',
             help = "Add linguistic context extraction features for TTS synthesis")
     args.add_argument("--no-norm", action='store_true',
@@ -59,15 +58,15 @@ def main():
     modules = []
     modules.append(txp.modules.Tokenise(args))
     modules.append(txp.modules.PosTag(args))
-    # if not args.get('no_norm'):
-    #     modules.append(txp.modules.Normalise(args))
+    if not args.get('no_norm'):
+        modules.append(txp.modules.Normalise(args))
     modules.append(txp.modules.Pauses(args))
     modules.append(txp.modules.Phrasing(args))
     modules.append(txp.modules.Pronounce(args))
-    # modules.append(txp.modules.PostLex(args))
-    # modules.append(txp.modules.Syllabify(args))
-    # if args.get('cex'):
-        # modules.append(txp.modules.ContextExtraction(args))
+    modules.append(txp.modules.PostLex(args))
+    modules.append(txp.modules.Syllabify(args))
+    if args.get('cex'):
+        modules.append(txp.modules.ContextExtraction(args))
 
     # Create an Idlak XML document
     if filein == '-':
@@ -83,6 +82,10 @@ def main():
                 inputxml = open(filein).read()
             except UnicodeDecodeError:
                 inputxml = open(filein, encoding = 'utf8').read()
+
+
+    if args.get('verbose'):
+        sys.stderr.write("Input xml: {0}\n".format(inputxml))
 
     doc = txp.XMLDoc(inputxml)
 
