@@ -90,14 +90,14 @@ class PronCheck:
         for p in pron:
             m = self._regex_phone.match(p)
             if m is None:
-                errprint("ERROR: '{p}' is not a valid phone".format(p))
+                errprint("ERROR: '{}' is not a valid phone".format(p))
                 return False
             if m.group('stress'):
                 if not m.group('phoneme') in self.nuclei:
-                    errprint("ERROR: '{p}' should not have stress".format(p))
+                    errprint("ERROR: '{}' should not have stress".format(p))
                     return False
             elif m.group('phoneme') in self.nuclei:
-                errprint("ERROR: '{p}' missing stress".format(p))
+                errprint("ERROR: '{}' missing stress".format(p))
                 return False
         return True
 
