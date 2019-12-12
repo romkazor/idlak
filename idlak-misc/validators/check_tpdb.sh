@@ -71,7 +71,7 @@ function file_applys {
     local rdir=$( dirname $rootfile )
     local tdir=$( dirname $targetfile )
     local rpath=$( realpath --relative-to=$tpdbdir/$tdir $tpdbdir/$rdir  )
-    local res=$( echo $rpath | sed s'/\.\.\///' | sed s'/^\.\.//' )
+    local res=$( echo $rpath | sed s'/\.\.\///' | sed s'/^\.//' | sed s'/^\.//' )
     if [ -z "$res" ] ; then 
         apply=1
     else
@@ -83,6 +83,7 @@ function file_applys {
 filelist phone ; phonesets=("${fnames[@]}") 
 filelist trules ; trules=("${fnames[@]}") 
 filelist lexicon ; lexicons=("${fnames[@]}") 
+filelist sylmax ; sylmaxs=("${fnames[@]}") 
 
 echo "checking phonesets:"
 for fn in ${phonesets[@]} ; do 
@@ -108,7 +109,26 @@ for tr in ${trules[@]} ; do
         done
     fi
 done
+echo
 
+echo "checking lexicons:"
+for lex in ${lexicons[@]} ; do 
+    echo "$lex"
+    for pset in ${phonesets[@]} ; do 
+        for sm in ${sylmaxs[@]} ; do 
+            file_applys $lex $pset  ; use_pset=$apply
+            file_applys $sm $lex  ; use_sm_lex=$apply
+            file_applys $pset $sm ; use_sm_pset=$apply
+            if [ $use_pset ] && [ $use_sm_pset ] && [ $use_sm_lex ] ; then
+                error=
+                python3 ./check_lexicon.py -l $tpdbdir/$lex -p $tpdbdir/$pset -s $tpdbdir/$sm || error=true
+                if [ $error ] ; then 
+                    echo "error in $tpdbdir/$lex"
+                fi
+            fi
+        done
+    done;
+done
 
 
 echo

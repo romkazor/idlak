@@ -6,7 +6,7 @@ import os
 import sys
 import re
 import collections
-
+import unicodedata
 
 def check_lexicon(lexicon, phoneset, sylmax):
     valid = True
@@ -25,6 +25,10 @@ def check_lexicon(lexicon, phoneset, sylmax):
         if len(grapheme.split()) > 1:
             # TODO check using tokenisation rules instead
             errprint("ERROR: '{}': graphemes cannot contain more than one token".format(grapheme))
+            valid = False
+            continue
+        if grapheme != unicodedata.normalize('NFD', grapheme):
+            errprint("ERROR: '{}': graphemes is not fully decomposed unicode, use {}".format(grapheme, unicodedata.normalize('NFD', grapheme)))
             valid = False
             continue
 
@@ -107,7 +111,7 @@ def parse_phoneset(phoneset):
     phones = []
     try:
         for event, ph in etree.iterparse(phoneset, events=("end",), tag='phone'):
-            if ph.attrib['name'] != '_' and ph.attrib['name'] == ph.attrib['name'].lower():
+            if ph.attrib['name'] != '_':
                 phones.append(ph.attrib['name'].strip())
     except Exception as e:
         errprint("CRITICAL: cannot parse phoneset file")
@@ -140,7 +144,7 @@ def main():
                         help = "accent specific phoneset file")
     parser.add_argument("-s", "--sylmax", required = True, type=argparse.FileType('rb'),
                         help = "accent specific syllabic specification file")
-    parser.add_argument("-l", "--lexicon", type=argparse.FileType('rb'),
+    parser.add_argument("-l", "--lexicon", required = True, type=argparse.FileType('rb'),
                         help = "lexicon file")
     args = parser.parse_args()
 

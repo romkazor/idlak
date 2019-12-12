@@ -97,7 +97,7 @@ def fix_entry(word, pron):
     if '-' in word:
         return None, None
 
-    word = unicodedata.normalize('NFC', word) # make sure words are fully decomposed
+    word = unicodedata.normalize('NFD', word) # make sure words are fully decomposed
     pron = _fix_missing_stress(pron)
 
     stress_count = pron.count('1')
