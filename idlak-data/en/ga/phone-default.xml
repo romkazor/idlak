@@ -52,10 +52,10 @@
 		<description word_example="guy" pron_example="g_ay" ipa="g"/>
 	</phone>
 	<phone name="hh">
-		<description word_example="hat" pron_example="h_a_t" ipa="h"/>
+		<description word_example="hat" pron_example="hh_a_t" ipa="h"/>
 	</phone>
 	<phone name="ih">
-		<description word_example="hit" pron_example="h_ih_t" ipa="ɪ"/>
+		<description word_example="hit" pron_example="hh_ih_t" ipa="ɪ"/>
 	</phone>
 	<phone name="iy">
 		<description word_example="fleece" pron_example="f_l_iy_s" ipa="i"/>

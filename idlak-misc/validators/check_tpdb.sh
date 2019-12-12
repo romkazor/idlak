@@ -86,8 +86,13 @@ filelist lexicon ; lexicons=("${fnames[@]}")
 filelist sylmax ; sylmaxs=("${fnames[@]}") 
 
 echo "checking phonesets:"
-for fn in ${phonesets[@]} ; do 
-    echo "$fn"
+for pset in ${phonesets[@]} ; do 
+    echo "$pset"
+    error=
+    python3 ./check_phoneset.py -p $tpdbdir/$pset || error=true
+    if [ $error ] ; then 
+        echo "error in $tpdbdir/$pset"
+    fi
 done
 echo
 

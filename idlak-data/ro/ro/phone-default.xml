@@ -106,7 +106,7 @@
     <description word_example="then" pron_example="dh_e_n" ipa="ð"/>
   </phone>
   <phone name="ix">
-    <description word_example="kit" pron_example="k_i_t" ipa="ɪ"/>
+    <description word_example="kit" pron_example="k_ix_t" ipa="ɪ"/>
   </phone>
   <phone name="i@">
     <description word_example="near" pron_example="n_i@_R" ipa="ɪə"/>
@@ -118,13 +118,13 @@
     <description word_example="thought" pron_example="th_oo_t" ipa="ɔ"/>
   </phone>
   <phone name="rx">
-    <description word_example="ray" pron_example="r_ei" ipa="ɹ"/>
+    <description word_example="ray" pron_example="rx_ei" ipa="ɹ"/>
   </phone>
   <phone name="th">
     <description word_example="thin" pron_example="th_i_n" ipa="θ"/>
   </phone>
   <phone name="ux">
-    <description word_example="foot" pron_example="f_u_t" ipa="ʊ"/>
+    <description word_example="foot" pron_example="f_ux_t" ipa="ʊ"/>
   </phone>
   <phone name="u@">
     <description word_example="cure" pron_example="k_y_u@_r" ipa="ʊə"/>
@@ -133,6 +133,6 @@
     <description word_example="strut" pron_example="s_t_r_uh_t" ipa="ʌ"/>
   </phone>
   <phone name="_">
-    <description word_example="-" pron_example="-" ipa=""/>
+    <description word_example="" pron_example="" ipa=""/>
   </phone>
 </phonesetup>

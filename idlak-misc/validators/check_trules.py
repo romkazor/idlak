@@ -64,8 +64,24 @@ def trules_convertillegal(trulesxml, lexiconxml):
             bad_table = True
             bad_entry = True
 
+        if bad == unicodedata.normalize('NFC', good) and good == unicodedata.normalize('NFD', good):
+            com = unicodedata.normalize('NFC', good.upper())
+            dec = unicodedata.normalize('NFD', good.upper())
+            if com not in table:
+                eprint(f"convertillegal: {entry_str(com, dec)} uppercase decomposition missing")
+                suggested_table[com] = unicodedata.normalize('NFD', dec)
+                bad_table = True 
+            com = unicodedata.normalize('NFC', good.lower())
+            dec = unicodedata.normalize('NFD', good.lower())
+            if com not in table:
+                eprint(f"convertillegal: {entry_str(com, dec)} lowercase decomposition missing")
+                suggested_table[com] = unicodedata.normalize('NFD', dec)
+                bad_table = True 
+            
+
+
         if not bad_entry:
-            suggested_table[bad] = unicodedata.normalize('NFD', good)
+            suggested_table[bad] = unicodedata.normalize('NFD', good) 
 
     if lexiconxml is not None:
         # checks that all unicode characters in the lexicon have decomposed to composed entries

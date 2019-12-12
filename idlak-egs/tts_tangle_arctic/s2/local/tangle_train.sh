@@ -667,6 +667,9 @@ case $lng in
     ga)
         sampletxt='Níl aon tinteán mar do thinteán féin'
         ;;
+    ro)
+        sampletxt="Ziua bună de dimineaţă se vede."
+        ;;
     *)
         for f in $testdatadir/*.xml ; do
             if [ -e "$f" ]; then

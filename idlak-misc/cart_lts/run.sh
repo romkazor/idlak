@@ -27,7 +27,7 @@ output="$(pwd)/ccart-default.xml"
 tmpdir="$(pwd)/tmp"
 
 # Argument handling
-while getopts "hp:s:l:o:" opt
+while getopts "hp:s:l:o:T:" opt
 do
     case $opt in
         p)

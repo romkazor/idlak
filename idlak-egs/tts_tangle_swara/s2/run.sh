@@ -87,6 +87,11 @@ for spk in $spks; do
         echo "making lexicon speaker specific lexicon"
         python3 make_lexicon.py $corpusdir/${spk_upper} $lexfile
     fi 
+
+    if [ ! -e $tpdb/$lng/$acc/lexicon-default.xml ] ; then
+        cd $tpdb/$lng/$acc
+        ln -s $spk/lexicon-default.xml lexicon-default.xml
+    fi
 done
 
 trainargs="--lng $lng --acc $acc --spks $spks"

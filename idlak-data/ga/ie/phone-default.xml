@@ -22,7 +22,7 @@
 		<description word_example="beo" pron_example="bj_oy1" ipa="bʲ"/>
 	</phone>
 	<phone name="cc">
-		<description word_example="cluiche" pron_example="k_l_i1_cc_@0" ipa="ç"/>
+		<description word_example="cluiche" pron_example="k_l_i1_cc_@0" ipa="ç"/>
 	</phone>
 	<phone name="d">
 		<description word_example="ard" pron_example="a1_r_d" ipa="d"/>
