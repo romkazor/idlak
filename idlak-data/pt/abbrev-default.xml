@@ -1,0 +1,18 @@
+<abbreviations>
+<!-- The abbreviation can either be a whole tokenised token (in English separated by whitespace, or it 
+     can be some punctuation followed by a token followed by punctuation. In the first case the entire 
+     token must match, in the second the puctuation before and after must match but allows extra 
+     punctuation before or after. The expansion is the text node. Optionally
+     a lex tag can be put around words to select a pronunciation type no other XML -->
+<abb token="Dr" pstpunc="."> médico </abb>
+<abb token="Dr"> médico </abb>
+<abb token="Sr" pstpunc="."> senhor </abb>
+<abb token="Sr"> senhor </abb>
+<abb token="Sra" pstpunc="."> senhora </abb>
+<abb token="Sra"> senhora </abb>
+<abb token="Ms" pstpunc="."> bean uasal </abb>
+<abb token="Ms"> bean uasal </abb>
+<abb token="NASA"> nasa </abb>
+<abb prepunc="(" token="US" pstpunc=")"> u s </abb>
+<abb token=":-)"> sorriso </abb>
+</abbreviations>
