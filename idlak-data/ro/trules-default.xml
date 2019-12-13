@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rules>
+
+  <!-- normal tkeniser behavior is as follows:
+       1. Tokenise on white space
+       2. Strip initial punctuation
+       while valid tokens in whitespace token
+       3a. Search for valid tokens and create new tokens if none:
+       3b. Strip final punctuation
+       3c. if nothing matches delete next character and continue
+       continue until we reach the end of the whitespace token 
+
+for example:
+
+hello to.my.friend -> hello to[.] my[.] friend
+hello 23,456 times$.yes -> hello 23,456 times $[.] yes
+
+i.e. punctuation characters can be included within tokens but not itially
+
+The tokenisation will have a very big impact on following normalisation rules
+Do not alter the tokenisation unless ready to fix all norm rules for that 
+language
+
+  -->
+
+
+  <regex name="whitespace">
+    <comment>
+      Used by the tokeniser.
+      Whitespace characters.
+    </comment>
+    <exp>
+      <![CDATA[^([ \n\t\r]+)]]>
+    </exp>
+  </regex>
+
+  <regex name="punctuation">
+    <comment>
+      Used by the tokeniser.
+      Strip punctuation of the front and back of tokens.
+    </comment>
+    <exp>
+      <![CDATA[^([()\[\]{}"'!?.,;:|]*)]]>
+    </exp>
+  </regex>
+
+  <regex name="alpha">
+    <comment>
+      Used by the tokeniser.
+      Also, extend it with the language-specific letters as required.
+      This is the legal set of characters present in head words in the
+      lexicon.
+    </comment>
+    <exp>
+      <![CDATA[^([a-zşţA-ZŞŢ_']|ă|Ă|â|Â|î|Î|ș|Ș|ț|Ț)+]]>
+    </exp>
+  </regex>
+
+  <!-- a token pattern will be searched for in token.* order in this file 
+       this needs to be greedy (more complex tokens first) --> 
+  <regex name="token1">
+    <comment>
+      It is used by the tokeniser to tokenise these characters separately
+    </comment>
+    <exp>
+      <![CDATA[^([\-+\/\*=$£€¥₩@&%|\\#~^¬])]]>
+    </exp>
+  </regex>
+
+  <regex name="token2">
+    <comment>
+      Internally punctuated numbers
+    </comment>
+    <exp>
+      <![CDATA[^([0-9]+[0-9\.,]*[0-9]+(s|m|M)?)]]>
+    </exp>
+  </regex>
+
+  <regex name="token3">
+    <comment>
+      Not punctuation
+    </comment>
+    <exp>
+      <![CDATA[^([^()\[\]{}"'!?.,;:|]*)]]>
+    </exp>
+  </regex>
+
+  <lookup name="downcase">
+    <comment>
+      Important: Do not delete this table, as it is used by the normaliser
+      internally.
+      Also, extend it with the language-specific letters.
+    </comment>
+    <exp>
+      <![CDATA[{"A":"a", "B":"b", "C":"c", "D":"d", "E":"e", "F":"f", "G":"g", "H":"h", "I":"i", "J":"j", "K":"k", "L":"l", "M":"m", "N":"n", "O":"o", "P":"p", "Q":"q", "R":"r", "S":"s", "T":"t", "U":"u", "V":"v", "W":"w", "X":"x", "Y":"y", "Z":"z", "Ä":"ä", "Ö":"ö", "Ü":"ü", "Ă":"ă", "Â":"â", "Î":"î", "Ș":"ș", "Ş":"ş", "Ț":"ț", "Ţ":"ţ"}]]>
+    </exp>
+  </lookup>
+
+  <lookup name="convertillegal">
+    <comment>
+      These characters will be mapped before tokenisation. Basically this is to
+      reduce the very large set of UTF chars toa  more manageable set. For
+      example English systems would typically ignore accents, UTF can be 
+      transformed from composite characters to single characters for some
+      languages etc. 
+    </comment>
+    <exp>
+      <![CDATA[{"À":"A", "Â":"Â", "Ã":"A", "Ā":"A", "Ă":"Ă", "Ä":"A", "Å":"A", "Ą":"A", "Ć":"C", "Č":"C", "Ç":"C", "Ď":"D", "È":"E", "Ê":"E", "Ē":"E", "Ĕ":"E", "Ė":"E", "Ë":"E", "Ě":"E", "Ę":"E", "Ģ":"G", "Ì":"I", "Î":"Î", "Ī":"I", "Ï":"I", "Į":"I", "Ķ":"K", "Ĺ":"L", "Ľ":"L", "Ļ":"L", "Ń":"N", "Ñ":"N", "Ň":"N", "Ņ":"N", "Ò":"O", "Ô":"O", "Õ":"O", "Ō":"O", "Ö":"O", "Ő":"O", "Ŕ":"R", "Ř":"R", "Ŗ":"R", "Ś":"S", "Š":"S", "Ș":"Ș", "Ť":"T", "Ț":"Ț", "Ù":"U", "Û":"U", "Ū":"U", "Ü":"U", "Ů":"U", "Ű":"U", "Ų":"U", "Ý":"Y", "Ÿ":"Y", "Ź":"Z", "Ż":"Z", "Ž":"Z", "\u0170":"u", "\u0171":"u", "à":"a", "â":"â", "ã":"a", "ā":"a", "ă":"ă", "ä":"a", "å":"a", "ą":"a", "ć":"c", "č":"c", "ç":"c", "ď":"d", "è":"e", "é":"e", "ê":"e", "ē":"e", "ĕ":"e", "ė":"e", "ë":"e", "ě":"e", "ę":"e", "ģ":"g", "ì":"i", "î":"î", "ī":"i", "ï":"i", "į":"i", "ķ":"k", "ĺ":"l", "ľ":"l", "ļ":"l", "ń":"n", "ñ":"n", "ň":"n", "ņ":"n", "ò":"o", "ô":"o", "õ":"o", "ō":"o", "ö":"o", "ő":"o", "ŕ":"r", "ř":"r", "ŗ":"r", "ś":"s", "š":"s", "ș":"ș", "ť":"t", "ț":"ț", "ù":"u", "û":"u", "ū":"u", "ü":"u", "ů":"u", "ű":"u", "ų":"u", "ý":"y", "ÿ":"y", "ź":"z", "ż":"z", "ž":"z", "Æ":"AE", "Ø":"O", "ß":"ss", "æ":"ae", "ø":"o", "Đ":"D", "đ":"d", "Ł":"L", "ł":"l", "０":"0", "１":"1", "２":"2", "３":"3", "４":"4", "５":"5", "６":"6", "７":"7", "８":"8", "９":"9", "Ａ":"A", "Ｂ":"B", "Ｃ":"C", "Ｄ":"D", "Ｅ":"E", "Ｆ":"F", "Ｇ":"G", "Ｈ":"H", "Ｉ":"I", "Ｊ":"J", "Ｋ":"K", "Ｌ":"L", "Ｍ":"M", "Ｎ":"N", "Ｏ":"O", "Ｐ":"P", "Ｑ":"Q", "Ｒ":"R", "Ｓ":"S", "Ｔ":"T", "Ｕ":"U", "Ｖ":"V", "Ｗ":"W", "Ｘ":"X", "Ｙ":"Y", "Ｚ":"Z", "ａ":"a", "ｂ":"b", "ｃ":"c", "ｄ":"d", "ｅ":"e", "ｆ":"f", "ｇ":"g", "ｈ":"h", "ｉ":"i", "ｊ":"j", "ｋ":"k", "ｌ":"l", "ｍ":"m", "ｎ":"n", "ｏ":"o", "ｐ":"p", "ｑ":"q", "ｒ":"r", "ｓ":"s", "ｔ":"t", "ｕ":"u", "ｖ":"v", "ｗ":"w", "ｘ":"x", "ｙ":"y", "ｚ":"z"}]]>
+    </exp>
+  </lookup>
+
+  <lookup name="utfpunc2ascii">
+    <comment>
+      These characters will be mapped before tokenisation. Basically this is to
+      reduce the very large set of UTF punctuation chars to a more manageable 
+      set.
+    </comment>
+    <exp>
+      <![CDATA[{"‘":"'", "’":"'", "‛":"'", '“':'"', '”':'"',"΄":"'", "´":"'", "`":"'", "…":".", "\uFF06":"&", "„":'"', '–':'-', '–':'-', '–':'-', '—':'-', "＇":"'"}]]>
+    </exp>
+  </lookup>
+
+
+</rules>

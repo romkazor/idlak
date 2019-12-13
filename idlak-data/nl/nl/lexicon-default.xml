@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf8'?>
 <lexicon>
   <lex pron="aa1" entry="full" default="true">a</lex>
   <lex pron="aa1 k ah0 n t" entry="full" default="true">a-kant</lex>
@@ -1845,7 +1846,7 @@
   <lex pron="ah0 n d r iy1 s" entry="full" default="true">andries</lex>
   <lex pron="ah0 n d r iy1 s ax0 n" entry="full" default="true">andriessen</lex>
   <lex pron="ah0 n d r ow1 n iy0 k uh0 s" entry="full" default="true">andronicus</lex>
-  <lex pron="ah0 n d r ee1" entry="full" default="true">andré</lex>
+  <lex pron="ah0 n d r ee1" entry="full" default="true">andré</lex>
 <lex pron="ah1 n d iy0" entry="full" default="true">andy</lex>
   <lex pron="aa0 n eh0 g d ow1 t ax0" entry="full" default="true">anekdote</lex>
   <lex pron="aa0 n eh0 g d ow1 t ax0 s" entry="full" default="true">anekdotes</lex>
@@ -1882,8 +1883,8 @@
   <lex pron="ah1 ng s t ax0 gh ax0" entry="full" default="true">angstige</lex>
   <lex pron="aa1 n iy0 m aa0" entry="full" default="true">anima</lex>
   <lex pron="ah0 n iy0 m aa1 t s iy0 s" entry="full" default="true">animaties</lex>
-<lex pron="e@ n iy0 m ee1 s j ax0 n" entry="full" default="true">animation</lex>
-<lex pron="aa0 n iy0 m ih1 z m ax0" entry="full" default="true">animisme</lex>
+  <lex pron="e@0 n iy0 m ee1 s j ax0 n" entry="full" default="true">animation</lex>
+  <lex pron="aa0 n iy0 m ih1 z m ax0" entry="full" default="true">animisme</lex>
   <lex pron="aa1 n iy0 m ow0" entry="full" default="true">animo</lex>
   <lex pron="ah0 n iy1 t aa0" entry="full" default="true">anita</lex>
   <lex pron="ah1 n j aa0" entry="full" default="true">anja</lex>
@@ -2492,7 +2493,7 @@
   <lex pron="ow0 s t r aa1 l iy0 s" entry="1" default="false">australisch</lex>
   <lex pron="au0 s t r aa1 l iy0 s ax0" entry="full" default="true">australische</lex>
   <lex pron="ow0 s t r aa1 l iy0 s ax0" entry="1" default="false">australische</lex>
-  <lex pron="au0 s t r aa1 l iy0 ax0" entry="full" default="true">australië</lex>
+  <lex pron="au0 s t r aa1 l iy0 ax0" entry="full" default="true">australië</lex>
 <lex pron="ow0 t eu1 rr" entry="full" default="true">auteur</lex>
   <lex pron="au0 t eu1 rr" entry="1" default="false">auteur</lex>
   <lex pron="ow0 t eu1 rr s" entry="full" default="true">auteurs</lex>
@@ -2651,8 +2652,7 @@
   <lex pron="ah0 z ei1 n" entry="full" default="true">azijn</lex>
   <lex pron="ah0 z ei1 n z uu0 rr" entry="full" default="true">azijnzuur</lex>
   <lex pron="aa0 z iy0 m uh1 t" entry="full" default="true">azimut</lex>
-  <lex pron="aa1 z iy0 axe" entry="full" default="true">azië</lex>
-<lex pron="ah0 s t ee1 k ax0 n" entry="full" default="true">azteken</lex>
+  <lex pron="ah0 s t ee1 k ax0 n" entry="full" default="true">azteken</lex>
   <lex pron="ah0 z uu1 rr b l au0" entry="full" default="true">azuurblauw</lex>
   <lex pron="b ee1" entry="full" default="true">b</lex>
   <lex pron="b aa1" entry="full" default="true">ba</lex>
@@ -3579,7 +3579,7 @@
   <lex pron="b eh1 l gh ax0 n m oh0 p ax0 n" entry="full" default="true">belgenmoppen</lex>
   <lex pron="b eh1 l gh iy0 s" entry="full" default="true">belgisch</lex>
   <lex pron="b eh1 l gh iy0 s" entry="full" default="true">belgische</lex>
-  <lex pron="b eh0 l gh iy1 ax0" entry="full" default="true">belgië</lex>
+  <lex pron="b eh0 l gh iy1 ax0" entry="full" default="true">belgië</lex>
 <lex pron="b eh1 l gh r ah0 d ow0" entry="full" default="true">belgrado</lex>
   <lex pron="b ax0 l ih1 x aa0 m t" entry="full" default="true">belichaamd</lex>
   <lex pron="b ax0 l ih1 x aa0 m d ax0" entry="full" default="true">belichaamde</lex>
@@ -4611,9 +4611,9 @@
   <lex pron="b ax0 z w ee1 r ih0 ng" entry="full" default="true">bezwering</lex>
   <lex pron="b ax0 z w ee1 r ih0 ng ax0 n" entry="full" default="true">bezweringen</lex>
   <lex pron="b ax0 z w ow1 r ax0 n" entry="full" default="true">bezworen</lex>
-  <lex pron="b ax0 ee1 d ih0 x t" entry="full" default="true">beëdigd</lex>
-<lex pron="b ax0 ei1 n d ih0 gh ax0 n" entry="full" default="true">beëindigen</lex>
-<lex pron="b ax0 ih1 n v l oe0 d ax0" entry="full" default="true">beïnvloedde</lex>
+  <lex pron="b ax0 ee1 d ih0 x t" entry="full" default="true">beëdigd</lex>
+<lex pron="b ax0 ei1 n d ih0 gh ax0 n" entry="full" default="true">beëindigen</lex>
+<lex pron="b ax0 ih1 n v l oe0 d ax0" entry="full" default="true">beïnvloedde</lex>
 <lex pron="b uu1 t ah0 n" entry="full" default="true">bhutan</lex>
   <lex pron="b iy1" entry="full" default="true">bi</lex>
   <lex pron="b iy0 aa1 f r aa0" entry="full" default="true">biafra</lex>
@@ -5686,7 +5686,7 @@
   <lex pron="b r aa0 z iy0 l j aa1 n s" entry="full" default="true">braziliaans</lex>
   <lex pron="b r aa0 z iy0 l j aa1 n s ax0" entry="full" default="true">braziliaanse</lex>
   <lex pron="b r aa0 z iy0 l j aa1 n ax0 n" entry="full" default="true">brazilianen</lex>
-  <lex pron="b r aa0 z iy1 l iy0 ax0" entry="full" default="true">brazilië</lex>
+  <lex pron="b r aa0 z iy1 l iy0 ax0" entry="full" default="true">brazilië</lex>
 <lex pron="b r ee1 k" entry="full" default="true">break</lex>
   <lex pron="b r ee1 j k" entry="1" default="false">break</lex>
   <lex pron="b r eh1 x t" entry="full" default="true">brecht</lex>
@@ -6128,7 +6128,7 @@
   <lex pron="k ah1 l s iy0 uh0 m s uh0 l f aa0 t" entry="full" default="true">calciumsulfaat</lex>
   <lex pron="k ah1 l s iy0 uh0 m t ax0 k oh0 rr t" entry="full" default="true">calciumtekort</lex>
 <lex pron="k aa1 l iy0" entry="full" default="true">cali</lex>
-  <lex pron="k eh0 l iy0 f oh1 rr n iy0 ax0" entry="full" default="true">californië</lex>
+  <lex pron="k eh0 l iy0 f oh1 rr n iy0 ax0" entry="full" default="true">californië</lex>
 <lex pron="k aa0 l ow0 r iy1 b ax0 h oe0 f t ax0" entry="full" default="true">caloriebehoefte</lex>
   <lex pron="k ah0 l ow1 r iy0 s ax0" entry="full" default="true">calorische</lex>
   <lex pron="k ah0 l v aa1 r iy0" entry="full" default="true">calvarie</lex>
@@ -6243,8 +6243,8 @@
   <lex pron="k ah1 rr l aa0" entry="full" default="true">carla</lex>
   <lex pron="k ah1 rr l ow0" entry="full" default="true">carlo</lex>
   <lex pron="k ah1 rr l oh0 s" entry="full" default="true">carlos</lex>
-  <lex pron="k ah1 rr l aa0 j ax l" entry="full" default="true">carlyle</lex>
-<lex pron="k ah1 rr m eh2 l" entry="full" default="true">carmel</lex>
+  <lex pron="k ah1 rr l aa0 j ax0 l" entry="full" default="true">carlyle</lex>
+  <lex pron="k ah1 rr m eh2 l" entry="full" default="true">carmel</lex>
   <lex pron="k ah1 rr m ax0 n" entry="full" default="true">carmen</lex>
   <lex pron="k ah1 rr m eh0 n" entry="1" default="false">carmen</lex>
   <lex pron="k ah0 rr m ih1 gh ax0 l t" entry="full" default="true">carmiggelt</lex>
@@ -7464,8 +7464,8 @@
   <lex pron="k r oe1" entry="1" default="false">crew</lex>
   <lex pron="k r oe1 w s" entry="full" default="true">crews</lex>
   <lex pron="k r oe1 s" entry="1" default="false">crews</lex>
-  <lex pron="k r ee0 ih1 rr d ax0" entry="full" default="true">creëerde</lex>
-<lex pron="k r ee0 ih1 r ax0 n" entry="full" default="true">creëren</lex>
+  <lex pron="k r ee0 ih1 rr d ax0" entry="full" default="true">creëerde</lex>
+<lex pron="k r ee0 ih1 r ax0 n" entry="full" default="true">creëren</lex>
 <lex pron="k r ih1 k ax0 t" entry="full" default="true">cricket</lex>
   <lex pron="k r ih1 k eh0 t" entry="1" default="false">cricket</lex>
   <lex pron="k r iy1 m ax0" entry="full" default="true">crime</lex>
@@ -7571,7 +7571,7 @@
   <lex pron="s iy1 r ih0 l" entry="full" default="true">cyril</lex>
   <lex pron="s iy0 r ih1 l ax0" entry="full" default="true">cyrille</lex>
   <lex pron="s iy1 r uh0 s" entry="full" default="true">cyrus</lex>
-  <lex pron="s ax0 l iy1 n" entry="full" default="true">céline</lex>
+  <lex pron="s ax0 l iy1 n" entry="full" default="true">céline</lex>
 <lex pron="d ee1" entry="full" default="true">d</lex>
   <lex pron="d ax1 r" entry="full" default="true">d'r</lex>
 <lex pron="d iy1 d ee0 j" entry="full" default="true">d-day</lex>
@@ -9097,8 +9097,8 @@
   <lex pron="d r iy1 v au2 d ax0 gh ax0" entry="full" default="true">drievoudige</lex>
   <lex pron="d r iy0 v uh1 l d ax0 x h ei0 t" entry="full" default="true">drievuldigheid</lex>
   <lex pron="d r iy1 w iy0 l ax0 rr" entry="full" default="true">driewieler</lex>
-  <lex pron="d r iy0 ax0 n t ah1 x t ih0 x" entry="full" default="true">drieëntachtig</lex>
-<lex pron="d r iy0 ax0 n v ei1 f t ih0 x" entry="full" default="true">drieënvijftig</lex>
+  <lex pron="d r iy0 ax0 n t ah1 x t ih0 x" entry="full" default="true">drieëntachtig</lex>
+<lex pron="d r iy0 ax0 n v ei1 f t ih0 x" entry="full" default="true">drieënvijftig</lex>
 <lex pron="d r ih1 f t" entry="full" default="true">drift</lex>
   <lex pron="d r ih1 v d b ui0 ax0 n" entry="full" default="true">driftbuien</lex>
   <lex pron="d r ih1 f t ax0 n" entry="full" default="true">driften</lex>
@@ -10279,7 +10279,7 @@
   <lex pron="eh1 s ax0 n" entry="full" default="true">essen</lex>
   <lex pron="eh0 s eh1 n s iy0" entry="full" default="true">essentie</lex>
   <lex pron="eh0 s eh0 n s j ee1 l" entry="full" default="true">essentieel</lex>
-  <lex pron="eh0 s eh0 n s j ee1 l ax0" entry="full" default="true">essentiële</lex>
+  <lex pron="eh0 s eh0 n s j ee1 l ax0" entry="full" default="true">essentiële</lex>
 <lex pron="eh1 s t ax0 rr" entry="full" default="true">esther</lex>
   <lex pron="eh0 s t ee1 t iy0 k aa0" entry="full" default="true">esthetica</lex>
   <lex pron="eh0 s t ee0 t iy1 k" entry="full" default="true">esthetiek</lex>
@@ -11346,8 +11346,7 @@
   <lex pron="f iy1 z iy0 s ax0" entry="full" default="true">fysische</lex>
   <lex pron="f iy1 t ow0 p l ah0 ng k t oh0 n" entry="full" default="true">fytoplankton</lex>
   <lex pron="gh ee1" entry="full" default="true">g</lex>
-  <lex pron="g ow1 k uu0" entry="full" default="true">g oku</lex>
-<lex pron="gh aa1" entry="full" default="true">ga</lex>
+  <lex pron="gh aa1" entry="full" default="true">ga</lex>
   <lex pron="gh aa1 f" entry="full" default="true">gaaf</lex>
   <lex pron="gh aa1 l" entry="full" default="true">gaal</lex>
   <lex pron="gh aa1 n" entry="full" default="true">gaan</lex>
@@ -11448,7 +11447,6 @@
   <lex pron="gh ah0 rr n iy0 z oe1 n ax0 n" entry="full" default="true">garnizoenen</lex>
   <lex pron="gh ah0 rr n iy0 z oe1 n s s t ah0 t" entry="full" default="true">garnizoensstad</lex>
   <lex pron="gh ah0 r oe1 d aa0" entry="full" default="true">garoeda</lex>
-  <lex pron="gh ah0 r ih1 n sj aa0" entry="full" default="true">garrincha</lex>
 <lex pron="gh ah1 r iy0" entry="full" default="true">gary</lex>
   <lex pron="gh ah1 s" entry="full" default="true">gas</lex>
   <lex pron="gh ah1 z b oh0 r ih0 ng ax0 n" entry="full" default="true">gasboringen</lex>
@@ -13537,9 +13535,9 @@
   <lex pron="gh ax0 z w ee1 f t" entry="full" default="true">gezweefd</lex>
   <lex pron="gh ax0 z w eh1 l ax0 n" entry="full" default="true">gezwellen</lex>
   <lex pron="gh ax0 z w ow1 r ax0 n" entry="full" default="true">gezworen</lex>
-  <lex pron="gh ax0 ei1 s t" entry="full" default="true">geëist</lex>
-<lex pron="gh ax0 ee0 v ah0 k uu0 ee1 rr t" entry="full" default="true">geëvacueerd</lex>
-<lex pron="gh ax0 iy1 d eh0 n t iy0 f iy0 s ee1 rr t" entry="full" default="true">geïdentificeerd</lex>
+  <lex pron="gh ax0 ei1 s t" entry="full" default="true">geëist</lex>
+<lex pron="gh ax0 ee0 v ah0 k uu0 ee1 rr t" entry="full" default="true">geëvacueerd</lex>
+<lex pron="gh ax0 iy1 d eh0 n t iy0 f iy0 s ee1 rr t" entry="full" default="true">geïdentificeerd</lex>
 <lex pron="gh aa1 n aa0" entry="full" default="true">ghana</lex>
   <lex pron="g ah1 z n aa0" entry="full" default="true">ghazna</lex>
 <lex pron="g ow1 w s t r aa0 j t ax0 rr" entry="full" default="true">ghostwriter</lex>
@@ -13770,7 +13768,7 @@
   <lex pron="gh oh1 k ax0 rr" entry="full" default="true">gokker</lex>
   <lex pron="gh oh1 k t" entry="full" default="true">gokt</lex>
   <lex pron="gh oh1 k t ax0" entry="full" default="true">gokte</lex>
-  <lex pron="g ow0 k uu0" entry="full" default="true">goku</lex>
+  <lex pron="g ow1 k uu0" entry="full" default="true">goku</lex>
 <lex pron="gh oh1 l t" entry="full" default="true">gold</lex>
   <lex pron="gh oh1 l d b eh0 rr x" entry="full" default="true">goldberg</lex>
   <lex pron="gh oh1 l d ax0 n" entry="full" default="true">golden</lex>
@@ -14580,7 +14578,7 @@
   <lex pron="h aa1 v ow0" entry="full" default="true">havo</lex>
   <lex pron="h ah0 w aa1 iy0" entry="full" default="true">hawaii</lex>
   <lex pron="h aa0 w aa0 j aa1 n ax0 n" entry="full" default="true">hawaiianen</lex>
-<lex pron="h aa0 w aa0 j aa1 n s ax0" entry="full" default="true">hawaïaanse</lex>
+<lex pron="h aa0 w aa0 j aa1 n s ax0" entry="full" default="true">hawaïaanse</lex>
 <lex pron="h aa0 w r aa1 n iy0" entry="full" default="true">hawrani</lex>
 <lex pron="h ah0 z aa1 rr" entry="full" default="true">hazard</lex>
   <lex pron="h ah0 z aa1 rr t" entry="1" default="false">hazard</lex>
@@ -15777,7 +15775,7 @@
   <lex pron="h iy0 d r ow0 f ow1 r ih0 n s t ah0 l aa0 t s iy0" entry="full" default="true">hydrofoorinstallatie</lex>
   <lex pron="h iy0 d r ow0 l iy1 z ax0" entry="full" default="true">hydrolyse</lex>
   <lex pron="h iy0 ee1 n aa0" entry="full" default="true">hyena</lex>
-  <lex pron="h iy0 gh iy0 eh1 n ax0" entry="full" default="true">hygiëne</lex>
+  <lex pron="h iy0 gh iy0 eh1 n ax0" entry="full" default="true">hygiëne</lex>
 <lex pron="h iy0 gh r ow0 s k ow1 p iy0 s" entry="full" default="true">hygroscopisch</lex>
   <lex pron="h iy0 gh r oh0 s k ow1 p iy0 s" entry="1" default="false">hygroscopisch</lex>
   <lex pron="h ih1 m n ax0" entry="full" default="true">hymne</lex>
@@ -15838,7 +15836,7 @@
   <lex pron="iy0 d ee0 aa1 l iy0 t ax0 rr" entry="full" default="true">idealiter</lex>
   <lex pron="iy0 d ee0 aa1 l iy0 t eh0 rr" entry="1" default="false">idealiter</lex>
   <lex pron="iy0 d ee1" entry="full" default="true">idee</lex>
-  <lex pron="iy0 d ee1 ax0 n" entry="full" default="true">ideeën</lex>
+  <lex pron="iy0 d ee1 ax0 n" entry="full" default="true">ideeën</lex>
 <lex pron="iy1 d ax0 m" entry="full" default="true">idem</lex>
   <lex pron="iy1 d eh0 m" entry="1" default="false">idem</lex>
   <lex pron="iy0 d eh0 n t iy1 k" entry="full" default="true">identiek</lex>
@@ -16346,7 +16344,7 @@
   <lex pron="ih1 n gh ax0 z oh0 n d ax0 n" entry="full" default="true">ingezonden</lex>
   <lex pron="ih1 n gh ih0 ng" entry="full" default="true">inging</lex>
   <lex pron="ih1 n gh r aa0 v ax0 n" entry="full" default="true">ingraven</lex>
-  <lex pron="ih0 n gh r ee0 d iy0  eh1 n t ax0 n" entry="full" default="true">ingrediënten</lex>
+  <lex pron="ih0 n gh r ee0 d iy0  eh1 n t ax0 n" entry="full" default="true">ingrediënten</lex>
 <lex pron="ih1 n gh r ee0 p" entry="full" default="true">ingreep</lex>
   <lex pron="ih1 n gh r ee0 p ax0 n" entry="full" default="true">ingrepen</lex>
   <lex pron="ih1 n gh r ei0 p ax0 n" entry="full" default="true">ingrijpen</lex>
@@ -16756,7 +16754,7 @@
   <lex pron="ih0 n t r ow0 v eh1 rr t" entry="full" default="true">introvert</lex>
   <lex pron="ih0 n t r ow0 v eh1 rr t ax0" entry="full" default="true">introverte</lex>
   <lex pron="ih0 n t uh1 s ax0 n" entry="full" default="true">intussen</lex>
-  <lex pron="ih1 n t uu1 iy0 t iy1 v ax0" entry="full" default="true">intuïtieve</lex>
+  <lex pron="ih1 n t uu1 iy0 t iy1 v ax0" entry="full" default="true">intuïtieve</lex>
 <lex pron="ih1 n v ah0 l" entry="full" default="true">inval</lex>
   <lex pron="ih0 n v ah0 l iy1 d ax0" entry="full" default="true">invalide</lex>
   <lex pron="ih0 n v ah0 l iy0 d iy0 t ei1 t" entry="full" default="true">invaliditeit</lex>
@@ -16858,7 +16856,7 @@
   <lex pron="iy0 ow1 n iy0 s ax0" entry="full" default="true">ionische</lex>
   <lex pron="iy0 ow0 n iy0 z ee1 r ax0 n" entry="full" default="true">ioniseren</lex>
   <lex pron="iy0 ow0 n iy0 z ee1 r ax0 n d ax0" entry="full" default="true">ioniserende</lex>
-  <lex pron="iy0 ow0 n iy1 ax0" entry="full" default="true">ionië</lex>
+  <lex pron="iy0 ow0 n iy1 ax0" entry="full" default="true">ionië</lex>
 <lex pron="iy0 r ah1 k" entry="full" default="true">irak</lex>
   <lex pron="iy0 r ah1 n" entry="full" default="true">iran</lex>
   <lex pron="iy0 r ee1 n aa0" entry="full" default="true">irene</lex>
@@ -16901,7 +16899,7 @@
   <lex pron="iy0 z ow0 t ow1 n ax0" entry="full" default="true">isotone</lex>
   <lex pron="iy0 z ow0 t ow1 p" entry="full" default="true">isotoop</lex>
   <lex pron="iy0 z ow0 t ow1 p ax0 n" entry="full" default="true">isotopen</lex>
-  <lex pron="ih1 s r aa0 eh0 l" entry="full" default="true">israël</lex>
+  <lex pron="ih1 s r aa0 eh0 l" entry="full" default="true">israël</lex>
 <lex pron="ih1 sh oe0 w" entry="full" default="true">issue</lex>
   <lex pron="ih1 sh oe0" entry="1" default="false">issue</lex>
   <lex pron="ih1 sh oe0 s" entry="full" default="true">issues</lex>
@@ -16914,7 +16912,7 @@
   <lex pron="iy0 t ah0 l j aa1 n s" entry="full" default="true">italianen</lex>
   <lex pron="iy0 t aa1 l iy0 s" entry="full" default="true">italisch</lex>
   <lex pron="iy0 t aa1 l iy0 s ax0" entry="full" default="true">italische</lex>
-  <lex pron="iy0 t aa1 l iy0 ax0" entry="full" default="true">italië</lex>
+  <lex pron="iy0 t aa1 l iy0 ax0" entry="full" default="true">italië</lex>
 <lex pron="aa1 j t ax0 m" entry="full" default="true">item</lex>
   <lex pron="iy1 t eh0 m" entry="1" default="false">item</lex>
   <lex pron="iy1 t ax0 m" entry="2" default="false">item</lex>
@@ -19925,7 +19923,7 @@
   <lex pron="l ih1 ng k ax0 rr z ei0 d ax0" entry="full" default="true">linkerzijde</lex>
   <lex pron="l ih1 ng k s" entry="full" default="true">links</lex>
   <lex pron="l ih1 ng k s ah0 f" entry="full" default="true">linksaf</lex>
-  <lex pron="l ng1 g z b ui2 t ax0 n" entry="full" default="true">linksbuiten</lex>
+  <lex pron="l ih1 ng z b ui2 t ax0 n" entry="full" default="true">linksbuiten</lex>
   <lex pron="l ih1 ng k s ax0" entry="full" default="true">linkse</lex>
   <lex pron="l ih1 ng k s h ah2 n d ax0 gh ax0" entry="full" default="true">linkshandige</lex>
   <lex pron="l ih0 n ee1 uh0 s" entry="full" default="true">linnaeus</lex>
@@ -20756,7 +20754,7 @@
   <lex pron="m ah1 rr t aa0" entry="full" default="true">martha</lex>
   <lex pron="m ah0 rr s iy0 aa1 l ax0" entry="full" default="true">martiale</lex>
   <lex pron="m ah1 rr t ih0 n" entry="full" default="true">martin</lex>
-  <lex pron="m ah0 rr t ih0 n e@ rr" entry="full" default="true">martinair</lex>
+  <lex pron="m ah0 rr t ih0 n e@1 rr" entry="full" default="true">martinair</lex>
 <lex pron="m ah0 rr t iy1 n uh0 s" entry="full" default="true">martinus</lex>
   <lex pron="m ah1 rr t iy0" entry="full" default="true">marty</lex>
   <lex pron="m ah1 rr k s" entry="full" default="true">marx</lex>
@@ -20868,9 +20866,9 @@
 <lex pron="m aa0 j ow0 n e@1 z ax0" entry="full" default="true">mayonaise</lex>
   <lex pron="m aa1 z ax0 l ax0 n" entry="full" default="true">mazelen</lex>
   <lex pron="m aa1 z ax0 n" entry="full" default="true">mazen</lex>
-  <lex pron="m aa1 j s b l aa0 d ax0 r ax0 n" entry="full" default="true">maïsbladeren</lex>
-<lex pron="m aa1 j s k oh0 r ax0 l s" entry="full" default="true">maïskorrels</lex>
-<lex pron="m aa1 j s p l ui0 m" entry="full" default="true">maïspluim</lex>
+  <lex pron="m aa1 j s b l aa0 d ax0 r ax0 n" entry="full" default="true">maïsbladeren</lex>
+<lex pron="m aa1 j s k oh0 r ax0 l s" entry="full" default="true">maïskorrels</lex>
+<lex pron="m aa1 j s p l ui0 m" entry="full" default="true">maïspluim</lex>
 <lex pron="m eh0 k g ih1 n ax0 s" entry="full" default="true">mcguinness</lex>
 <lex pron="m eh0 k n ax0 m aa1 rr aa0" entry="full" default="true">mcnamara</lex>
 <lex pron="m ax0" entry="full" default="true">me</lex>
@@ -21138,7 +21136,7 @@
   <lex pron="m eh1 l k s uu0 rr" entry="full" default="true">melkzuur</lex>
   <lex pron="m ee0 l ow0 d iy1" entry="full" default="true">melodie</lex>
   <lex pron="m ee0 l ow0 d j eu1 z ax0" entry="full" default="true">melodieuze</lex>
-  <lex pron="m ee0 l ow0 d iy0 ax0 n" entry="full" default="true">melodieën</lex>
+  <lex pron="m ee0 l ow0 d iy0 ax0 n" entry="full" default="true">melodieën</lex>
 <lex pron="m ee0 l ow1 d iy0 s" entry="full" default="true">melodisch</lex>
   <lex pron="m ee0 l ow1 d iy0 s ax0" entry="full" default="true">melodische</lex>
   <lex pron="m ee0 l ow1 d iy0 s ax0 rr" entry="full" default="true">melodischer</lex>
@@ -21195,7 +21193,7 @@
   <lex pron="m eh1 n s ax0 l ax0 k h ei0 t" entry="full" default="true">menselijkheid</lex>
   <lex pron="m eh1 n s ax0 n" entry="full" default="true">mensen</lex>
   <lex pron="m eh1 n s ax0 n h ah0 n d ax0 l" entry="full" default="true">mensenhandel</lex>
-<lex pron="m eh1 n s ax0 n h ah0 n d eax0 n" entry="full" default="true">mensenhanden</lex>
+<lex pron="m eh1 n s ax0 n h ah0 n d ax0 n" entry="full" default="true">mensenhanden</lex>
 <lex pron="m eh1 n s ax0 n l ee0 v ax0 n" entry="full" default="true">mensenleven</lex>
   <lex pron="m eh1 n s ax0 n l ee0 v ax0 n s" entry="full" default="true">mensenlevens</lex>
   <lex pron="m eh1 n s ax0 n oh0 f ax0 rr" entry="full" default="true">mensenoffer</lex>
@@ -21582,7 +21580,7 @@
   <lex pron="m ih1 n ax0 z ah0 ng" entry="full" default="true">minnezang</lex>
   <lex pron="m ih1 n ax0 z ah0 ng ax0 rr" entry="full" default="true">minnezanger</lex>
   <lex pron="m iy1 n oh0 rr" entry="full" default="true">minor</lex>
-  <lex pron="m iy0 n ow1 iy0 s ax0" entry="full" default="true">minoïsche</lex>
+  <lex pron="m iy0 n ow1 iy0 s ax0" entry="full" default="true">minoïsche</lex>
 <lex pron="m ih1 n p uh0 n t" entry="full" default="true">minpunt</lex>
   <lex pron="m ih1 n s t" entry="full" default="true">minst</lex>
   <lex pron="m ih1 n s t ax0" entry="full" default="true">minste</lex>
@@ -22421,7 +22419,7 @@
 <lex pron="n aa1 z iy0 k r ih0 ng ax0 n" entry="full" default="true">nazi-kringen</lex>
   <lex pron="n aa1 z iy0 p ah0 rr t ei0" entry="full" default="true">nazi-partij</lex>
   <lex pron="n ah0 z ih1 z m ax0" entry="full" default="true">nazisme</lex>
-  <lex pron="n aa0 iy0 v iy0 t ei1 t" entry="full" default="true">naïviteit</lex>
+  <lex pron="n aa0 iy0 v iy0 t ei1 t" entry="full" default="true">naïviteit</lex>
 <lex pron="n ee0 ah1 n d ax0 rr t aa0 l ax0 rr" entry="full" default="true">neanderthaler</lex>
   <lex pron="n ee0 ah1 n d ax0 rr t aa0 l ax0 rr s" entry="full" default="true">neanderthalers</lex>
   <lex pron="n ee0 k r ow1 z ax0" entry="full" default="true">necrose</lex>
@@ -22513,10 +22511,10 @@
 <lex pron="n ee0 gh ax0 n t iy0 n ah0 x t ax0 n z eh1 s t ih0 gh" entry="full" default="true">negentienachtenzestig</lex>
 <lex pron="n ee1 gh ax0 n t iy0 n d ax0" entry="full" default="true">negentiende</lex>
   <lex pron="n ee0 gh ax0 n t iy0 n d ax0 ee1 w s ax0" entry="full" default="true">negentiende-eeuwse</lex>
-  <lex pron="n ee0 gh ax0 n t iy0 n d r iy1 ax0 n n ee0 gh ax0 n t ih2 gh" entry="full" default="true">negentiendrieënnegentig</lex>
-<lex pron="n ee0 gh ax0 n t iy0 n d r iy0 ax0 n t ah1 x t ih0 gh" entry="full" default="true">negentiendrieëntachtig</lex>
-<lex pron="n ee0 gh ax0 n t iy0 n d r iy1 eh1 n t w ih0 n t ih0 gh" entry="full" default="true">negentiendrieëntwintig</lex>
-<lex pron="n ee0 gh ax0 n t iy0 n d r iy0 ax0 n z eh1 s t ih0 x" entry="full" default="true">negentiendrieënzestig</lex>
+  <lex pron="n ee0 gh ax0 n t iy0 n d r iy1 ax0 n n ee0 gh ax0 n t ih2 gh" entry="full" default="true">negentiendrieënnegentig</lex>
+<lex pron="n ee0 gh ax0 n t iy0 n d r iy0 ax0 n t ah1 x t ih0 gh" entry="full" default="true">negentiendrieëntachtig</lex>
+<lex pron="n ee0 gh ax0 n t iy0 n d r iy1 eh1 n t w ih0 n t ih0 gh" entry="full" default="true">negentiendrieëntwintig</lex>
+<lex pron="n ee0 gh ax0 n t iy0 n d r iy0 ax0 n z eh1 s t ih0 x" entry="full" default="true">negentiendrieënzestig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n ee0 n ax0 n ee1 gh ax0 n t ax0 x" entry="full" default="true">negentieneenennegentig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n ee0 n ax0 n z eh1 s t ih0 gh" entry="full" default="true">negentieneenenzestig</lex>
 <lex pron=" ee0 gh ax0 n t iy0 n ee0 n ax0 n z ee1 v ax0 n t ih0 x" entry="full" default="true">negentieneenenzeventig</lex>
@@ -22528,9 +22526,9 @@
 <lex pron="n ee0 gh ax0 n t iy0 n ee0 gh ax0 n ax0 n z eh1 s t ih0 x" entry="full" default="true">negentiennegenenzestig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n ee1 gh ax0 n t ih0 x" entry="full" default="true">negentiennegentig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n t ah1 x t ih0 gh" entry="full" default="true">negentientachtig</lex>
-<lex pron="n ee0 gh ax0 n t iy0 n t w ee0 ax0 n ee1 gh ax0 n t ih0 x" entry="full" default="true">negentientweeënnegentig</lex>
+<lex pron="n ee0 gh ax0 n t iy0 n t w ee0 ax0 n ee1 gh ax0 n t ih0 x" entry="full" default="true">negentientweeënnegentig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n v iy0 r ax0 n ee1 gh ax0 n t ih0 gh" entry="full" default="true">negentienvierennegentig</lex>
-<lex pron="nn ee0 gh ax0 n t iy0 n v ei0 v ax0 n t ah1 x t ih0 x" entry="full" default="true">negentienvijfentachtig</lex>
+<lex pron="n ee0 gh ax0 n t iy0 n v ei0 v ax0 n t ah1 x t ih0 x" entry="full" default="true">negentienvijfentachtig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n v ei0 f ax0 n z eh1 s t ih0 gh" entry="full" default="true">negentienvijfenzestig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n v ei1 f t ih0 gh" entry="full" default="true">negentienvijftig</lex>
 <lex pron="n ee0 gh ax0 n t iy0 n z eh0 s ax0 n v ee1 rr t ih0 x" entry="full" default="true">negentienzesenveertig</lex>
@@ -23045,7 +23043,7 @@
   <lex pron="oe0 h oe1" entry="full" default="true">oehoe</lex>
   <lex pron="oe1 h oe0" entry="1" default="false">oehoe</lex>
   <lex pron="oe1 j" entry="full" default="true">oei</lex>
-  <lex pron="oe0 k r aa0 iy1 n eh0" entry="full" default="true">oekraïne</lex>
+  <lex pron="oe0 k r aa0 iy1 n eh0" entry="full" default="true">oekraïne</lex>
 <lex pron="oe1 rr k n ah0 l" entry="full" default="true">oerknal</lex>
   <lex pron="oe1 r au0 d ax0" entry="full" default="true">oeroude</lex>
   <lex pron="oe1 rr w au0 t" entry="full" default="true">oerwoud</lex>
@@ -23081,7 +23079,7 @@
   <lex pron="oh0 f iy0 s iy1 r ax0 n" entry="full" default="true">officieren</lex>
   <lex pron="oh0 f iy0 s j eu1 s" entry="full" default="true">officieus</lex>
   <lex pron="oh0 f iy0 s j eu1 z ax0" entry="full" default="true">officieuze</lex>
-  <lex pron="oh0 f iy0 s j ee1 l ax0" entry="full" default="true">officiële</lex>
+  <lex pron="oh0 f iy0 s j ee1 l ax0" entry="full" default="true">officiële</lex>
 <lex pron="oh0 f r ee1 rr d ax0" entry="full" default="true">offreerde</lex>
   <lex pron="oh1 f s eh0 t" entry="full" default="true">offset</lex>
   <lex pron="oh1 f s eh0 d d r uh0 k" entry="full" default="true">offsetdruk</lex>
@@ -23135,7 +23133,7 @@
   <lex pron="ow1 l iy0 v ax0 rr" entry="full" default="true">oliver</lex>
   <lex pron="ow1 l iy0 v iy0 rr" entry="full" default="true">olivier</lex>
   <lex pron="ow0 l iy0 v ei1 n m ah0 n t ax0 l" entry="full" default="true">olivijnmantel</lex>
-<lex pron="ow1 l iy0 ax0 n" entry="full" default="true">oliën</lex>
+<lex pron="ow1 l iy0 ax0 n" entry="full" default="true">oliën</lex>
 <lex pron="oh1 l s ax0 n" entry="full" default="true">olsen</lex>
   <lex pron="ow0 l ih1 m p iy0 aa0" entry="full" default="true">olympia</lex>
   <lex pron="ow0 l ih0 m p iy0 aa1 d ax0" entry="full" default="true">olympiade</lex>
@@ -25284,7 +25282,7 @@
   <lex pron="oh1 s k ah0 rr" entry="full" default="true">oskar</lex>
   <lex pron="oh0 s k aa1 rr" entry="1" default="false">oskar</lex>
   <lex pron="oh1 s ax0 n" entry="full" default="true">ossen</lex>
-  <lex pron="ow0 s t ee0 ow0 d eh1 rr m eax0 n" entry="full" default="true">osteodermen</lex>
+  <lex pron="ow0 s t ee0 ow0 d eh1 rr m ax0 n" entry="full" default="true">osteodermen</lex>
 <lex pron="oh0 s t r ow0 gh ow1 t ax0 n" entry="full" default="true">ostrogoten</lex>
 <lex pron="oh1 z w ah0 l t" entry="full" default="true">oswald</lex>
   <lex pron="ow1 t s iy0 uh0 m" entry="full" default="true">otium</lex>
@@ -25303,7 +25301,7 @@
   <lex pron="au0 t s t r ei1 d ax0 rr s" entry="full" default="true">oud-strijders</lex>
   <lex pron="au1 d ax0" entry="full" default="true">oude</lex>
   <lex pron="au0 d ax0 j aa0 rr z aa1 v oh0 n t" entry="full" default="true">oudejaarsavond</lex>
-  <lex pron="au0 d ax0 j aa1 rr s k ohh n f ax0 r an0 s ax0" entry="full" default="true">oudejaarsconference</lex>
+  <lex pron="au0 d ax0 j aa1 rr s k oh0 n f ax0 r an0 s ax0" entry="full" default="true">oudejaarsconference</lex>
 <lex pron="au1 d ax0 n" entry="full" default="true">ouden</lex>
   <lex pron="au1 d ax0 rr" entry="full" default="true">ouder</lex>
   <lex pron="au1 d ax0 rr d oh0 m" entry="full" default="true">ouderdom</lex>
@@ -26243,7 +26241,7 @@
   <lex pron="p eh1 l s" entry="full" default="true">pels</lex>
   <lex pron="p eh1 l v ih0 s" entry="full" default="true">pelvis</lex>
   <lex pron="p eh1 l z ax0 n" entry="full" default="true">pelzen</lex>
-  <lex pron="p ee0 l ee1" entry="full" default="true">pelé</lex>
+  <lex pron="p ee0 l ee1" entry="full" default="true">pelé</lex>
 <lex pron="p eh1 n" entry="full" default="true">pen</lex>
   <lex pron="p ax0 n aa1 t" entry="full" default="true">penaat</lex>
 <lex pron="p eh1 n ah0 l t iy0" entry="full" default="true">penalty</lex>
@@ -27054,7 +27052,7 @@
   <lex pron="p ow0 t eh1 n s iy0" entry="full" default="true">potentie</lex>
   <lex pron="p ow0 t eh0 n s j ee1 l" entry="full" default="true">potentieel</lex>
   <lex pron="p ow0 t eh1 n s iy0 s" entry="full" default="true">potenties</lex>
-  <lex pron="p ow0 t eh0 n s iy0 ee1 l ax0" entry="full" default="true">potentiële</lex>
+  <lex pron="p ow0 t eh0 n s iy0 ee1 l ax0" entry="full" default="true">potentiële</lex>
 <lex pron="p oh1 t h oe0 t" entry="full" default="true">pothoed</lex>
   <lex pron="p oh1 t l ow0 t" entry="full" default="true">potlood</lex>
   <lex pron="p oh0 t m ee1 t ax0 rr" entry="full" default="true">potmeter</lex>
@@ -27190,7 +27188,7 @@
   <lex pron="p r ee0 z iy0 d eh1 n t s" entry="full" default="true">presidents</lex>
   <lex pron="p r ee0 z iy0 d eh1 n t s x ah0 p" entry="full" default="true">presidentschap</lex>
   <lex pron="p r ee0 z iy0 d eh1 n t s k ah0 n d iy0 d aa0 t" entry="full" default="true">presidentskandidaat</lex>
-  <lex pron="p r ee0 s iy0 d eh1 n t s f ax0 rr k iy0 z ih ng ax0 n" entry="full" default="true">presidentsverkiezingen</lex>
+  <lex pron="p r ee0 s iy0 d eh1 n t s f ax0 rr k iy0 z ih0 ng ax0 n" entry="full" default="true">presidentsverkiezingen</lex>
 <lex pron="p r ee0 z iy0 d ee1 r ax0 n d ax0" entry="full" default="true">presiderende</lex>
   <lex pron="p r ee0 z iy1 d iy0 uh0 m" entry="full" default="true">presidium</lex>
   <lex pron="p r eh1 s l iy0" entry="full" default="true">presley</lex>
@@ -27588,7 +27586,7 @@
   <lex pron="p r ui1 s iy0 s ax0" entry="full" default="true">pruisische</lex>
   <lex pron="p s ah1 l m" entry="full" default="true">psalm</lex>
   <lex pron="p s ah1 l m ax0 n" entry="full" default="true">psalmen</lex>
-  <lex pron="p s ah1 l m ee0 l ow0 d iy0 ax0 n" entry="full" default="true">psalmmelodieën</lex>
+  <lex pron="p s ah1 l m ee0 l ow0 d iy0 ax0 n" entry="full" default="true">psalmmelodieën</lex>
 <lex pron="p s eu0 d ow0 n iy1 m" entry="full" default="true">pseudoniem</lex>
   <lex pron="p s iy0 x ee0 d ee1 l iy0 s ax0" entry="full" default="true">psychedelische</lex>
   <lex pron="p s iy0 x iy0 aa1 t ax0 rr" entry="full" default="true">psychiater</lex>
@@ -30311,8 +30309,8 @@
   <lex pron="s eh0 rr v iy1 s" entry="full" default="true">servies</lex>
   <lex pron="s eh1 rr v iy0 s" entry="full" default="true">servisch</lex>
   <lex pron="s eh1 rr v iy0 s ax0" entry="full" default="true">servische</lex>
-  <lex pron="s eh1 rr v iy0 ax0" entry="full" default="true">servië</lex>
-<lex pron="s eh1 rr v iy0 ax0 rr s" entry="full" default="true">serviërs</lex>
+  <lex pron="s eh1 rr v iy0 ax0" entry="full" default="true">servië</lex>
+<lex pron="s eh1 rr v iy0 ax0 rr s" entry="full" default="true">serviërs</lex>
 <lex pron="s eh1 s iy0" entry="full" default="true">sessie</lex>
   <lex pron="s eh1 s iy0 s" entry="full" default="true">sessies</lex>
   <lex pron="s eh1 t" entry="full" default="true">set</lex>
@@ -32342,7 +32340,7 @@
   <lex pron="s uh1 b j eh0 k t ax0 n" entry="full" default="true">subjecten</lex>
   <lex pron="s uh0 b j eh1 k t ax0 n" entry="1" default="false">subjecten</lex>
   <lex pron="s uh0 b j eh0 k t iy1 f" entry="full" default="true">subjectief</lex>
-  <lex pron="s uh0 b j aeh0 k t iy1 f s" entry="full" default="true">subjectiefs</lex>
+  <lex pron="s uh0 b j eh0 k t iy1 f s" entry="full" default="true">subjectiefs</lex>
 <lex pron="s uh0 b j eh0 k t iy1 v ax0" entry="full" default="true">subjectieve</lex>
   <lex pron="s uu0 b l iy1 m ax0" entry="full" default="true">sublieme</lex>
   <lex pron="s uu0 b l iy0 m ee1 r ax0 n" entry="full" default="true">sublimeren</lex>
@@ -33292,7 +33290,7 @@
   <lex pron="t ee0 ow0 r ee1 t iy0 s ax0" entry="full" default="true">theoretische</lex>
   <lex pron="t ee0 ow0 r iy1" entry="full" default="true">theorie</lex>
   <lex pron="t ee0 ow0 r iy1 v oh0 rr m ih0 ng" entry="full" default="true">theorievorming</lex>
-  <lex pron="t ee0 ow0 r iy1 ax0 n" entry="full" default="true">theorieën</lex>
+  <lex pron="t ee0 ow0 r iy1 ax0 n" entry="full" default="true">theorieën</lex>
 <lex pron="t ee0 ow0 z ow0 f iy1" entry="full" default="true">theosofie</lex>
   <lex pron="t ee0 ow0 z ow1 f iy0 s ax0" entry="full" default="true">theosofische</lex>
   <lex pron="t ee0 r ah0 p eu1 t ax0" entry="full" default="true">therapeute</lex>
@@ -34372,7 +34370,7 @@
   <lex pron="t w ee1 v au2 d ax0 gh ax0" entry="full" default="true">tweevoudige</lex>
   <lex pron="t w ee1 z ei2 d ax0 x" entry="full" default="true">tweezijdig</lex>
   <lex pron="t w ee1 z ei2 d ax0 gh ax0" entry="full" default="true">tweezijdige</lex>
-  <lex pron="t w ee0 ax0 n t w ih1 n t ih0 x" entry="full" default="true">tweeëntwintig</lex>
+  <lex pron="t w ee0 ax0 n t w ih1 n t ih0 x" entry="full" default="true">tweeëntwintig</lex>
 <lex pron="t w eh1 n s" entry="full" default="true">twens</lex>
   <lex pron="t w eh1 n t ax0" entry="full" default="true">twente</lex>
   <lex pron="t w ei1 f ax0 l" entry="full" default="true">twijfel</lex>
@@ -34907,7 +34905,7 @@
   <lex pron="ui0 t f oe1 r ax0 gh ax0" entry="full" default="true">uitvoerige</lex>
   <lex pron="ui1 t f oe0 r ih0 ng" entry="full" default="true">uitvoering</lex>
   <lex pron="ui1 t f oe0 r ih0 ng ax0 n" entry="full" default="true">uitvoeringen</lex>
-  <lex pron="ui1 t f oe0 r ih1 ng s p l ah0 n eax0 n" entry="full" default="true">uitvoeringsplannen</lex>
+  <lex pron="ui1 t f oe0 r ih1 ng s p l ah0 n ax0 n" entry="full" default="true">uitvoeringsplannen</lex>
 <lex pron="ui1 t f oe0 r ih0 ng s p r ah0 k t ei0 k" entry="full" default="true">uitvoeringspraktijk</lex>
   <lex pron="ui1 t f oe0 r ih0 ng s p r ah0 k t ei0 k ax0 n" entry="full" default="true">uitvoeringspraktijken</lex>
   <lex pron="ui1 t f oe0 rr t" entry="full" default="true">uitvoert</lex>
@@ -35226,7 +35224,7 @@
   <lex pron="v aa0 r iy0 ee1 rr d ax0 n" entry="full" default="true">varieerden</lex>
   <lex pron="v aa0 r iy0 ee1 rr t" entry="full" default="true">varieert</lex>
   <lex pron="v aa0 r iy0 ow1 l aa0" entry="full" default="true">variola</lex>
-  <lex pron="v aa0 r iy0 ih1 r ax0 n" entry="full" default="true">variëren</lex>
+  <lex pron="v aa0 r iy0 ih1 r ax0 n" entry="full" default="true">variëren</lex>
 <lex pron="v ah1 rr k ax0 n" entry="full" default="true">varken</lex>
   <lex pron="v ah1 rr k ax0 n s" entry="full" default="true">varkens</lex>
   <lex pron="v ah0 rr k ax0 n s f oh0 k ax0 r ei1" entry="full" default="true">varkensfokkerij</lex>
@@ -35415,7 +35413,7 @@
   <lex pron="v eh1 n d ax0 l s" entry="full" default="true">vendels</lex>
   <lex pron="v eh0 n d eh1 t aa0" entry="full" default="true">vendetta</lex>
 <lex pron="v ee1 n ax0 n" entry="full" default="true">venen</lex>
-  <lex pron="v ax0 n ee1 t s iy0 ax0" entry="full" default="true">venetië</lex>
+  <lex pron="v ax0 n ee1 t s iy0 ax0" entry="full" default="true">venetië</lex>
 <lex pron="v ee0 n ee0 z ow0 l aa1 n s" entry="full" default="true">venezolaans</lex>
   <lex pron="v ee0 n ee0 z ow0 l aa1 n s ax0" entry="full" default="true">venezolaanse</lex>
   <lex pron="v ee0 n ee0 z uu0 ee1 l aa0" entry="full" default="true">venezuela</lex>
@@ -37220,7 +37218,7 @@
   <lex pron="v ei1 f t iy0 n d ax0" entry="full" default="true">vijftiende</lex>
   <lex pron="v ei1 f t iy0 n d ui0 z ax0 n t" entry="full" default="true">vijftienduizend</lex>
 <lex pron="v ei1 f t iy0 n h oh0 n d ax0 rr t" entry="full" default="true">vijftienhonderd</lex>
-  <lex pron="v ei0 f t iy0 n t w ee0 ax0 n z ee1 v ax0 n t ih0 gh" entry="full" default="true">vijftientweeënzeventig</lex>
+  <lex pron="v ei0 f t iy0 n t w ee0 ax0 n z ee1 v ax0 n t ih0 gh" entry="full" default="true">vijftientweeënzeventig</lex>
 <lex pron="f ei1 f t ax0 x" entry="full" default="true">vijftig</lex>
   <lex pron="f ei1 f t ax0 gh d ui0 z ax0 n t" entry="full" default="true">vijftigduizend</lex>
   <lex pron="f ei1 f t ax0 gh ax0 rr" entry="full" default="true">vijftiger</lex>
@@ -37546,7 +37544,7 @@
   <lex pron="v oe1 d b ah0 l ax0 rr s" entry="full" default="true">voetballers</lex>
   <lex pron="v oe1 d b ah0 l s x oe0 n ax0 n" entry="full" default="true">voetbalschoenen</lex>
   <lex pron="v oe1 d b ah0 l t" entry="full" default="true">voetbalt</lex>
-  <lex pron="v oe1 t b ah0 l t r e@ n s f ax0 rr" entry="full" default="true">voetbaltransfer</lex>
+  <lex pron="v oe1 t b ah0 l t r e@0 n s f ax0 rr" entry="full" default="true">voetbaltransfer</lex>
 <lex pron="v oe1 d b ah0 l v eh0 l d ax0 n" entry="full" default="true">voetbalvelden</lex>
   <lex pron="v oe1 d b ah0 l w eh0 t s t r ei0 t" entry="full" default="true">voetbalwedstrijd</lex>
   <lex pron="v oe1 d b ah0 l w eh0 t s t r ei0 d ax0 n" entry="full" default="true">voetbalwedstrijden</lex>
@@ -40012,7 +40010,7 @@
   <lex pron="z eh1 z d ax0" entry="full" default="true">zesde</lex>
   <lex pron="z eh1 z d ui0 z ax0 n t" entry="full" default="true">zesduizend</lex>
   <lex pron="z eh1 z ax0 n d eh0 rr t ax0 x" entry="full" default="true">zesendertig</lex>
-  <lex pron="z eh0 s t iy n t ah1 x t ih0 x" entry="full" default="true">zesentachtig</lex>
+  <lex pron="z eh0 s t iy0 n t ah1 x t ih0 x" entry="full" default="true">zesentachtig</lex>
 <lex pron="z eh1 z ax0 n t w ih0 n t ax0 x" entry="full" default="true">zesentwintig</lex>
   <lex pron="z eh1 z ax0 n t w ih0 n t ax0 gh d ui0 z ax0 n t" entry="full" default="true">zesentwintigduizend</lex>
   <lex pron="z eh0 s ax0 n z eh1 s t ih0 x" entry="full" default="true">zesenzestig</lex>
@@ -40027,7 +40025,7 @@
   <lex pron="z eh1 s t iy0 n d ax0" entry="full" default="true">zestiende</lex>
   <lex pron="z eh1 s t iy0 n d ui0 z ax0 n t" entry="full" default="true">zestienduizend</lex>
   <lex pron="z eh1 s t iy0 n h oh0 n d ax0 rr t" entry="full" default="true">zestienhonderd</lex>
-  <lex pron="z eh1 s t iy0 n t w ee1 eh0 n t w ih0 n t ih0 gh" entry="full" default="true">zestientweeëntwintig</lex>
+  <lex pron="z eh1 s t iy0 n t w ee1 eh0 n t w ih0 n t ih0 gh" entry="full" default="true">zestientweeëntwintig</lex>
 <lex pron="z eh0 s t iy0 n z ee1 v ax0 n t ax0 gh" entry="full" default="true">zestienzeventig</lex>
 <lex pron="s eh1 s t ax0 x" entry="full" default="true">zestig</lex>
   <lex pron="s eh1 s t ax0 gh d ui0 z ax0 n t" entry="full" default="true">zestigduizend</lex>
@@ -40515,7 +40513,7 @@
   <lex pron="z w ah0 rr t w ih1 t" entry="full" default="true">zwart-wit</lex>
   <lex pron="z w ah1 rr t ax0" entry="full" default="true">zwarte</lex>
   <lex pron="z w ah1 rr t ax0 n" entry="full" default="true">zwarten</lex>
-  <lex pron="z w ah1 rr t ax0 d eik k s t ax0 rr s x ah0 n s" entry="full" default="true">zwartendijksterschans</lex>
+  <lex pron="z w ah1 rr t ax0 d ei0 k s t ax0 rr s x ah0 n s" entry="full" default="true">zwartendijksterschans</lex>
 <lex pron="z w aa1 v ax0 l" entry="full" default="true">zwavel</lex>
   <lex pron="z w aa1 v ax0 l d iy0 oh0 k s iy0 d ax0" entry="full" default="true">zwaveldioxide</lex>
   <lex pron="z w aa1 v ax0 l r ee0 ah0 k t oh0 rr" entry="full" default="true">zwavelreactor</lex>
@@ -40585,3 +40583,4 @@
   <lex pron="z w oe1 rr t" entry="full" default="true">zwoerd</lex>
   <lex pron="z w oh1 l ax0" entry="full" default="true">zwolle</lex>
 </lexicon>
+

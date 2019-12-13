@@ -50,8 +50,14 @@
 		<n pat="u"/>
 		<n pat="o"/>
 		<n pat="a"/>
-		<n pat="e"/>
 		<n pat="y"/>
 		<n pat="i"/>
+		<n pat="iy"/>
+		<n pat="ae"/>
+		<n pat="ij"/>
+		<n pat="iye"/>
+		<n pat="aj"/>
+		<n pat="@"/>
+		<n pat="ie"/>
 	</nuclei>
 </syl>

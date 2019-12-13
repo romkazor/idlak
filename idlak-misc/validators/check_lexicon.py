@@ -6,7 +6,7 @@ import os
 import sys
 import re
 import collections
-
+import unicodedata
 
 def check_lexicon(lexicon, phoneset, sylmax):
     valid = True
@@ -15,6 +15,9 @@ def check_lexicon(lexicon, phoneset, sylmax):
     phones = parse_phoneset(phoneset)
     nuclei = get_nuclei(sylmax)
     pc = PronCheck(phones, nuclei)
+    used_phones = set([p for p in phones if p.lower() == p])
+    
+    strip_pat = re.compile('\d*')
 
     for event, lex in etree.iterparse(lexicon, events=("end",), tag='lex'):
         grapheme = lex.text.strip()
@@ -27,6 +30,10 @@ def check_lexicon(lexicon, phoneset, sylmax):
             errprint("ERROR: '{}': graphemes cannot contain more than one token".format(grapheme))
             valid = False
             continue
+        if grapheme != unicodedata.normalize('NFD', grapheme):
+            errprint("ERROR: '{}': graphemes is not fully decomposed unicode, use {}".format(grapheme, unicodedata.normalize('NFD', grapheme)))
+            valid = False
+            continue
 
         pron = lex.attrib.get('pron')
         if not pron:
@@ -37,6 +44,8 @@ def check_lexicon(lexicon, phoneset, sylmax):
             errprint("ERROR: '{}': pronuncation is invalid".format(grapheme))
             valid = False
             continue
+        lex_phones = [strip_pat.sub('', p) for p in pron.split()]
+        used_phones.difference_update(lex_phones)
 
         entry = lex.attrib.get('entry', '').strip()
         if not entry:
@@ -64,6 +73,9 @@ def check_lexicon(lexicon, phoneset, sylmax):
 
         lex_dict[grapheme].append((pron, entry, default))
 
+    if(used_phones):
+        phns =  '", "'.join(used_phones)
+        errprint(f'WARN: \"{phns}\" have no entries in the lexicon')
 
     for grapheme, (lex) in lex_dict.items():
         if len(lex) > 1 and sum(map(lambda l: l[2], lex)) > 1:
@@ -90,14 +102,14 @@ class PronCheck:
         for p in pron:
             m = self._regex_phone.match(p)
             if m is None:
-                errprint("ERROR: '{p}' is not a valid phone".format(p))
+                errprint("ERROR: '{}' is not a valid phone".format(p))
                 return False
             if m.group('stress'):
                 if not m.group('phoneme') in self.nuclei:
-                    errprint("ERROR: '{p}' should not have stress".format(p))
+                    errprint("ERROR: '{}' should not have stress".format(p))
                     return False
             elif m.group('phoneme') in self.nuclei:
-                errprint("ERROR: '{p}' missing stress".format(p))
+                errprint("ERROR: '{}' missing stress".format(p))
                 return False
         return True
 
@@ -107,7 +119,7 @@ def parse_phoneset(phoneset):
     phones = []
     try:
         for event, ph in etree.iterparse(phoneset, events=("end",), tag='phone'):
-            if ph.attrib['name'] != '_' and ph.attrib['name'] == ph.attrib['name'].lower():
+            if ph.attrib['name'] != '_':
                 phones.append(ph.attrib['name'].strip())
     except Exception as e:
         errprint("CRITICAL: cannot parse phoneset file")
@@ -140,7 +152,7 @@ def main():
                         help = "accent specific phoneset file")
     parser.add_argument("-s", "--sylmax", required = True, type=argparse.FileType('rb'),
                         help = "accent specific syllabic specification file")
-    parser.add_argument("-l", "--lexicon", type=argparse.FileType('rb'),
+    parser.add_argument("-l", "--lexicon", required = True, type=argparse.FileType('rb'),
                         help = "lexicon file")
     args = parser.parse_args()
 

@@ -18,6 +18,7 @@
 
 
 import os
+import copy
 import sys
 import argparse
 import re
@@ -34,11 +35,25 @@ def extracted_needed_transcriptions(in_file, scp_file, out_file):
             continue
         fileids.append(line.split()[0])
 
-    for uttnode in xml.xpath('//fileid'):
-        if not uttnode.get('id') in fileids:
-            uttnode.getparent().remove(uttnode)
+    spkpat = re.compile('[a-z]{3}')
+    speakers = set(s.split('_')[0] for s in fileids)
+    speakers = [s for s in speakers if spkpat.match(s)]
 
-    out_file.write(etree.tostring(xml,
+    outxml = etree.Element("recording_script")
+
+    for uttnode in xml.xpath('//fileid'):
+        fid = uttnode.get('id')
+        if fid in fileids:
+            outxml.append(copy.copy(uttnode))
+        elif len(fid.split('_')) == 2:
+            for spk in speakers:
+                fullid = spk + '_' + fid
+                if fullid in fileids:
+                    node = copy.copy(uttnode)
+                    node.set('id', fullid)
+                    outxml.append(node)
+
+    out_file.write(etree.tostring(outxml,
                    xml_declaration=True,
                    encoding='utf-8',
                    pretty_print = True))

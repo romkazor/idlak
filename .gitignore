@@ -100,6 +100,8 @@ GSYMS
 /idlak-egs/*/s*/lblf0data
 /idlak-egs/*/s*/voices
 /idlak-egs/*/s*/testout
+/idlak-egs/tts_tangle_swara/s2/corpus
+
 
 # Idlak scripts default values
 /idlak-misc/cart_lts/tmp/
@@ -219,3 +221,6 @@ GSYMS
 /tools/cub-1.8.0.zip
 /tools/cub-1.8.0/
 /tools/cub
+tools/idlak
+tools/python/.use_default_python
+**/.vscode
