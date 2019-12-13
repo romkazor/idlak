@@ -15,7 +15,7 @@ l2_penalty=0
 
 # data processing,
 train_tool="nnet-train-frmshuff"
-train_tool_opts="--minibatch-size=64 --randomizer-size=32768 --randomizer-seed=777"
+train_tool_opts="--minibatch-size=256 --randomizer-size=32768 --randomizer-seed=777"
 feature_transform=
 output_feature_transform=
 
