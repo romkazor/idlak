@@ -75,9 +75,6 @@ cart2toolspath="$HERE/../../tools"
 validatorspath="$HERE/../validators"
 phonetisaurus_align="$cart2toolspath/Phonetisaurus/phonetisaurus-align"
 
-# check the lexicon is valid
-python3 $validatorspath/check_lexicon.py -l $lexicon -p $phoneset -s $sylmax
-
 bname=$( basename ${lexicon} .xml )
 archname=${bname#lexicon-}
 

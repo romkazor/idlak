@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<phonesetup>
+  <phone name="a">
+    <description ipa="a" pron_example="p_a" word_example="pá"/>
+  </phone>
+  <phone name="aa">
+    <description ipa="ɐ" pron_example="k_an_m_aa" word_example="cama"/>
+  </phone>
+  <phone name="e">
+    <description ipa="ɛ" pron_example="p_e" word_example="pé"/>
+  </phone>
+  <phone name="ee">
+    <description ipa="e" pron_example="v_ee" word_example="vê"/>
+  </phone>
+  <phone name="@">
+    <description ipa="ə" pron_example="d_@" word_example="de"/>
+  </phone>
+  <phone name="o">
+    <description ipa="ɔ" pron_example="p_o" word_example="pó"/>
+  </phone>
+  <phone name="oo">
+    <description ipa="o" pron_example="a_v_oo" word_example="avô"/>
+  </phone>
+  <phone name="i">
+    <description ipa="i" pron_example="t_i" word_example="ti"/>
+  </phone>
+  <phone name="u">
+    <description ipa="u" pron_example="t_u_d_u" word_example="tudo"/>
+  </phone>
+  <phone name="j">
+    <description ipa="j" pron_example="p_a_j" word_example="pai"/>
+  </phone>
+  <phone name="w">
+    <description ipa="w" pron_example="p_a_w" word_example="pau"/>
+  </phone>
+  <phone name="an">
+    <description ipa="ә̃" pron_example="b_an_k_u" word_example="banco"/>
+  </phone>
+  <phone name="en">
+    <description ipa="ẽ" pron_example="p_en_t_@" word_example="pente"/>
+  </phone>
+  <phone name="on">
+    <description ipa="ɔ̃" pron_example="p_on_t_@" word_example="ponte"/>
+  </phone>
+  <phone name="in">
+    <description ipa="ĩ" pron_example="s_in" word_example="sim"/>
+  </phone>
+  <phone name="un">
+    <description ipa="ũ" pron_example="@_t_un" word_example="atum"/>
+  </phone>
+  <phone name="b">
+    <description ipa="b" pron_example="b_o_l_@" word_example="bola"/>
+  </phone>
+  <phone name="d">
+    <description ipa="d" pron_example="d_ee_d_u" word_example="dedo"/>
+  </phone>
+  <phone name="f">
+    <description ipa="f" pron_example="f_e" word_example="fé"/>
+  </phone>
+  <phone name="g">
+    <description ipa="g" pron_example="g_a_t_u" word_example="gato"/>
+  </phone>
+  <phone name="x">
+    <description ipa="ʒ" pron_example="x_a" word_example="já"/>
+  </phone>
+  <phone name="k">
+    <description ipa="k" pron_example="k_a_z_@" word_example="casa"/>
+  </phone>
+  <phone name="l">
+    <description ipa="l" pron_example="l_a" word_example="lá"/>
+  </phone>
+  <phone name="ll">
+    <description ipa="lˠ" pron_example="m_a_ll" word_example="mal"/>
+  </phone>
+  <phone name="m">
+    <description ipa="m" pron_example="m_@_un" word_example="mão"/>
+  </phone>
+  <phone name="n">
+    <description ipa="n" pron_example="n_@_un" word_example="não"/>
+  </phone>
+  <phone name="ng">
+    <description ipa=" ŋ" pron_example="b_an_ng_k_u" word_example="banco"/>
+  </phone>
+  <phone name="ny">
+    <description ipa=" ɲ" pron_example="s_@_ny_@" word_example="senha"/>
+  </phone>
+  <phone name="p">
+    <description ipa="p" pron_example="p_a" word_example="pá"/>
+  </phone>
+  <phone name="r">
+    <description ipa="ɾ" pron_example="k_a_r_u" word_example="caro"/>
+  </phone>
+  <phone name="rr">
+    <description ipa="ʁ" pron_example="k_a_rr_u" word_example="carro"/>
+  </phone>
+  <phone name="s">
+    <description ipa="s" pron_example="s_o_ll" word_example="sol"/>
+  </phone>
+  <phone name="sh">
+    <description ipa=" ʃ" pron_example="sh_a_v_@" word_example="chave"/>
+  </phone>
+  <phone name="t">
+    <description ipa="t" pron_example="t_u" word_example="tu"/>
+  </phone>
+  <phone name="v">
+    <description ipa="v" pron_example="v_o_t_aa" word_example="vota"/>
+  </phone>
+  <phone name="lh">
+    <description ipa="ʎ" pron_example="v_a_lh_a" word_example="valha"/>
+  </phone>
+  <phone name="z">
+    <description ipa="z" pron_example="k_a_z_@" word_example="casa"/>
+  </phone>
+</phonesetup>

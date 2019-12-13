@@ -56,7 +56,7 @@ learn_rate=0.008   # initial learning rate,
 scheduler_opts=    # options, passed to the training scheduler,
 train_tool=nnet-train-frmshuff-tgtmat  # default idlak training tool
                    # optionally change the training tool,
-train_tool_opts="--objective-function=mse"   # options for the training tool,
+train_tool_opts="--objective-function=mse --minibatch-size=64"   # options for the training tool,
 frame_weights=     # per-frame weights for gradient weighting,
 utt_weights=       # per-utterance weights (scalar for --frame-weights),
 
