@@ -15,6 +15,9 @@ def check_lexicon(lexicon, phoneset, sylmax):
     phones = parse_phoneset(phoneset)
     nuclei = get_nuclei(sylmax)
     pc = PronCheck(phones, nuclei)
+    used_phones = set([p for p in phones if p.lower() == p])
+    
+    strip_pat = re.compile('\d*')
 
     for event, lex in etree.iterparse(lexicon, events=("end",), tag='lex'):
         grapheme = lex.text.strip()
@@ -41,6 +44,8 @@ def check_lexicon(lexicon, phoneset, sylmax):
             errprint("ERROR: '{}': pronuncation is invalid".format(grapheme))
             valid = False
             continue
+        lex_phones = [strip_pat.sub('', p) for p in pron.split()]
+        used_phones.difference_update(lex_phones)
 
         entry = lex.attrib.get('entry', '').strip()
         if not entry:
@@ -68,6 +73,9 @@ def check_lexicon(lexicon, phoneset, sylmax):
 
         lex_dict[grapheme].append((pron, entry, default))
 
+    if(used_phones):
+        phns =  '", "'.join(used_phones)
+        errprint(f'WARN: \"{phns}\" have no entries in the lexicon')
 
     for grapheme, (lex) in lex_dict.items():
         if len(lex) > 1 and sum(map(lambda l: l[2], lex)) > 1:

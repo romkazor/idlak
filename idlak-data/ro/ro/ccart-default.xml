@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <lts>
-	<tree ltr='a' rootnode='N1' terminal='1' nonterminal='0'>
-		<node id='T0' val='a0'/>
+	<tree ltr='a' rootnode='N2' terminal='2' nonterminal='2'>
+		<node id='T0' val='0'/>
+		<node id='T1' val='a0'/>
+		<node id='N2' pos='n.name' posval='̆' yes='0' no='3'/>
+		<node id='N3' pos='n.name' posval='̂' yes='0' no='1'/>
 	</tree>
 	<tree ltr='b' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='b'/>
@@ -36,17 +39,21 @@
 		<node id='T1' val='h'/>
 		<node id='N2' pos='p.name' posval='c' yes='0' no='1'/>
 	</tree>
-	<tree ltr='i' rootnode='N3' terminal='3' nonterminal='7'>
+	<tree ltr='i' rootnode='N4' terminal='4' nonterminal='10'>
 		<node id='T0' val='j'/>
 		<node id='T1' val='ij'/>
-		<node id='T2' val='i0'/>
-		<node id='N3' pos='n.name' posval='#' yes='6' no='9'/>
-		<node id='N4' pos='p.name' posval='e' yes='0' no='1'/>
-		<node id='N5' pos='p.name' posval='u' yes='0' no='4'/>
-		<node id='N6' pos='p.name' posval='i' yes='0' no='5'/>
-		<node id='N7' pos='p.p.p.name' posval='#' yes='0' no='2'/>
-		<node id='N8' pos='n.name' posval='e' yes='7' no='2'/>
-		<node id='N9' pos='n.name' posval='u' yes='2' no='8'/>
+		<node id='T2' val='0'/>
+		<node id='T3' val='i0'/>
+		<node id='N4' pos='n.name' posval='#' yes='7' no='13'/>
+		<node id='N5' pos='p.name' posval='e' yes='0' no='1'/>
+		<node id='N6' pos='p.p.name' posval='l' yes='0' no='5'/>
+		<node id='N7' pos='p.name' posval='i' yes='0' no='6'/>
+		<node id='N8' pos='p.p.p.p.p.name' posval='#' yes='3' no='0'/>
+		<node id='N9' pos='n.n.n.n.n.name' posval='#' yes='3' no='0'/>
+		<node id='N10' pos='n.n.n.name' posval='#' yes='3' no='9'/>
+		<node id='N11' pos='n.name' posval='e' yes='10' no='3'/>
+		<node id='N12' pos='n.name' posval='u' yes='8' no='11'/>
+		<node id='N13' pos='n.name' posval='̂' yes='2' no='12'/>
 	</tree>
 	<tree ltr='j' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='zh'/>
@@ -77,58 +84,76 @@
 	<tree ltr='r' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='r'/>
 	</tree>
-	<tree ltr='s' rootnode='N1' terminal='1' nonterminal='0'>
-		<node id='T0' val='s'/>
+	<tree ltr='s' rootnode='N2' terminal='2' nonterminal='1'>
+		<node id='T0' val='0'/>
+		<node id='T1' val='s'/>
+		<node id='N2' pos='n.name' posval='̦' yes='0' no='1'/>
 	</tree>
-	<tree ltr='0' rootnode='N2' terminal='2' nonterminal='43'>
+	<tree ltr='0' rootnode='N2' terminal='2' nonterminal='57'>
 		<node id='T0' val='1'/>
 		<node id='T1' val='0'/>
-		<node id='N2' pos='n.n.n.n.n.name' posval='#' yes='40' no='44'/>
+		<node id='N2' pos='n.n.n.n.n.n.name' posval='#' yes='52' no='58'/>
 		<node id='N3' pos='p.p.p.name' posval='#' yes='0' no='1'/>
-		<node id='N4' pos='n.n.n.n.name' posval='e' yes='0' no='1'/>
-		<node id='N5' pos='n.n.n.n.name' posval='#' yes='0' no='4'/>
-		<node id='N6' pos='p.name' posval='#' yes='1' no='5'/>
-		<node id='N7' pos='n.n.n.name' posval='#' yes='0' no='6'/>
-		<node id='N8' pos='p.p.p.p.name' posval='#' yes='3' no='1'/>
-		<node id='N9' pos='p.p.p.p.name' posval='#' yes='0' no='1'/>
-		<node id='N10' pos='n.name' posval='r' yes='1' no='0'/>
-		<node id='N11' pos='n.n.name' posval='i' yes='1' no='0'/>
-		<node id='N12' pos='p.p.p.name' posval='#' yes='0' no='11'/>
-		<node id='N13' pos='n.name' posval='r' yes='12' no='0'/>
-		<node id='N14' pos='n.name' posval='c' yes='9' no='13'/>
-		<node id='N15' pos='name' posval='i' yes='0' no='1'/>
-		<node id='N16' pos='n.n.n.name' posval='e' yes='0' no='15'/>
-		<node id='N17' pos='n.n.n.name' posval='i' yes='0' no='16'/>
-		<node id='N18' pos='n.n.name' posval='u' yes='0' no='17'/>
-		<node id='N19' pos='n.n.name' posval='t' yes='0' no='18'/>
-		<node id='N20' pos='n.n.name' posval='a' yes='1' no='19'/>
-		<node id='N21' pos='n.n.n.name' posval='#' yes='14' no='20'/>
-		<node id='N22' pos='p.name' posval='l' yes='10' no='21'/>
-		<node id='N23' pos='n.name' posval='e' yes='1' no='22'/>
-		<node id='N24' pos='n.name' posval='n' yes='0' no='23'/>
-		<node id='N25' pos='n.name' posval='a' yes='1' no='24'/>
-		<node id='N26' pos='n.n.n.n.name' posval='i' yes='0' no='1'/>
-		<node id='N27' pos='n.n.n.name' posval='r' yes='26' no='1'/>
-		<node id='N28' pos='n.n.n.name' posval='i' yes='0' no='27'/>
-		<node id='N29' pos='n.n.n.name' posval='l' yes='10' no='28'/>
-		<node id='N30' pos='n.n.n.name' posval='n' yes='1' no='29'/>
-		<node id='N31' pos='n.n.n.name' posval='a' yes='1' no='30'/>
-		<node id='N32' pos='n.n.n.name' posval='u' yes='0' no='31'/>
-		<node id='N33' pos='n.n.name' posval='a' yes='1' no='32'/>
-		<node id='N34' pos='n.n.n.n.name' posval='t' yes='1' no='33'/>
-		<node id='N35' pos='n.n.n.n.name' posval='#' yes='25' no='34'/>
-		<node id='N36' pos='n.name' posval='i' yes='9' no='35'/>
-		<node id='N37' pos='n.n.n.name' posval='t' yes='1' no='36'/>
-		<node id='N38' pos='n.name' posval='l' yes='8' no='37'/>
-		<node id='N39' pos='name' posval='a' yes='7' no='38'/>
-		<node id='N40' pos='n.name' posval='#' yes='3' no='39'/>
-		<node id='N41' pos='p.p.name' posval='#' yes='1' no='0'/>
-		<node id='N42' pos='n.n.n.n.name' posval='l' yes='0' no='1'/>
-		<node id='N43' pos='n.n.n.name' posval='l' yes='41' no='42'/>
-		<node id='N44' pos='n.n.n.n.n.n.n.name' posval='#' yes='43' no='1'/>
+		<node id='N4' pos='p.p.p.p.p.p.name' posval='#' yes='1' no='0'/>
+		<node id='N5' pos='n.n.name' posval='#' yes='1' no='4'/>
+		<node id='N6' pos='p.p.name' posval='#' yes='0' no='1'/>
+		<node id='N7' pos='n.n.name' posval='t' yes='0' no='6'/>
+		<node id='N8' pos='n.n.n.n.n.name' posval='#' yes='7' no='1'/>
+		<node id='N9' pos='n.n.name' posval='̦' yes='0' no='8'/>
+		<node id='N10' pos='n.n.n.name' posval='l' yes='0' no='9'/>
+		<node id='N11' pos='n.n.name' posval='a' yes='1' no='10'/>
+		<node id='N12' pos='p.name' posval='#' yes='1' no='11'/>
+		<node id='N13' pos='n.n.n.n.name' posval='#' yes='0' no='12'/>
+		<node id='N14' pos='n.n.n.n.name' posval='#' yes='0' no='1'/>
+		<node id='N15' pos='name' posval='u' yes='1' no='14'/>
+		<node id='N16' pos='p.p.p.p.name' posval='#' yes='15' no='1'/>
+		<node id='N17' pos='p.p.p.p.name' posval='#' yes='0' no='1'/>
+		<node id='N18' pos='n.name' posval='r' yes='1' no='0'/>
+		<node id='N19' pos='n.n.name' posval='i' yes='1' no='0'/>
+		<node id='N20' pos='n.name' posval='c' yes='1' no='19'/>
+		<node id='N21' pos='p.p.p.name' posval='#' yes='0' no='20'/>
+		<node id='N22' pos='n.n.n.name' posval='e' yes='0' no='1'/>
+		<node id='N23' pos='n.n.n.name' posval='i' yes='0' no='22'/>
+		<node id='N24' pos='n.n.n.name' posval='̆' yes='0' no='23'/>
+		<node id='N25' pos='n.n.name' posval='u' yes='0' no='24'/>
+		<node id='N26' pos='n.n.name' posval='̦' yes='0' no='25'/>
+		<node id='N27' pos='n.n.n.name' posval='#' yes='21' no='26'/>
+		<node id='N28' pos='n.name' posval='e' yes='1' no='27'/>
+		<node id='N29' pos='p.name' posval='l' yes='18' no='28'/>
+		<node id='N30' pos='n.name' posval='n' yes='0' no='29'/>
+		<node id='N31' pos='n.name' posval='a' yes='1' no='30'/>
+		<node id='N32' pos='n.n.n.name' posval='t' yes='1' no='31'/>
+		<node id='N33' pos='n.n.n.n.n.name' posval='#' yes='0' no='1'/>
+		<node id='N34' pos='n.n.n.name' posval='̦' yes='0' no='33'/>
+		<node id='N35' pos='name' posval='u' yes='1' no='0'/>
+		<node id='N36' pos='p.p.p.p.name' posval='#' yes='1' no='0'/>
+		<node id='N37' pos='n.n.n.name' posval='r' yes='36' no='1'/>
+		<node id='N38' pos='n.n.n.name' posval='a' yes='1' no='37'/>
+		<node id='N39' pos='n.n.n.n.name' posval='̆' yes='0' no='38'/>
+		<node id='N40' pos='n.n.n.name' posval='u' yes='0' no='39'/>
+		<node id='N41' pos='name' posval='̆' yes='1' no='40'/>
+		<node id='N42' pos='n.n.n.name' posval='l' yes='35' no='41'/>
+		<node id='N43' pos='n.n.name' posval='t' yes='34' no='42'/>
+		<node id='N44' pos='n.n.name' posval='̦' yes='0' no='43'/>
+		<node id='N45' pos='n.n.n.n.name' posval='t' yes='1' no='44'/>
+		<node id='N46' pos='n.n.name' posval='a' yes='1' no='45'/>
+		<node id='N47' pos='n.n.n.n.name' posval='#' yes='32' no='46'/>
+		<node id='N48' pos='n.name' posval='i' yes='17' no='47'/>
+		<node id='N49' pos='n.name' posval='l' yes='16' no='48'/>
+		<node id='N50' pos='name' posval='a' yes='13' no='49'/>
+		<node id='N51' pos='n.name' posval='̆' yes='5' no='50'/>
+		<node id='N52' pos='n.name' posval='#' yes='3' no='51'/>
+		<node id='N53' pos='p.p.p.name' posval='#' yes='1' no='0'/>
+		<node id='N54' pos='n.n.n.n.n.n.name' posval='e' yes='0' no='1'/>
+		<node id='N55' pos='n.n.n.n.name' posval='i' yes='54' no='1'/>
+		<node id='N56' pos='n.n.n.n.n.name' posval='l' yes='55' no='1'/>
+		<node id='N57' pos='n.n.n.n.name' posval='l' yes='53' no='56'/>
+		<node id='N58' pos='n.n.n.n.n.n.n.n.name' posval='#' yes='57' no='1'/>
 	</tree>
-	<tree ltr='t' rootnode='N1' terminal='1' nonterminal='0'>
-		<node id='T0' val='t'/>
+	<tree ltr='t' rootnode='N2' terminal='2' nonterminal='1'>
+		<node id='T0' val='0'/>
+		<node id='T1' val='t'/>
+		<node id='N2' pos='n.name' posval='̦' yes='0' no='1'/>
 	</tree>
 	<tree ltr='u' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='u0'/>
@@ -148,19 +173,15 @@
 	<tree ltr='z' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='z'/>
 	</tree>
-	<tree ltr='â' rootnode='N1' terminal='1' nonterminal='0'>
+	<tree ltr='̂' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='a@0'/>
 	</tree>
-	<tree ltr='î' rootnode='N1' terminal='1' nonterminal='0'>
-		<node id='T0' val='a@0'/>
-	</tree>
-	<tree ltr='ă' rootnode='N1' terminal='1' nonterminal='0'>
+	<tree ltr='̆' rootnode='N1' terminal='1' nonterminal='0'>
 		<node id='T0' val='@0'/>
 	</tree>
-	<tree ltr='ș' rootnode='N1' terminal='1' nonterminal='0'>
-		<node id='T0' val='sh'/>
-	</tree>
-	<tree ltr='ț' rootnode='N1' terminal='1' nonterminal='0'>
+	<tree ltr='̦' rootnode='N2' terminal='2' nonterminal='1'>
 		<node id='T0' val='ts'/>
+		<node id='T1' val='sh'/>
+		<node id='N2' pos='p.name' posval='t' yes='0' no='1'/>
 	</tree>
 </lts>
