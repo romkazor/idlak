@@ -108,25 +108,25 @@
 		<o pat="s x r"/>
 	</onsets>
 	<nuclei stress="false">
-		<n name="aa"/>
-		<n name="an"/>
-		<n name="ah"/>
-		<n name="au"/>
-		<n name="ax"/>
-		<n name="eh"/>
-		<n name="ee"/>
-		<n name="eu"/>
-		<n name="ei"/>
-		<n name="e@"/>
-		<n name="@@"/>
-		<n name="ih"/>
-		<n name="iy"/>
-		<n name="ow"/>
-		<n name="on"/>
-		<n name="oh"/>
-		<n name="oe"/>
-		<n name="ui"/>
-		<n name="uh"/>
-		<n name="uu"/>
+		<s name="aa"/>
+		<s name="an"/>
+		<s name="ah"/>
+		<s name="au"/>
+		<s name="ax"/>
+		<s name="eh"/>
+		<s name="ee"/>
+		<s name="eu"/>
+		<s name="ei"/>
+		<s name="e@"/>
+		<s name="@@"/>
+		<s name="ih"/>
+		<s name="iy"/>
+		<s name="ow"/>
+		<s name="on"/>
+		<s name="oh"/>
+		<s name="oe"/>
+		<s name="ui"/>
+		<s name="uh"/>
+		<s name="uu"/>
 	</nuclei>
 </syl>
