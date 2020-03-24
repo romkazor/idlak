@@ -2,8 +2,8 @@
 TOREPLACE="from pip import main"
 REPLACETO="from pip._internal import main"
 
-echo "virtualenv venv"
-virtualenv venv
+echo "virtualenv -p python3 venv"
+virtualenv -p python3 venv
 echo "source venv/bin/activate"
 source venv/bin/activate
 echo "replace \"$TOREPLACE\" \"$REPLACETO\" -- venv/bin/pip3"
