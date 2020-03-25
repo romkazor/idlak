@@ -53,6 +53,7 @@ RUN python3 -m pip install -r requirements.txt
 EXPOSE 80
 
 # setup nginx
+RUN yum install -y epel-release
 RUN yum install -y nginx
 
 # setup idlak service
