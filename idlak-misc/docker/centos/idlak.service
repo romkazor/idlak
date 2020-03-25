@@ -5,8 +5,8 @@ After=network.target
 [Service]
 User=root
 Group=nginx
-WorkingDirectory=/usr/local/idlak
-ExecStart=/usr/local/bin/uwsgi --ini wsgi.ini
+WorkingDirectory=/usr/local/idlak/idlak-server
+ExecStart=/usr/local/bin/uwsgi --ini /usr/local/idlak/idlak-server/wsgi.ini
 
 [Install]
 WantedBy=multi-user.target

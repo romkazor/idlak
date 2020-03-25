@@ -68,13 +68,13 @@ RUN yum install -y nginx
 RUN cp /usr/local/idlak/idlak-misc/docker/centos/wsgi.ini ./.
 RUN cp /usr/local/idlak/idlak-misc/docker/centos/idlak.service /etc/systemd/system/.
 RUN cp /usr/local/idlak/idlak-misc/docker/centos/idlak.conf /etc/nginx/conf.d/idlak.conf
-RUN systemctl start idlak
+#RUN systemctl start idlak
 RUN systemctl enable idlak
 
 # continue setting up nginx
 RUN usermod -a -G root nginx
 RUN chmod 710 /usr/local/idlak
-RUN systemctl start nginx
+#RUN systemctl start nginx
 RUN systemctl enable nginx
 
 CMD ["/usr/sbin/init"]
