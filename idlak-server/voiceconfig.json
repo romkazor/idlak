@@ -1,0 +1,20 @@
+{
+    "voices": [
+        {
+            "name": "en_ga_slt",
+            "gender": "female",
+            "lang": "en",
+            "acc": "ga",
+            "vid": "slt",
+            "dir": "../idlak-voices/tangle/en/ga/slt"
+        },
+        {
+            "name": "ro_ro_bas",
+            "gender": "female",
+            "lang": "ro",
+            "acc": "ro",
+            "vid": "bas",
+            "dir": "../idlak-voices/tangle/ro/ro/bas"
+        }
+    ]
+}
