@@ -62,7 +62,7 @@ def create_app(config_name):
             for v in app.config['VOICE_CONFIG']['voices']:
                 voice = Voice.new_voice(v['vid'], v['name'], v['lang'], v['acc'],
                                         v['gender'], v['dir'])
-                if 'error' in voice and 'Voice already exists' not in voice['error']:
+                if type(voice) == dict and 'error' in voice and 'Voice already exists' not in voice['error']:
                     app.logger.error(voice['error'])
                     sys.exit()
             app.logger.info("Voices from configuration file have been loaded")
