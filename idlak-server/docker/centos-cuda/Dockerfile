@@ -32,8 +32,7 @@ RUN yum install -y cuda
 
 WORKDIR /usr/local/
 # Use the newest idlak version
-#RUN git clone https://github.com/Idlak/idlak.git
-RUN git clone https://github.com/skaiste/idlak.git
+RUN git clone https://github.com/Idlak/idlak.git
 WORKDIR /usr/local/idlak
 RUN git checkout server-docker
 RUN git pull
