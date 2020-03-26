@@ -11,3 +11,4 @@ python-pcre==0.7
 requests==2.21.0
 SQLAlchemy==1.2.10
 Werkzeug==0.14.1
+uwsgi==2.0.18

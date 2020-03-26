@@ -1,0 +1,12 @@
+[Unit]
+Description=uWSGI instance to serve Idlak REST API server
+After=network.target
+
+[Service]
+User=root
+Group=nginx
+WorkingDirectory=/usr/local/idlak/idlak-server
+ExecStart=/usr/local/bin/uwsgi --ini wsgi.ini
+
+[Install]
+WantedBy=multi-user.target

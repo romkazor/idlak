@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import subprocess
 import shutil
 from logging.handlers import RotatingFileHandler
@@ -44,6 +45,7 @@ def create_app(config_name):
     with app.app_context():
         from app import models, endpoints, reqlogging       # noqa
         from app.models.user import User                    # noqa
+        from app.models.voice import Voice                    # noqa
 
         # if database is not created
         if not os.path.isfile(app.config['DATABASE_NAME']+'.db'):
@@ -54,6 +56,16 @@ def create_app(config_name):
             admin_user = User.new_user_full('admin', 'admin', True)
             app.logger.info("An initial admin user has been created: {}"
                             .format(admin_user))
+            
+        # load all voices from config
+        if 'VOICE_CONFIG' in app.config:
+            for v in app.config['VOICE_CONFIG']['voices']:
+                voice = Voice.new_voice(v['vid'], v['name'], v['lang'], v['acc'],
+                                        v['gender'], v['dir'])
+                if type(voice) == dict and 'error' in voice and 'Voice already exists' not in voice['error']:
+                    app.logger.error(voice['error'])
+                    sys.exit()
+            app.logger.info("Voices from configuration file have been loaded")
 
     # url endpoints
     from app.endpoints.auth import Auth, Auth_Expire

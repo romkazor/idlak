@@ -15,8 +15,9 @@ from flask_restful import Resource, abort, request
 from flask_jwt_simple import jwt_required
 from app.models.voice import Voice
 
+idlakdir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-sys.path.append('../src/')
+sys.path.append(os.path.join(idlakdir, 'src'))
 from pyIdlak import TangleVoice         # noqa
 
 spch_parser = reqparser.RequestParser()

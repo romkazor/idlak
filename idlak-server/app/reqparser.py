@@ -23,17 +23,17 @@ class RequestParser():
     def __init__(self):
         self.reqschema = {
             # content-type: application/json
-            "json": RequestSchema(strict=True),
+            "json": RequestSchema(),
             # content-type: multipart/form-data
-            "form": RequestSchema(strict=True),
+            "form": RequestSchema(),
             # arguments from url
-            "args": RequestSchema(strict=True),
+            "args": RequestSchema(),
             # application/x-www-form-urlencoded, form-data, arguments from url
-            "values": RequestSchema(strict=True),
+            "values": RequestSchema(),
             # content-type: text/plain
-            "text": RequestSchema(strict=True),
-            "headers": RequestSchema(strict=True),
-            "cookies": RequestSchema(strict=True)
+            "text": RequestSchema(),
+            "headers": RequestSchema(),
+            "cookies": RequestSchema()
             }
         self.help = {}
 

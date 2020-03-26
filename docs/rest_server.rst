@@ -45,8 +45,13 @@ Loading voices
 --------------
 
 In order for the users to get speech of any voice, the database must
-know about the voices and their location. To set a voice up, the server
-must be installed and in the ``idlak-server`` directory a command has to
+know about the voices and their location. 
+The current voice configuration file ``voiceconfig.json`` has prebuilt 
+voice information. Other voices can be added to this file to be loaded 
+to the database on startup of the server.
+
+To set a voice up in a different way, the server
+must be installed and in the ``idlak-server`` directory and a command has to
 be run:
 
 ::
@@ -69,7 +74,12 @@ information and get processed speech of these voices.
 
 Deployment
 ----------
-Follow `this link <http://flask.pocoo.org/docs/1.0/deploying/>`_ for
+For deployment with docker, docker images with and without cuda can be 
+found in ``idlak-server/docker`` directory.
+The server is run on port 80.
+
+
+Follow `this link <http://flask.pocoo.org/docs/1.0/deploying/>`_ for 
 information on how to deploy a Flask application.
 
 

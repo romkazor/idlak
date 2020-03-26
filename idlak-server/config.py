@@ -1,6 +1,7 @@
 import os
 import configparser
 import uuid
+import json
 from datetime import timedelta
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -26,6 +27,14 @@ def load_config_file(conf, config_name):
     # correct database value
     conf['SQLALCHEMY_DATABASE_URI'] = (conf['SQLALCHEMY_DATABASE_URI']
                                        .format(conf['DATABASE_NAME']))
+    # voice configuration
+    if 'VOICE_CONFIG' in conf:
+        vcfn = os.path.realpath(os.path.join(basedir, conf['VOICE_CONFIG']))
+        if os.path.isfile(vcfn):
+            with open(vcfn, "r") as vcf:
+               conf['VOICE_CONFIG'] = json.loads(vcf.read())
+            for v in conf['VOICE_CONFIG']['voices']:
+                v['dir'] = os.path.realpath(os.path.join(basedir, v['dir']))
     # correct AUTHENTICATION value
     if 'AUTHORIZATION' in conf:
         auth = conf['AUTHORIZATION']
