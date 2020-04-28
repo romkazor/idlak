@@ -40,7 +40,7 @@ dnndir=$voice_dir/acoustic
 cleanup=1
 datadir=`mktemp -d`
 mkdir -p $datadir
-tpdb=`readlink -f $voice_dir/lang/`
+tpdb=`realpath $voice_dir/lang/`
 
 [ -f path.sh ] && . ./path.sh;
 

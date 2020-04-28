@@ -10,7 +10,7 @@ Idlak is a project to build an end-to-end parametric TTS
 system within Kaldi, to be distributed with the same Apache 2 licence.
 It contains a robust front-end, voice building tools, speech analysis
 utilities, and DNN tools suitable for parametric synthesis. It also contains
-an example of using Idlak as an end-to-end TTS system, in egs/tts_dnn_arctic/s1
+an example of using Idlak as an end-to-end TTS system, in idlak-egs/tts_tangle_arctic/s2
 
 Note that the kaldi structure has been maintained and the tool building
 procedure is identical.
@@ -31,7 +31,7 @@ and appears in src/html/
 To run the example system builds, see `egs/README.txt`.
 
 If you are reading this, you probably want to build the "Tangle" demo, which
-is located egs/tts_dnn_arctic/s1.
+is located idlak-egs/tts_tangle_arctic/s2.
 
 If you encounter problems (and you probably will), please do not hesitate to
 contact the developers (see below). In addition to specific questions, please
