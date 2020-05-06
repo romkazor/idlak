@@ -145,12 +145,18 @@ if [ $stage -le 0 ]; then
 
         # Split train, dev sets
         # linux and mac have to do this in different ways
-        head -n-$nodev $flist > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            head -n-$nodev $flist | sed s'|^\(.*\)|\1 '$audio_dir/'\1.wav|' | sort -u > $datadir/train/$spk/wav.scp
-        else
-            tail -r $flist | tail -n +$nodev | tail -r | sed s'|^\(.*\)|\1 '$audio_dir/'\1.wav|' | sort -u  > $datadir/train/$spk/wav.scp
-        fi
+        case $(uname | tr '[:upper:]' '[:lower:]') in
+            linux*) 
+                head -n-$nodev $flist 
+                ;;
+            darwin*) 
+                tail -r $flist | tail -n +$nodev | tail -r 
+                ;;
+            *) 
+                echo "ERROR : unknown system $(uname | tr '[:upper:]' '[:lower:]') " 
+                ;;
+        esac | sed s'|^\(.*\)|\1 '$audio_dir/'\1.wav|' | sort -u > $datadir/train/$spk/wav.scp
+
         cat $datadir/train/$spk/wav.scp >> $datadir/train/wav.scp
 
         tail -n$nodev $flist | sed s'|^\(.*\)|\1 '$audio_dir/'\1.wav|' | sort -u  > $datadir/dev/$spk/wav.scp
