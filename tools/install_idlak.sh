@@ -18,7 +18,7 @@ echo "****(1) Installing expat"
 
 (
   rm -f expat-2.1.0.tar.gz 2>/dev/null
-  wget -T 10 -t 3 https://sourceforge.net/projects/expat/files/expat/2.1.0/expat-2.1.0.tar.gz
+  wget -T 10 -t 3 https://src.fedoraproject.org/repo/pkgs/expat/expat-2.1.0.tar.gz/dd7dab7a5fea97d2a6a43f511449b7cd/expat-2.1.0.tar.gz --no-check-certificate
   if [ ! -e expat-2.1.0.tar.gz ]; then
     echo "****download of expat-2.1.0.tar.gz failed."
     exit 1
@@ -42,7 +42,7 @@ echo "****(2) Installing pugixml"
 (
   rm -rf pugixml-1.2 pugixml-1.2.tar.gz 2>/dev/null
   #wget -T 10 -t 3 http://pugixml.googlecode.com/files/pugixml-1.2.tar.gz
-  wget -T 10 -t 3 https://github.com/zeux/pugixml/releases/download/v1.2/pugixml-1.2.tar.gz
+  wget -T 10 -t 3 https://github.com/zeux/pugixml/releases/download/v1.2/pugixml-1.2.tar.gz --no-check-certificate
   if [ ! -e pugixml-1.2.tar.gz ]; then
     echo "****download of pugixml-1.2.tar.gz failed."
     exit 1
@@ -79,7 +79,7 @@ echo "****(3) Installing pcre with utf8 support"
 
 (
   rm -f pcre-8.20.tar.bz2 2>/dev/null
-  wget -T 10 -t 3 https://sourceforge.net/projects/pcre/files/pcre/8.20/pcre-8.20.tar.bz2
+  wget -T 10 -t 3 https://sourceforge.net/projects/pcre/files/pcre/8.20/pcre-8.20.tar.bz2 --no-check-certificate
   if [ ! -e pcre-8.20.tar.bz2 ]; then
     echo "****download of pcre-8.20.tar.bz2 failed."
     exit 1
@@ -101,7 +101,7 @@ fi
 echo "****(4) Installing SPTK"
 (
     rm -f SPTK-3.9.tar.gz 2>/dev/null
-    wget -T 10 -t 3 https://sourceforge.net/projects/sp-tk/files/SPTK/SPTK-3.9/SPTK-3.9.tar.gz
+    wget -T 10 -t 3 https://sourceforge.net/projects/sp-tk/files/SPTK/SPTK-3.9/SPTK-3.9.tar.gz --no-check-certificate
     if [ ! -e SPTK-3.9.tar.gz ]; then
         echo "****download of SPTK-3.9.tar.gz failed."
         exit 1
@@ -174,17 +174,17 @@ fi
 #    git clone https://github.com/AdolfVonKleist/Phonetisaurus.git
 #    if [ ! -e Phonetisaurus ]; then
 #        echo "****cloning of Phonetisaurus failed."
-#	    exit 1
+#           exit 1
 #    else
 #        cd Phonetisaurus
-#	    git checkout 09651ed5f6e9040d6dd30070601ecccfad254df4 . || exit 1
+#           git checkout 09651ed5f6e9040d6dd30070601ecccfad254df4 . || exit 1
 #        patch -p1 -N < ../extras/phonetisaurus.patch
 #        cd src/.autoconf
 #        autoconf -o ../configure || exit 1
 #        cd ..
 #        LDFLAGS="-Wl,-rpath=`pwd`/../../openfst/lib/" ./configure --with-openfst-libs=`pwd`/../../openfst/lib --with-openfst-includes=`pwd`/../../openfst/include  --with-install-bin=`pwd`/.. || exit 1
-#	    make -j4 || exit 1
-#	    make install || exit 1
+#           make -j4 || exit 1
+#           make install || exit 1
 #        cd ..
 #    fi
 #)
