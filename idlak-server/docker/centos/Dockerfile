@@ -15,14 +15,16 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
+RUN sed -e '/override_install_langs/ s/^#*/#/' -i
 RUN yum update -y
 RUN yum groupinstall -y "Development Tools" "System Tools"
 RUN yum install -y \
     git bzip2 wget subversion which sox \
     gcc-c++ make automake autoconf zlib-devel atlas-static \
-     python python3-devel cmake tcsh pcre-devel
+     python python3-devel cmake tcsh pcre-devel coreutils
 RUN yum remove -y swig
 RUN yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/swig3-3.0.12-17.el7.x86_64.rpm
+# ENV CPU_CORE $(expr `nproc` - 1)
 
 WORKDIR /usr/local/
 # Use the newest idlak version
