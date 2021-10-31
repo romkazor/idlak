@@ -15,7 +15,7 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
-RUN sed -e '/override_install_langs/ s/^#*/#/' -i
+RUN sed -e '/override_install_langs/ s/^#*/#/' -i /etc/yum.conf
 RUN yum update -y
 RUN yum groupinstall -y "Development Tools" "System Tools"
 RUN yum install -y \
