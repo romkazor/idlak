@@ -31,7 +31,7 @@ To run the already installed Rest server one must:
 
 In order for the users to get speech of any voice, the database must know about the voices and their location. To set a voice up, the server must be installed and in the ```idlak-server``` directory a command has to be run:
 
-    ./seed/addvoice.py -g female -n Anastasia -i abr -d ../idlak-egs/tts_tangle_idlak/s2/voices/ru/ru/abr_pmdl
+    ./seed/addvoice.py -g female -n Anastasia -i abr -d ../idlak-voices/tangle/s2/voices/ru/ru/abr
 
 the different information based on the voice must be provided: gender, name, id and tpdb directory To remove voice information from the server, a command in the ```idlak-server``` directory has to be run:
 
